@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="GB18030"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:context="http://www.springframework.org/schema/context" 
+	   xmlns:aop="http://www.springframework.org/schema/aop" 
+	   xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+					http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+					http://www.springframework.org/schema/context
+					http://www.springframework.org/schema/context/spring-context-3.1.xsd
+					http://www.springframework.org/schema/aop
+					http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+           			http://www.springframework.org/schema/mvc
+ 					http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+ 					http://www.springframework.org/schema/tx
+					http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+	<context:component-scan base-package="name.chenyuelin.controller" />
+
+	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
+
+	<!-- <mvc:resources location="/,classpath:/META-INF/publicResources/" mapping="/static/**"/> -->
+	
+	<mvc:resources location="/static/" mapping="/static/**" />
+	
+	<!-- <mvc:default-servlet-handler default-servlet-name="default"/> -->
+
+	<!-- <mvc:annotation-driven></mvc:annotation-driven> -->
+
+	<!-- <bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor"> -->
+	<!-- <property name="transactionInterceptor" ref="transactionInterceptor"/> -->
+	<!-- </bean> -->
+
+	<!-- <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"> -->
+	<!-- <property name="jpaTransactionManager" ref="txManager"/> -->
+	<!-- <property name="transactionAttributeSource"> -->
+	<!-- <bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/> -->
+	<!-- </property> -->
+	<!-- </bean> -->
+
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>/WEB-INF/i18n/i18Test</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="formattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+<!-- 				<bean class="name.chenyuelin.interceptor.HttpPutContentInterceptor"/> -->
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+				<property name="conversionService" ref="formattingConversionService" />
+			</bean>
+		</property>
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+					<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
+				</bean>
+				<bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置ViewResolver -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="ignoreAcceptHeader" value="true" />
+		<property name="defaultContentType" value="#{T(org.springframework.http.MediaType).TEXT_HTML}" />
+		<property name="mediaTypes">
+			<map>
+				<!-- <entry key="htm" value="text/html" /> -->
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+					<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
+				</bean>
+			</list>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="contentType" value="text/html;charset=GB18030" />
+					<property name="cache" value="true" />
+					<property name="prefix" value="/WEB-INF/jsp/" />
+					<property name="suffix" value=".jsp" /><!-- 可以不用 -->
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置ExceptionResolver -->
+	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
+		<property name="warnLogCategory" value="name.chenyuelin.HandlerExceptionResolver" />
+	</bean>
+</beans>
