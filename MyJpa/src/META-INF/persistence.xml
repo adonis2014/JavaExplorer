@@ -7,8 +7,8 @@
 		<!-- <class>name.chenyuelin.entity.test.Agent</class> -->
 		<class>name.chenyuelin.entity.test.Area</class>
 <!-- 		<class>name.chenyuelin.entity.test.Carea</class> -->
-<!-- 		<class>name.chenyuelin.entity.test.Customer</class> -->
-<!-- 		<class>name.chenyuelin.entity.test.CustomerAddress</class> -->
+		<class>name.chenyuelin.entity.test.Customer</class>
+		<class>name.chenyuelin.entity.test.CustomerAddress</class>
 <!-- 		<class>name.chenyuelin.entity.test.CustomerAddressPK</class> -->
 		<class>name.chenyuelin.entity.test.Department</class>
 		<!-- <class>name.chenyuelin.entity.test.Hotel</class> -->

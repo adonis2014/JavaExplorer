@@ -8,6 +8,7 @@ import java.sql.Timestamp;
  * The persistent class for the customer_address database table.
  */
 @Entity
+@IdClass(CustomerAddressPK.class)
 @Table(name = "customer_address")
 public class CustomerAddress implements Serializable {
 
@@ -16,10 +17,16 @@ public class CustomerAddress implements Serializable {
 	 */
 	private static final long serialVersionUID = -8017841601982883303L;
 
-	@EmbeddedId
-	private CustomerAddressPK id;
-
-	private byte active;
+	@Id
+	@Column(name="sub_id")
+	private byte subId;
+	
+	@Id
+	@ManyToOne
+	@JoinColumn(name="customer_id")
+    private Customer customer;
+	
+	private boolean active;
 
 	@Column(name = "create_time")
 	private Timestamp createTime;
@@ -30,10 +37,6 @@ public class CustomerAddress implements Serializable {
 
 	@Column(name = "update_time")
 	private Timestamp updateTime;
-
-	// bi-directional many-to-one association to Customer
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Customer customer;
 
 	// bi-directional many-to-one association to Area
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -68,19 +71,11 @@ public class CustomerAddress implements Serializable {
 	public CustomerAddress() {
 	}
 
-	public CustomerAddressPK getId() {
-		return this.id;
-	}
-
-	public void setId(CustomerAddressPK id) {
-		this.id = id;
-	}
-
-	public byte getActive() {
+	public boolean getActive() {
 		return this.active;
 	}
 
-	public void setActive(byte active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
@@ -171,5 +166,13 @@ public class CustomerAddress implements Serializable {
 	public void setArea6(Area area6) {
 		this.area6 = area6;
 	}
+
+    public byte getSubId() {
+        return subId;
+    }
+
+    public void setSubId(byte subId) {
+        this.subId = subId;
+    }
 
 }

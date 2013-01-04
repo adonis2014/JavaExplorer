@@ -17,7 +17,7 @@
 <!-- <context:load-time-weaver/> -->
 	<context:property-placeholder location="/WEB-INF/configuration/appProperty.Properties" />
 
-	<context:component-scan base-package="name.chenyuelin.service,name.chenyuelin.dao" />
+	<context:component-scan base-package="name.chenyuelin.service,name.chenyuelin.dao,name.chenyuelin.transformer" />
 
 	<!-- <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> <property name="locations"> <list> <value>/WEB-INF/configuration/appProperty.Properties</value> </list> </property> </bean> -->
 
@@ -31,6 +31,8 @@
 			<props>
 				<prop key="useUnicode">${useUnicode}</prop>
 				<prop key="characterEncoding">${characterEncoding}</prop>
+				<prop key="zeroDateTimeBehavior">${zeroDateTimeBehavior}</prop>
+				<prop key="transformedBitIsBoolean">${transformedBitIsBoolean}</prop>
 			</props>
 		</property>
 	</bean>
@@ -40,12 +42,12 @@
 <!-- 		<property name="packagesToScan" value="name.chenyuelin.entity.test"/> -->
 <!-- 		<property name="persistenceXmlLocation" value="/META-INF/persistence.xml" /> -->
 <!-- 		<property name="persistenceUnitName" value="testDB" /> -->
-		<!-- <property name="loadTimeWeaver">
-			<bean class="org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver" />
-			<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+		<property name="loadTimeWeaver">
+<!-- 			<bean class="org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver" /> -->
+<!-- 			<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" /> -->
 			<bean class="org.springframework.context.weaving.DefaultContextLoadTimeWeaver" />
-			<bean class="org.springframework.instrument.classloading.SimpleLoadTimeWeaver" />
-		</property> -->
+<!-- 			<bean class="org.springframework.instrument.classloading.SimpleLoadTimeWeaver" /> -->
+		</property>
 		<!-- <property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter" />
 		</property>

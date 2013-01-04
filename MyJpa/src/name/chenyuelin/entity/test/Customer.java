@@ -22,7 +22,7 @@ public class Customer implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private byte id;
 
-	private byte active;
+	private boolean active;
 
 	@Temporal(TemporalType.DATE)
 	private Date birthday;
@@ -55,9 +55,9 @@ public class Customer implements Serializable {
 	@OneToMany(mappedBy = "customer")
 	private List<CustomerAddress> customerAddresses;
 
-	// bi-directional many-to-one association to SimpleOrder
+	/*// bi-directional many-to-one association to SimpleOrder
 	@OneToMany(mappedBy = "customer")
-	private List<SimpleOrder> simpleOrders;
+	private List<SimpleOrder> simpleOrders;*/
 
 	public Customer() {
 	}
@@ -70,11 +70,11 @@ public class Customer implements Serializable {
 		this.id = id;
 	}
 
-	public byte getActive() {
+	public boolean getActive() {
 		return this.active;
 	}
 
-	public void setActive(byte active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
@@ -166,12 +166,12 @@ public class Customer implements Serializable {
 		this.customerAddresses = customerAddresses;
 	}
 
-	public List<SimpleOrder> getSimpleOrders() {
+	/*public List<SimpleOrder> getSimpleOrders() {
 		return this.simpleOrders;
 	}
 
 	public void setSimpleOrders(List<SimpleOrder> simpleOrders) {
 		this.simpleOrders = simpleOrders;
-	}
+	}*/
 
 }

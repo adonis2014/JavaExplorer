@@ -20,7 +20,7 @@ public class Area implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	private byte active;
+	private Boolean active;
 
 	@Column(name = "area_code")
 	private String areaCode;
@@ -45,7 +45,7 @@ public class Area implements Serializable {
 	private List<Area> areas;
 
 	// bi-directional many-to-one association to CustomerAddress
-	/*@OneToMany(mappedBy = "area1")
+	@OneToMany(mappedBy = "area1")
 	private List<CustomerAddress> customerAddresses1;
 
 	// bi-directional many-to-one association to CustomerAddress
@@ -68,7 +68,7 @@ public class Area implements Serializable {
 	@OneToMany(mappedBy = "area6")
 	private List<CustomerAddress> customerAddresses6;
 
-	// bi-directional many-to-one association to SimpleOrder
+	/*// bi-directional many-to-one association to SimpleOrder
 	@OneToMany(mappedBy = "area1")
 	private List<SimpleOrder> simpleOrders1;
 
@@ -103,11 +103,11 @@ public class Area implements Serializable {
 		this.id = id;
 	}
 
-	public byte getActive() {
+	public Boolean getActive() {
 		return this.active;
 	}
 
-	public void setActive(byte active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -159,7 +159,7 @@ public class Area implements Serializable {
 		this.areas = areas;
 	}
 
-	/*public List<CustomerAddress> getCustomerAddresses1() {
+	public List<CustomerAddress> getCustomerAddresses1() {
 		return this.customerAddresses1;
 	}
 
@@ -207,7 +207,7 @@ public class Area implements Serializable {
 		this.customerAddresses6 = customerAddresses6;
 	}
 
-	public List<SimpleOrder> getSimpleOrders1() {
+	/*public List<SimpleOrder> getSimpleOrders1() {
 		return this.simpleOrders1;
 	}
 

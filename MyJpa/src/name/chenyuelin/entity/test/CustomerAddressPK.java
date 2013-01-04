@@ -1,12 +1,10 @@
 package name.chenyuelin.entity.test;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * The primary key class for the customer_address database table.
  */
-@Embeddable
 public class CustomerAddressPK implements Serializable {
 
 	/**
@@ -14,21 +12,24 @@ public class CustomerAddressPK implements Serializable {
 	 */
 	private static final long serialVersionUID = -4263510130147539350L;
 
-	@Column(name = "customer_id")
-	private byte customerId;
+	private byte customer;
 
-	@Column(name = "sub_id")
 	private byte subId;
 
 	public CustomerAddressPK() {
 	}
 
+	public CustomerAddressPK(byte customerId,byte subId){
+	    customer=customerId;
+	    this.subId=subId;
+	}
+	
 	public byte getCustomerId() {
-		return this.customerId;
+		return this.customer;
 	}
 
 	public void setCustomerId(byte customerId) {
-		this.customerId = customerId;
+		this.customer = customerId;
 	}
 
 	public byte getSubId() {
@@ -48,7 +49,7 @@ public class CustomerAddressPK implements Serializable {
 			return false;
 		}
 		CustomerAddressPK castOther = (CustomerAddressPK) other;
-		return (this.customerId == castOther.customerId) && (this.subId == castOther.subId);
+		return (this.customer == castOther.customer) && (this.subId == castOther.subId);
 
 	}
 
@@ -56,7 +57,7 @@ public class CustomerAddressPK implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + (this.customerId);
+		hash = hash * prime + (this.customer);
 		hash = hash * prime + (this.subId);
 
 		return hash;
