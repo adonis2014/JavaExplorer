@@ -57,7 +57,7 @@ Date.prototype.format = function(format){
 };*/
 
 /**
- * XmlParserUtil objectaa
+ * XmlParserUtil object
  */
 function XmlParserUtil(){
 	var isMoz=(typeof document.implementation != 'undefined')&& (typeof document.implementation.createDocument != 'undefined');
