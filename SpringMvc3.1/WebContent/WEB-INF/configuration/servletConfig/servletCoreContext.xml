@@ -20,24 +20,18 @@
 
 	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
 
-	<!-- <mvc:resources location="/,classpath:/META-INF/publicResources/" mapping="/static/**"/> -->
-	
 	<mvc:resources location="/static/" mapping="/static/**" />
-	
-	<!-- <mvc:default-servlet-handler default-servlet-name="default"/> -->
 
-	<!-- <mvc:annotation-driven></mvc:annotation-driven> -->
+	<!-- <bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
+		<property name="transactionInterceptor" ref="transactionInterceptor" />
+	</bean>
 
-	<!-- <bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor"> -->
-	<!-- <property name="transactionInterceptor" ref="transactionInterceptor"/> -->
-	<!-- </bean> -->
-
-	<!-- <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"> -->
-	<!-- <property name="jpaTransactionManager" ref="txManager"/> -->
-	<!-- <property name="transactionAttributeSource"> -->
-	<!-- <bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/> -->
-	<!-- </property> -->
-	<!-- </bean> -->
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="jpaTransactionManager" ref="txManager" />
+		<property name="transactionAttributeSource">
+			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+		</property>
+	</bean> -->
 
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
@@ -49,13 +43,24 @@
 
 	<bean id="formattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
 
+	<!-- 调用容器中bean方法 -->
+	<!-- <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="formattingConversionService" />
+		<property name="targetMethod" value="getObject" />
+		<property name="arguments">
+			<list>
+				<value type="org.codehaus.jackson.map.SerializationConfig.Feature">WRITE_DATES_AS_TIMESTAMPS</value>
+			</list>
+		</property>
+	</bean> -->
+
 	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
 	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
 
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		<property name="interceptors">
 			<list>
-<!-- 				<bean class="name.chenyuelin.interceptor.HttpPutContentInterceptor"/> -->
+				<!-- <bean class="name.chenyuelin.interceptor.HttpPutContentInterceptor"/> -->
 			</list>
 		</property>
 	</bean>
@@ -83,12 +88,19 @@
 		<property name="defaultContentType" value="#{T(org.springframework.http.MediaType).TEXT_HTML}" />
 		<property name="mediaTypes">
 			<map>
-				<entry key="xml" value="text/xml" />
+				<entry key="xml" value="application/xml" />
 				<entry key="json" value="application/json" />
 			</map>
 		</property>
 		<property name="defaultViews">
 			<list>
+				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<constructor-arg>
+						<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+							<property name="packagesToScan" value="name.chenyuelin.dto"/>
+						</bean>
+					</constructor-arg>
+				</bean>
 				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
 					<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
 				</bean>

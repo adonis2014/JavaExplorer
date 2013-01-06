@@ -10,10 +10,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
            			http://www.springframework.org/schema/mvc
  					http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 	
-	<bean name="/index.htm" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-		<property name="viewName" value="/index"/>
+	<bean name="/" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="index"/>
 	</bean>
-
+	
 	<bean name="/help/**" class="org.springframework.web.servlet.mvc.UrlFilenameViewController">
 		<property name="prefix" value="help/"/>
 	</bean>

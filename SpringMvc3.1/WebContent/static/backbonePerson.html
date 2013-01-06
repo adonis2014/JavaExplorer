@@ -4,16 +4,43 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
 <title>Backbone Sample</title>
+<!--[if lte IE 8]><script type="text/javascript" src="lib/json2.min.js"></script><![endif]-->
 <script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="lib/underscore-min.js"></script>
 <script type="text/javascript" src="lib/backbone.js"></script>
+<script type="text/javascript" src="lib/utils.js"></script>
 <script type="text/javascript">
-$().ready(function(){
-	alert(123);
-});
+	servletPath = location.pathname.substring(0, location.pathname
+			.indexOf("/static/backbonePerson.html"));
+
+	xmlParserUtil = new XmlParserUtil();
+	
+	person = {};
+	person.sex = "male";
+	person.name = "test";
+	person.birthday = new Date();
+	person.breakfastTime = new Date();
+	person.salary = 12345;
+	person.height = 1.78;
+	person.note = "测试用户";
+
+	xmlParserUtil = new XmlParserUtil();
+
+	$.ajax(servletPath + "/person.xml", {
+		contentType : "application/xml",
+		dataType : "xml",
+		type : "POST",
+		data : xmlParserUtil.serializerXml(xmlParserUtil.loadXmlFile("book.xml")),
+		success : function(data, textStatus, jqXHR) {
+			alert("textStatus");
+		}
+	});
+	alert(JSON.stringify(new Date()));
+
+	//alert(new DOMParser());
 </script>
 </head>
 <body>
-<h3>Person Information</h3>
+	<h3>Person Information</h3>
 </body>
 </html>
