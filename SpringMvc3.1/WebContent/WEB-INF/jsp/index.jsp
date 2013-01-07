@@ -5,9 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
-<title>Hello World</title>
+<title>Welcome</title>
 </head>
 <body>
-
+<h2 align="center">Welcome to the home page.</h2>
+<a href="${pageContext.request.contextPath}/static/backbonePerson.html" target="_blank">backbonePerson.html</a>
 </body>
 </html>

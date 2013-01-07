@@ -11,8 +11,7 @@
 		*/
 package name.chenyuelin.controller;
 
-import java.util.Map;
-
+import name.chenyuelin.dto.CustomerAddressDto;
 import name.chenyuelin.entity.test.CustomerAddress;
 import name.chenyuelin.service.UserService;
 import name.chenyuelin.transformer.CustomerTransformer;
@@ -57,8 +56,8 @@ public class CustomerController {
     public ModelAndView getCustomerAddress(@PathVariable("customerId")int customerId,@PathVariable("subId")int subId){
         
         CustomerAddress customerAddress=userService.findCustomerAddress(customerId, subId);
-        Map<String, Object> dto=transformer.transformerCustomerAddressToMap(customerAddress);
-        ModelAndView mav=new ModelAndView("root",dto);
+        CustomerAddressDto dto=transformer.transformerCustomerAddressToMap(customerAddress);
+        ModelAndView mav=new ModelAndView("root","CustomerAddressDto",dto);
         return mav;
     }
 }

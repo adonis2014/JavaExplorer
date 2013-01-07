@@ -11,13 +11,11 @@
 		*/
 package name.chenyuelin.transformer;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.stereotype.Component;
-
+import name.chenyuelin.dto.CustomerAddressDto;
 import name.chenyuelin.entity.test.Area;
 import name.chenyuelin.entity.test.CustomerAddress;
+
+import org.springframework.stereotype.Component;
 
 /**
  * @ClassName: CustomerTransformer
@@ -28,21 +26,31 @@ import name.chenyuelin.entity.test.CustomerAddress;
  */
 @Component
 public class CustomerTransformer {
-    public Map<String, Object> transformerCustomerAddressToMap(CustomerAddress customerAddress){
-        Map<String, Object> dto=new HashMap<String, Object>();
-        dto.put("customerName", customerAddress.getCustomer().getName());
-        dto.put("phone", customerAddress.getPhone());
-        dto.put("street", customerAddress.getStreet());
+    public CustomerAddressDto transformerCustomerAddressToMap(CustomerAddress customerAddress){
+        CustomerAddressDto dto=new CustomerAddressDto();
+        dto.setCustomerName(customerAddress.getCustomer().getName());
+        dto.setPhone(customerAddress.getPhone());
+        dto.setStreet(customerAddress.getStreet());
         Area area=customerAddress.getArea1();
-        dto.put("area1", area==null?area:area.getAreaName());
+        if(area!=null){
+        	dto.setArea1(area.getAreaName());
+        }
         area=customerAddress.getArea2();
-        dto.put("area2", area==null?area:area.getAreaName());
+        if(area!=null){
+        	dto.setArea2(area.getAreaName());
+        }
         area=customerAddress.getArea3();
-        dto.put("area3", area==null?area:area.getAreaName());
+        if(area!=null){
+        	dto.setArea3(area.getAreaName());
+        }
         area=customerAddress.getArea4();
-        dto.put("area4", area==null?area:area.getAreaName());
+        if(area!=null){
+        	dto.setArea4(area.getAreaName());
+        }
         area=customerAddress.getArea5();
-        dto.put("area5", area==null?area:area.getAreaName());
+        if(area!=null){
+        	dto.setArea5(area.getAreaName());
+        }
         return dto;
     }
 }
