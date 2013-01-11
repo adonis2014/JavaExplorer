@@ -1,3 +1,5 @@
+utils=window.utils||{};
+
 /**
  * prototype of date format.
  * @param format pattern the pattern describing the date and time format
@@ -56,72 +58,77 @@ Date.prototype.format = function(format){
 	}
 };*/
 
-/**
- * XmlParserUtil object
- */
-function XmlParserUtil(){
-	var isMoz=(typeof document.implementation != 'undefined')&& (typeof document.implementation.createDocument != 'undefined');
-	var isIe=(typeof window.ActiveXObject != 'undefined');
-	
-	var createXmlObject=function(){
-		var dom;
-		if (isMoz){
-			dom = document.implementation.createDocument("", "doc", null);
-		}else if(isIe){
-			var xmlDomVersions = ['Microsoft.XMLDOM','MSXML.2.DOMDocument.3.0','MSXML.2.DOMDocument.6.0'];
-            for(var i=0;i<xmlDomVersions.length;i++){
-                try{
-                	dom = new ActiveXObject(xmlDomVersions[i]);
-                    break;
-                }catch(e){
+void function(){
+    utils.xmlParser=new XmlParserUtil();
+    
+    /**
+     * XmlParserUtil object
+     */
+    function XmlParserUtil(){
+        var isMoz=(typeof document.implementation != 'undefined')&& (typeof document.implementation.createDocument != 'undefined');
+        var isIe=(typeof window.ActiveXObject != 'undefined');
+        
+        var createXmlObject=function(){
+            var dom;
+            if (isMoz){
+                dom = document.implementation.createDocument("", "doc", null);
+            }else if(isIe){
+                var xmlDomVersions = ['Microsoft.XMLDOM','MSXML.2.DOMDocument.3.0','MSXML.2.DOMDocument.6.0'];
+                for(var i=0;i<xmlDomVersions.length;i++){
+                    try{
+                        dom = new ActiveXObject(xmlDomVersions[i]);
+                        break;
+                    }catch(e){
+                    }
                 }
+            }else{
+                return null;
             }
-		}else{
-			return null;
-		}
-		dom.async = false;
-		return dom;
-	};
-	
-	/**
-	 * parser xml form string.
-	 * @param xmlString string of xml
-	 * @return dom of xml.
-	 */
-	this.parser=function(xmlString){
-		var xmlDoc=createXmlObject();
-		if (isMoz){
-			var domParser = new DOMParser();
-            xmlDoc = domParser.parseFromString(xmlString, 'text/xml');
-		}else if(isIe){
-			xmlDoc.loadXML(xmlString);
-		}
-		return xmlDoc;
-	};
-	
-	/**
-	 * serializer xml form dom of xml.
-	 * @param dom of xml
-	 * @return string of xml
-	 */
-	this.serializerXml=function(xmlObject){
-		if (isMoz){
-			return new XMLSerializer().serializeToString(xmlObject);
-		}else if(isIe){
-			return xmlObject.xml;
-		}else {
-			return null;
-		}
-	};
-	
-	/**
-	 * load xml from file path.
-	 * @param file path
-	 * @return dom of xml
-	 */
-	this.loadXmlFile=function(path){
-		var xmlObject=createXmlObject();
-		xmlObject.load(path);
-		return xmlObject;
-	};
-}
+            dom.async = false;
+            return dom;
+        };
+        
+        /**
+         * parser xml form string.
+         * @param xmlString string of xml
+         * @return dom of xml.
+         */
+        this.parser=function(xmlString){
+            var xmlDoc=createXmlObject();
+            if (isMoz){
+                var domParser = new DOMParser();
+                xmlDoc = domParser.parseFromString(xmlString, 'text/xml');
+            }else if(isIe){
+                xmlDoc.loadXML(xmlString);
+            }
+            return xmlDoc;
+        };
+        
+        /**
+         * serializer xml form dom of xml.
+         * @param dom of xml
+         * @return string of xml
+         */
+        this.serializerXml=function(xmlObject){
+            if (isMoz){
+                return new XMLSerializer().serializeToString(xmlObject);
+            }else if(isIe){
+                return xmlObject.xml;
+            }else {
+                return null;
+            }
+        };
+        
+        /**
+         * load xml from file path.
+         * @param file path
+         * @return dom of xml
+         */
+        this.loadXmlFile=function(path){
+            var xmlObject=createXmlObject();
+            xmlObject.load(path);
+            return xmlObject;
+        };
+    }
+}();
+

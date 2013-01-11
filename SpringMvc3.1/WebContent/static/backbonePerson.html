@@ -12,32 +12,42 @@
 <script type="text/javascript">
 	servletPath = location.pathname.substring(0, location.pathname
 			.indexOf("/static/backbonePerson.html"));
-
-	xmlParserUtil = new XmlParserUtil();
-	
 	person = {};
 	person.sex = "male";
 	person.name = "test";
-	person.birthday = new Date();
-	person.breakfastTime = new Date();
+	//person.birthday = new Date();
+	//person.breakfastTime = new Date();
 	person.salary = 12345;
 	person.height = 1.78;
 	person.note = "≤‚ ‘”√ªß";
 
-	xmlParserUtil = new XmlParserUtil();
+	//alert(decodeURIComponent($.param(person)));
+	
+	$.post(servletPath +"/person/formUrlencoded2.json",person,function(data){
+	    alert(123);
+	},"json");
+	
+	//alert(utils.xmlParser.serializerXml(utils.xmlParser.loadXmlFile("book.xml")));
+	
+	/* $.ajax(servletPath + "/person.json", {
+		contentType : "application/json",
+		dataType : "json",
+		type : "POST",
+		data:'{"name":"sddd","sex":"male","birthday":"1983-03-11T00:00:00.000Z","height":1.78,"breakfastTime":"1983-03-11T00:08:30.000Z","createTime":416188800000,"createTime1":416188800000,"createTime2":416188800000,"salary":12333,"note":"test data"}',
+		success : function(data, textStatus, jqXHR) {
+			alert(textStatus);
+		}
+	}); */
 
-	$.ajax(servletPath + "/person.xml", {
+	/* $.ajax(servletPath + "/person.xml", {
 		contentType : "application/xml",
 		dataType : "xml",
 		type : "POST",
-		data : xmlParserUtil.serializerXml(xmlParserUtil.loadXmlFile("book.xml")),
+		data : "<?xml version='1.0' encoding='GB18030'?>"+utils.xmlParser.serializerXml(utils.xmlParser.loadXmlFile("book.xml")),
 		success : function(data, textStatus, jqXHR) {
-			alert("textStatus");
+			alert(textStatus);
 		}
-	});
-	alert(JSON.stringify(new Date()));
-
-	//alert(new DOMParser());
+	}); */
 </script>
 </head>
 <body>

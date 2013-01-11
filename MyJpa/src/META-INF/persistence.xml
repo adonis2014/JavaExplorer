@@ -21,7 +21,7 @@
 		<!-- <class>name.chenyuelin.entity.test.T2</class> -->
 		<!-- <class>name.chenyuelin.entity.test.T5</class> -->
 		<!-- <class>name.chenyuelin.entity.test.TreeTable</class> -->
-		<!-- <class>name.chenyuelin.entity.test.UserCategory</class> -->
+<!-- 		<class>name.chenyuelin.entity.test.UserCategory</class> -->
 
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>

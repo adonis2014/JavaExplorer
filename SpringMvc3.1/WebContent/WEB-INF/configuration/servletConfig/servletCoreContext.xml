@@ -20,8 +20,9 @@
 
 	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
 
-	<mvc:resources location="/static/" mapping="/static/**" />
-
+	<mvc:resources location="/static/" mapping="/static/**" order="-1"/>
+	
+<!-- 	<mvc:annotation-driven ></mvc:annotation-driven> -->
 	<!-- <bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
 	</bean>
@@ -44,20 +45,19 @@
 	<bean id="formattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
 
 	<!-- 调用容器中bean方法 -->
-	<!-- <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="formattingConversionService" />
-		<property name="targetMethod" value="getObject" />
-		<property name="arguments">
-			<list>
-				<value type="org.codehaus.jackson.map.SerializationConfig.Feature">WRITE_DATES_AS_TIMESTAMPS</value>
-			</list>
-		</property>
-	</bean> -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<!-- <property name="targetClass" value="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" /> -->
+		<property name="targetObject" ref="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+		<property name="targetMethod" value="setOrder" />
+		<property name="arguments" value="#{T(java.lang.Integer).MAX_VALUE}" />
+	</bean>
 
-	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
-	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+	<!-- mvc:resources已注册些mapping所以可以不用注册
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" /> 
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />-->
 
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="order" value="0"/>
 		<property name="interceptors">
 			<list>
 				<!-- <bean class="name.chenyuelin.interceptor.HttpPutContentInterceptor"/> -->
@@ -69,11 +69,13 @@
 		<property name="webBindingInitializer">
 			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
 				<property name="conversionService" ref="formattingConversionService" />
+<!-- 				<property name="validator" value="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/> -->
 			</bean>
 		</property>
 		<property name="messageConverters">
 			<list>
 				<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
 				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
 					<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
 				</bean>

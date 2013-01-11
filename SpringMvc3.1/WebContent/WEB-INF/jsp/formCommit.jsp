@@ -5,9 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
-<title>Insert title here</title>
+<title>提交成功</title>
 </head>
 <body>
-hello
+<h3 align="center">欢迎${person.name }</h3>
 </body>
 </html>

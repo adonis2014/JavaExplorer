@@ -1,9 +1,12 @@
-<Person>
+<person>
 	<name>sddd</name>
 	<sex>male</sex>
-	<birthday>1983.03.11T00:00:00.000Z</birthday>
+	<birthday>1983-03-11T00:00:00.000Z</birthday>
+	<createTime>1983-03-11T00:00:00.000Z</createTime>
 	<height>1.78</height>
-	<breakfastTime>1983.03.11T00:08:30.000Z</breakfastTime>
+	<breakfastTime>1983-03-11T00:08:30.000Z</breakfastTime>
+	<createTime1>1983-03-11T00:08:30.000Z</createTime1>
+	<createTime2>1983-03-11T00:08:30.000Z</createTime2>
 	<salary>12333</salary>
 	<note>test data</note>
-</Person>
+</person>
