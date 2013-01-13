@@ -16,10 +16,14 @@ import name.chenyuelin.command.Person;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.web.HttpSessionRequiredException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @ClassName: FormSampleController
@@ -30,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 @RequestMapping("/form")
+@SessionAttributes("person")
 public class FormSampleController {
     private static final Log LOG=LogFactory.getLog(FormSampleController.class);
     
@@ -49,7 +54,7 @@ public class FormSampleController {
     }
     
     @RequestMapping(method=RequestMethod.POST)
-    public String processForm(@ModelAttribute Person person){
+    public String processForm(@ModelAttribute Person person,SessionStatus sessionStatus){
         boolean isLogDebug=LOG.isDebugEnabled();
         if(isLogDebug){
             StringBuilder debugInfo=new StringBuilder(50);
@@ -64,6 +69,7 @@ public class FormSampleController {
             debugInfo.append("note:").append(person.getNote());
             LOG.debug(debugInfo);
         }
+        sessionStatus.setComplete();
         if(isLogDebug){
             StringBuilder debugInfo=new StringBuilder();
             debugInfo.append("processForm end.\n");
@@ -72,4 +78,42 @@ public class FormSampleController {
         }
         return "formCommit";
     }
+    
+    @RequestMapping(value="2",method=RequestMethod.POST)
+    public String processForm(@ModelAttribute Person person,SessionStatus sessionStatus,RedirectAttributes redirectAttributes){
+        boolean isLogDebug=LOG.isDebugEnabled();
+        if(isLogDebug){
+            StringBuilder debugInfo=new StringBuilder(50);
+            debugInfo.append("processForm start.\n Request parameters:");
+            debugInfo.append("name:").append(person.getName()).append("\t");
+            debugInfo.append("sex:").append(person.getSex()).append("\t");
+            debugInfo.append("birthday:").append(person.getBirthday()).append("\t");
+            debugInfo.append("height:").append(person.getHeight()).append("\t");
+            debugInfo.append("breakfastTime:").append(person.getBreakfastTime()).append("\t");
+            debugInfo.append("createTime:").append(person.getCreateTime()).append("\t");
+            debugInfo.append("salary:").append(person.getSalary()).append("\t");
+            debugInfo.append("note:").append(person.getNote());
+            LOG.debug(debugInfo);
+        }
+        sessionStatus.setComplete();
+        redirectAttributes.addAttribute("name", person.getName()).addFlashAttribute("message", "Account created!");
+        if(isLogDebug){
+            StringBuilder debugInfo=new StringBuilder();
+            debugInfo.append("processForm end.\n");
+            debugInfo.append("go page formCommit.");
+            LOG.debug(debugInfo);
+        }
+        return "redirect:formCommit.htm";
+    }
+    
+    @RequestMapping(value="formCommit",method=RequestMethod.GET)
+    public String seccussForm(){
+    	return "formCommit";
+    }
+    
+//    全局统一处理
+    @ExceptionHandler
+	public String HttpSessionRequiredExceptionProcess(HttpSessionRequiredException e){
+		return "sessionRequired";
+	}
 }

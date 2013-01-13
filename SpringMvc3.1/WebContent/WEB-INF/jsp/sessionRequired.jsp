@@ -5,10 +5,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
-<title>提交成功</title>
+<title>警告</title>
 </head>
 <body>
-<h3 align="center">欢迎${person.name }</h3>
-${requestScope.message}
+<h2 align="center">请别反复刷新页面</h2>
+${exception}
 </body>
 </html>

@@ -25,5 +25,19 @@
 <form:button>提交</form:button>
 </form:form>
 
+<form:form modelAttribute="person" method="post" action="form/2.htm" >
+姓名：<form:input path="name" /><br/>
+性别：<form:select path="sex">
+<form:option value="male"/>
+<form:option value="female"/>
+</form:select><br/>
+生日：<form:input path="birthday" /><br/>
+身高：<form:input path="height" /><br/>
+早餐时间：<form:input path="breakfastTime" /><br/>
+创建时间：<form:input path="createTime" /><br/>
+薪水：<form:input path="salary" /><br/>
+备注：<form:input path="note" /><br/>
+<form:button>提交</form:button>
+</form:form>
 </body>
 </html>
