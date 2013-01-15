@@ -16,6 +16,8 @@ import name.chenyuelin.entity.test.CustomerAddress;
 import name.chenyuelin.service.UserService;
 import name.chenyuelin.transformer.CustomerTransformer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +35,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
+    public static final Log LOG=LogFactory.getLog(CustomerController.class);
+    
     private UserService userService;
 
     private CustomerTransformer transformer;

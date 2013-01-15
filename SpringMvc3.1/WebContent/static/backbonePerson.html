@@ -23,13 +23,13 @@
 
 	//alert(decodeURIComponent($.param(person)));
 	
-	$.post(servletPath +"/person/formUrlencoded2.json",person,function(data){
+	/* $.post(servletPath +"/person/formUrlencoded2.json",person,function(data){
 	    alert(123);
-	},"json");
+	},"json"); */
 	
 	//alert(utils.xmlParser.serializerXml(utils.xmlParser.loadXmlFile("book.xml")));
 	
-	/* $.ajax(servletPath + "/person.json", {
+	$.ajax(servletPath + "/person.json", {
 		contentType : "application/json",
 		dataType : "json",
 		type : "POST",
@@ -37,7 +37,7 @@
 		success : function(data, textStatus, jqXHR) {
 			alert(textStatus);
 		}
-	}); */
+	});
 
 	/* $.ajax(servletPath + "/person.xml", {
 		contentType : "application/xml",

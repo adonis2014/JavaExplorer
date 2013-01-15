@@ -36,7 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/form")
 @SessionAttributes("person")
 public class FormSampleController {
-    private static final Log LOG=LogFactory.getLog(FormSampleController.class);
+    public static final Log LOG=LogFactory.getLog(FormSampleController.class);
     
     
     @RequestMapping(method=RequestMethod.GET)
@@ -55,27 +55,7 @@ public class FormSampleController {
     
     @RequestMapping(method=RequestMethod.POST)
     public String processForm(@ModelAttribute Person person,SessionStatus sessionStatus){
-        boolean isLogDebug=LOG.isDebugEnabled();
-        if(isLogDebug){
-            StringBuilder debugInfo=new StringBuilder(50);
-            debugInfo.append("processForm start.\n Request parameters:");
-            debugInfo.append("name:").append(person.getName()).append("\t");
-            debugInfo.append("sex:").append(person.getSex()).append("\t");
-            debugInfo.append("birthday:").append(person.getBirthday()).append("\t");
-            debugInfo.append("height:").append(person.getHeight()).append("\t");
-            debugInfo.append("breakfastTime:").append(person.getBreakfastTime()).append("\t");
-            debugInfo.append("createTime:").append(person.getCreateTime()).append("\t");
-            debugInfo.append("salary:").append(person.getSalary()).append("\t");
-            debugInfo.append("note:").append(person.getNote());
-            LOG.debug(debugInfo);
-        }
         sessionStatus.setComplete();
-        if(isLogDebug){
-            StringBuilder debugInfo=new StringBuilder();
-            debugInfo.append("processForm end.\n");
-            debugInfo.append("go page formCommit.");
-            LOG.debug(debugInfo);
-        }
         return "formCommit";
     }
     

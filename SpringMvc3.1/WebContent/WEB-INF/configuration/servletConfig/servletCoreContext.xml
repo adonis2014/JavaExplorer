@@ -92,10 +92,10 @@
 	</bean> -->
 
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-		<property name="order" value="0"/>
+		<property name="order" value="0" />
 		<property name="interceptors">
 			<list>
-				<bean class="name.chenyuelin.interceptor.LoggerHandlerInterceptor"/>
+				<!-- <bean class="name.chenyuelin.interceptor.LoggerHandlerInterceptor"/> -->
 			</list>
 		</property>
 	</bean>
@@ -179,4 +179,10 @@
 	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
 		<property name="warnLogCategory" value="name.chenyuelin.DefaultHandlerExceptionResolver" />
 	</bean>
+	
+	<!-- aop -->
+	<bean class="name.chenyuelin.aopAdvisor.DebugLoggerAdvisor"/>
+	<aop:config>
+		<aop:advisor advice-ref="name.chenyuelin.aopAdvisor.DebugLoggerAdvisor" pointcut="execution(* name.chenyuelin.controller..*.*(..))" />
+	</aop:config>
 </beans>

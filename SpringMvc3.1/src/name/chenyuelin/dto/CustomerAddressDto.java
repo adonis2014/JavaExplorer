@@ -64,4 +64,17 @@ public class CustomerAddressDto {
 	public void setArea5(String area5) {
 		this.area5 = area5;
 	}
+	
+	public String toString(){
+	    StringBuilder sb=new StringBuilder(50);
+	    sb.append("{customerName:").append(customerName).append(", ");
+	    sb.append("phone:").append(phone).append(", ");
+	    sb.append("street:").append(street).append(", ");
+	    sb.append("area1:").append(area1).append(", ");
+	    sb.append("area2:").append(area2).append(", ");
+	    sb.append("area3:").append(area3).append(", ");
+	    sb.append("area4:").append(area4).append(", ");
+	    sb.append("area5:").append(area5).append("}");
+	    return sb.toString();
+	}
 }

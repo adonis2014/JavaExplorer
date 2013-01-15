@@ -41,7 +41,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/person")
 public class PersonController {
-	private static final Log LOG=LogFactory.getLog(PersonController.class);
+    public static final Log LOG=LogFactory.getLog(PersonController.class);
 	
 	private UserService userService;
 
@@ -63,18 +63,6 @@ public class PersonController {
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
 	public Person createPerson(@RequestBody Person person){
-		if(LOG.isTraceEnabled()){
-			StringBuilder logInfo=new StringBuilder(30);
-			logInfo.append("createPerson start. New person information:\n");
-			logInfo.append("name:").append(person.getName()).append("\t");
-			logInfo.append("sex:").append(person.getSex()).append("\t");
-			logInfo.append("birthday:").append(person.getBirthday()).append("\t");
-			logInfo.append("height:").append(person.getHeight()).append("\t");
-			logInfo.append("breakfastTime:").append(person.getBreakfastTime()).append("\t");
-			logInfo.append("salary:").append(person.getSalary()).append("\t");
-			logInfo.append("note:").append(person.getNote());
-			LOG.trace(logInfo);
-		}
 		//System.out.println(person.getCreateTime());
 		ObjectMapper om=new ObjectMapper();
 		try {

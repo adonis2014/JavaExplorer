@@ -111,4 +111,18 @@ public class Person {
     public void setCreateTime2(XMLGregorianCalendar createTime2) {
         this.createTime2 = createTime2;
     }
+    
+    public String toString(){
+        StringBuilder sb=new StringBuilder(50);
+        sb.append("{name:").append(name).append(", ");
+        sb.append("sex:").append(sex).append(", ");
+        sb.append("height:").append(height).append(", ");
+        sb.append("birthday:").append(birthday).append(", ");
+        sb.append("breakfastTime:").append(breakfastTime).append(", ");
+        sb.append("createTime:").append(createTime).append(", ");
+        sb.append("createTime1:").append(createTime1).append(", ");
+        sb.append("createTime2:").append(createTime2).append(", ");
+        sb.append("note:").append(note).append("}");
+        return sb.toString();
+    }
 }
