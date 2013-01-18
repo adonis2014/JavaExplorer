@@ -10,6 +10,40 @@
 <script type="text/javascript" src="lib/backbone.js"></script>
 <script type="text/javascript" src="lib/utils.js"></script>
 <script type="text/javascript">
+jQuery.param=function( a ) {  
+    var s = [ ];  
+    var encode=function(str){  
+        str=escape(str);  
+        str=str.replace(/\+/g,"%u002B");  
+        return str;  
+    };  
+    function add( key, value ){  
+        s[ s.length ] = encode(key) + '=' + encode(value);  
+    };  
+    // If an array was passed in, assume that it is an array  
+    // of form elements  
+    if ( jQuery.isArray(a) || a.jquery )  
+        // Serialize the form elements  
+        jQuery.each( a, function(){  
+            add( this.name, this.value );  
+        });  
+  
+    // Otherwise, assume that it's an object of key/value pairs  
+    else  
+        // Serialize the key/values  
+        for ( var j in a )  
+            // If the value is an array then the key names need to be repeated  
+            if ( jQuery.isArray(a[j]) )  
+                jQuery.each( a[j], function(){  
+                    add( j, this );  
+                });  
+            else  
+                add( j, jQuery.isFunction(a[j]) ? a[j]() : a[j] );  
+  
+    // Return the resulting serialization  
+    return s.join("&").replace(/%20/g, "+");  
+}
+
 	servletPath = location.pathname.substring(0, location.pathname
 			.indexOf("/static/backbonePerson.html"));
 	person = {};
@@ -20,37 +54,83 @@
 	person.salary = 12345;
 	person.height = 1.78;
 	person.note = "测试用户";
-
 	//alert(decodeURIComponent($.param(person)));
-	
-	/* $.post(servletPath +"/person/formUrlencoded2.json",person,function(data){
-	    alert(123);
-	},"json"); */
 	
 	//alert(utils.xmlParser.serializerXml(utils.xmlParser.loadXmlFile("book.xml")));
 	
-	$.ajax(servletPath + "/person.json", {
-		contentType : "application/json",
-		dataType : "json",
-		type : "POST",
-		data:'{"name":"sddd","sex":"male","birthday":"1983-03-11T00:00:00.000Z","height":1.78,"breakfastTime":"1983-03-11T00:08:30.000Z","createTime":416188800000,"createTime1":416188800000,"createTime2":416188800000,"salary":12333,"note":"test data"}',
-		success : function(data, textStatus, jqXHR) {
-			alert(textStatus);
-		}
-	});
-
-	/* $.ajax(servletPath + "/person.xml", {
-		contentType : "application/xml",
-		dataType : "xml",
-		type : "POST",
-		data : "<?xml version='1.0' encoding='GB18030'?>"+utils.xmlParser.serializerXml(utils.xmlParser.loadXmlFile("book.xml")),
-		success : function(data, textStatus, jqXHR) {
-			alert(textStatus);
-		}
-	}); */
+    $().ready(function() {
+        $("button:first").click(function(evt) {
+            $.post(servletPath + "/person/formUrlencoded2.json", person, function(data, textStatus, jqXHR) {
+                $("div").text(JSON.stringify(data));
+                console.debug(data);
+                console.debug(textStatus);
+                console.debug(jqXHR);
+            }, "json");
+        });
+        
+        $("button:eq(1)").click(function(evt) {
+            $.ajax(servletPath + "/person", {
+        		contentType : "application/json",
+        		dataType : "json",
+        		type : "POST",
+        		data:'{"name":"sddd","sex":"male","birthday":"1983-03-11T00:00:00.000Z","height":1.78,"breakfastTime":"1983-03-11T00:08:30.000Z","createTime":416188800000,"createTime1":416188800000,"createTime2":416188800000,"salary":12333,"note":"test data"}',
+        		success : function(data, textStatus, jqXHR) {
+        		    $("div").text(JSON.stringify(data));
+        		    console.debug(data);
+                    console.debug(textStatus);
+                    console.debug(jqXHR);
+        		},
+        		error:function(jqXHR, textStatus, errorThrown){
+        		    console.debug(jqXHR);
+                    console.debug(textStatus);
+                    console.debug(errorThrown);
+        		}
+        	});
+        });
+        
+        $("button:eq(2)").click(function(evt) {
+            $.ajax(servletPath + "/person", {
+        		contentType : "application/xml",
+        		dataType : "xml",
+        		type : "POST",
+        		data : "<?xml version='1.0' encoding='GB18030'?>"+utils.xmlParser.serializerXml(utils.xmlParser.loadXmlFile("book.xml")),
+        		success : function(data, textStatus, jqXHR) {
+        		    $("div").text(JSON.stringify(data));
+        		    console.debug(data);
+                    console.debug(textStatus);
+                    console.debug(jqXHR);
+        		},
+				error:function(jqXHR, textStatus, errorThrown){
+				    console.debug(jqXHR);
+                    console.debug(textStatus);
+                    console.debug(errorThrown);
+        		}
+        	});
+        });
+        
+        $("button:eq(3)").click(function(evt) {
+            $.getJSON(servletPath + "/person/1.json", escape("note=陈你"), function(data, textStatus, jqXHR) {
+                $("div").text(JSON.stringify(data));
+                console.debug(data);
+                console.debug(textStatus);
+                console.debug(jqXHR);
+            });
+        });
+        
+        
+    });
 </script>
 </head>
 <body>
 	<h3>Person Information</h3>
+	<button type="button">普通表单请求</button>
+	<button type="button">json请求</button>
+	<button type="button">xml请求</button>
+	<button type="button">get请求</button>
+	<div></div>
+	<form action="/SpringMvc3.1/person/1" method="get">
+		<input type="hidden" value="中文测试" name="note"/>
+		<input type="submit"/>
+	</form>
 </body>
 </html>

@@ -17,6 +17,8 @@ import javax.persistence.PersistenceContext;
 import name.chenyuelin.entity.test.CustomerAddress;
 import name.chenyuelin.entity.test.CustomerAddressPK;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,6 +30,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class JpaCustomerAddressDao {
+    public static final Log LOG=LogFactory.getLog(JpaCustomerAddressDao.class);
+    
     @PersistenceContext
     private EntityManager entityManager;
     

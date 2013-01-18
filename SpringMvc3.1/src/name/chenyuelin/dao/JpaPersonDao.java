@@ -8,6 +8,8 @@ import javax.persistence.PersistenceContext;
 
 import name.chenyuelin.entity.test.Person;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class JpaPersonDao {
+    public static final Log LOG=LogFactory.getLog(JpaPersonDao.class);
+    
 	@PersistenceContext
 	private EntityManager entityManager;
 	

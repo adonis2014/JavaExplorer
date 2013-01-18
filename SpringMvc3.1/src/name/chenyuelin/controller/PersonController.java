@@ -47,6 +47,7 @@ public class PersonController {
 
 	@ModelAttribute
 	public Collection<String> getAa(){
+	    LOG.trace("Create ModelAttribute.");
 	    return new ArrayList<String>();
 	}
 	
@@ -56,40 +57,33 @@ public class PersonController {
 	}
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-	public void getPerson(@PathVariable("id")int id){
-		System.out.println(userService.findPerson(id));
+	public ModelAndView getPerson(@PathVariable("id")int id,Person personPar){
+	    name.chenyuelin.entity.test.Person p=userService.findPerson(id);
+	    Person person=new Person();
+	    person.setName(p.getName());
+	    person.setSex(p.getSex());
+	    ModelAndView mav=new ModelAndView("root","person",person);
+		return mav;
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
 	public Person createPerson(@RequestBody Person person){
-		//System.out.println(person.getCreateTime());
-		ObjectMapper om=new ObjectMapper();
-		try {
-            om.writeValue(System.out, person);
-        } catch (JsonGenerationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+	    System.out.println("other request");
 		return person;
 	}
 	
 	@RequestMapping(value="formUrlencoded",method=RequestMethod.POST,consumes="application/x-www-form-urlencoded")
     public ModelAndView createPerson(@RequestBody MultiValueMap<String, Object> aa){
 	    ModelAndView mav=new ModelAndView("aa",aa);
+	    System.out.println("form request.");
 	    return mav;
     }
 	
 	@RequestMapping(value="formUrlencoded2",method=RequestMethod.POST)
 	public ModelAndView createPerson2(Person p,ModelMap map){
 	    Person person=(Person)map.get("person");
-	    person.setName("aaaaaaa");
+	    System.out.println("other request");
 	    ModelAndView mav=new ModelAndView();
 	    return mav;
     }

@@ -3,7 +3,6 @@
  */
 package name.chenyuelin.interceptor;
 
-import java.lang.reflect.Method;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.core.MethodParameter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,29 +30,10 @@ public class LoggerHandlerInterceptor implements HandlerInterceptor {
 	    if(LOG.isDebugEnabled()){
 	        HandlerMethod handlerMethod=(HandlerMethod)handler;
 	        Class<?> original=handlerMethod.getBeanType();
-	        Log log=logMap.get(original);
-	        if(log==null){
-	            try {
-	                log=(Log)original.getField(LOG_NAME).get(null);
-	                logMap.put(original, log);
-	            } catch (NoSuchFieldException e) {
-	                LOG.warn("", e);
-	                return true;
-	            }
+	        Log log=getLog(original);
+	        if(log!=null&&log.isDebugEnabled()){
+	            log.debug(handlerMethod.getMethod().getName()+" start.");
 	        }
-	        if(log.isDebugEnabled()){
-	            Method method=handlerMethod.getMethod();
-	            MethodParameter[] methodParameters=handlerMethod.getMethodParameters();
-	            StringBuilder debugLogInfo=new StringBuilder(50);
-	            debugLogInfo.append(method.getName()).append(" start.\t");
-	            debugLogInfo.append("parameters:\n");
-	            for(MethodParameter methodParameter:methodParameters){
-	                System.out.println(methodParameter);
-	            }
-	            
-	            log.debug(debugLogInfo);
-	        }
-	        
 	    }
 		return true;
 	}
@@ -70,8 +49,16 @@ public class LoggerHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
             throws Exception {
-        if (LOG.isDebugEnabled()) {
-
+        if(LOG.isDebugEnabled()){
+            HandlerMethod handlerMethod=(HandlerMethod)handler;
+            Class<?> original=handlerMethod.getBeanType();
+            Log log=getLog(original);
+            if(log!=null&&log.isDebugEnabled()){
+                StringBuilder debugMessage=new StringBuilder();
+                debugMessage.append(handlerMethod.getMethod().getName()).append(" end.\n");
+                debugMessage.append("Returns:").append(modelAndView.getModelMap());
+                log.debug(debugMessage);
+            }
         }
     }
 
@@ -87,9 +74,28 @@ public class LoggerHandlerInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
         if (LOG.isDebugEnabled()) {
-
+            LOG.debug("afterCompletion");
         }
-
+    }
+    
+    private Log getLog(Class<?> targetClass) throws IllegalArgumentException, SecurityException, IllegalAccessException {
+        Log log = logMap.get(targetClass);
+        if (log == null) {
+            try {
+                log = (Log) targetClass.getField(LOG_NAME).get(null);
+                logMap.put(targetClass, log);
+            } catch (NoSuchFieldException e) {
+                LOG.warn(e);
+                return null;
+            } catch (IllegalArgumentException e) {
+                throw e;
+            } catch (SecurityException e) {
+                throw e;
+            } catch (IllegalAccessException e) {
+                throw e;
+            }
+        }
+        return log;
     }
 
 }

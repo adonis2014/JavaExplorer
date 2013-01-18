@@ -40,7 +40,7 @@ public class DebugLoggerAdvisor implements MethodBeforeAdvice, AfterReturningAdv
 
             if (log != null && log.isDebugEnabled()) {
                 StringBuilder debugMessage = new StringBuilder(50);
-                debugMessage.append(method.getName()).append(" start.\tparameters:\n");
+                debugMessage.append(method.getName()).append(" start.\nParameters:\n");
                 for (Object arg : args) {
                     Class<?> argClass = arg.getClass();
                     debugMessage.append(argClass.getSimpleName()).append(":").append(arg).append("\n");
@@ -56,14 +56,12 @@ public class DebugLoggerAdvisor implements MethodBeforeAdvice, AfterReturningAdv
     
     @Override
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
-        System.out.println(33333);
         if (LOG.isDebugEnabled()) {
             Log log = getLog(target);
             if (log != null && log.isDebugEnabled()) {
                 StringBuilder debugMessage = new StringBuilder(50);
-                debugMessage.append(method.getName()).append(" end.\treturns:\t");
-                debugMessage.append(returnValue.getClass().getSimpleName()).append(":").append(returnValue);
-                System.out.println("===================================");
+                debugMessage.append(method.getName()).append(" end.\nReturns:{");
+                debugMessage.append(returnValue.getClass().getSimpleName()).append(":").append(returnValue).append("}");
                 log.debug(debugMessage);
             }
 

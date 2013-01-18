@@ -11,6 +11,8 @@ import name.chenyuelin.entity.test.CustomerAddress;
 import name.chenyuelin.entity.test.CustomerAddressPK;
 import name.chenyuelin.entity.test.Person;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
+    public static final Log LOG=LogFactory.getLog(UserService.class);
+    
 	private JpaPersonDao jpaPersonDao;
 	private JpaCustomerDao jpaCustomerDao;
 	private JpaCustomerAddressDao jpaCustomerAddressDao;

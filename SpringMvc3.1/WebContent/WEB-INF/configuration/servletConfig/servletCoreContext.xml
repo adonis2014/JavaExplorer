@@ -23,8 +23,6 @@
 
 	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
 
-	<mvc:resources location="/static/" mapping="/static/**" order="-1"/>
-	
 <!-- 	<mvc:annotation-driven ></mvc:annotation-driven> -->
 	<!-- <bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
@@ -53,72 +51,6 @@
 		</property>
 	</bean>
 
-	<!-- 调用容器中bean方法 -->
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<!-- <property name="targetClass" value="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" /> -->
-		<property name="targetObject" ref="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
-		<property name="targetMethod" value="setOrder" />
-		<property name="arguments" value="#{T(java.lang.Integer).MAX_VALUE}" />
-	</bean>
-
-	<!-- mvc:resources已注册些mapping所以可以不用注册
-	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" /> 
-	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />-->
-
-	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-		<property name="order" value="0"/>
-		<property name="interceptors">
-			<list>
-			</list>
-		</property>
-	</bean>
-
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<property name="webBindingInitializer">
-			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
-				<property name="conversionService" ref="formattingConversionService" />
-			</bean>
-		</property>
-		<property name="messageConverters">
-			<list>
-				<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
-				<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
-				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-					<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
-				</bean>
-				<bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
-			</list>
-		</property>
-	</bean> -->
-
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-		<property name="order" value="0" />
-		<property name="interceptors">
-			<list>
-				<!-- <bean class="name.chenyuelin.interceptor.LoggerHandlerInterceptor"/> -->
-			</list>
-		</property>
-	</bean>
-
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-		<property name="ignoreDefaultModelOnRedirect" value="true"/>
-		<property name="webBindingInitializer">
-			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
-				<property name="conversionService" ref="formattingConversionService" />
-			</bean>
-		</property>
-		<property name="messageConverters">
-			<list>
-				<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
-				<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
-				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-					<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
-				</bean>
-				<bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
-			</list>
-		</property>
-	</bean>
-	
 	<!-- 配置ViewResolver -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="ignoreAcceptHeader" value="true" />
@@ -134,7 +66,12 @@
 				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
 					<constructor-arg>
 						<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-							<property name="packagesToScan" value="name.chenyuelin.dto"/>
+							<property name="packagesToScan">
+								<list>
+									<value>name.chenyuelin.dto</value>
+									<value>name.chenyuelin.command</value>
+								</list>
+							</property>
 						</bean>
 					</constructor-arg>
 				</bean>
@@ -156,16 +93,6 @@
 	</bean>
 
 	<!-- 配置ExceptionResolver -->
-	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
-		<property name="warnLogCategory" value="name.chenyuelin.AnnotationMethodHandlerExceptionResolver" />
-		<property name="order" value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}"/>
-	</bean> -->
-	
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
-		<property name="warnLogCategory" value="name.chenyuelin.ExceptionHandlerExceptionResolver" />
-		<property name="order" value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}"/>
-	</bean>
-	
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="warnLogCategory" value="name.chenyuelin.SimpleMappingExceptionResolver" />
 		<property name="order" value="0"/>
@@ -179,10 +106,96 @@
 	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
 		<property name="warnLogCategory" value="name.chenyuelin.DefaultHandlerExceptionResolver" />
 	</bean>
+
+
+	<!-- *********************************************** beans profile ********************************************** -->
+	<beans profile="mvc2.5">
+		<!-- spring 2.5 config -->
+		<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+			<property name="order" value="0" />
+			<property name="interceptors">
+				<list>
+				</list>
+			</property>
+		</bean>
+
+		<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+			<property name="webBindingInitializer">
+				<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+					<property name="conversionService" ref="formattingConversionService" />
+				</bean>
+			</property>
+			<property name="messageConverters">
+				<list>
+					<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+					<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+					<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+						<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
+					</bean>
+					<bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+				</list>
+			</property>
+		</bean>
+
+		<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
+			<property name="warnLogCategory" value="name.chenyuelin.AnnotationMethodHandlerExceptionResolver" />
+			<property name="order" value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}" />
+		</bean>
+	</beans>
+
+	<beans profile="mvc3.1">
+		<!-- spring 3.1 config -->
+		<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+			<property name="order" value="0" />
+			<property name="interceptors">
+				<list>
+				</list>
+			</property>
+		</bean>
+
+		<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+			<property name="ignoreDefaultModelOnRedirect" value="true" />
+			<property name="webBindingInitializer">
+				<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+					<property name="conversionService" ref="formattingConversionService" />
+				</bean>
+			</property>
+			<property name="messageConverters">
+				<list>
+					<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+					<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+					<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+						<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
+					</bean>
+					<bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+				</list>
+			</property>
+		</bean>
+
+		<bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
+			<property name="warnLogCategory" value="name.chenyuelin.ExceptionHandlerExceptionResolver" />
+			<property name="order" value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}" />
+		</bean>
+	</beans>
+
+	<beans profile="dev">
+		<mvc:resources location="/static/" mapping="/static/**" order="-1" />
+		<!-- 调用容器中bean方法 -->
+		<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+			<!-- <property name="targetClass" value="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" /> -->
+			<property name="targetObject" ref="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+			<property name="targetMethod" value="setOrder" />
+			<property name="arguments" value="#{T(java.lang.Integer).MAX_VALUE}" />
+		</bean>
+	</beans>
+
+	<beans profile="production">
+		<!-- <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" /> -->
+		<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+	</beans>
 	
 	<!-- aop -->
-	<bean class="name.chenyuelin.aopAdvisor.DebugLoggerAdvisor"/>
-	<aop:config>
-		<aop:advisor advice-ref="name.chenyuelin.aopAdvisor.DebugLoggerAdvisor" pointcut="execution(* name.chenyuelin.controller..*.*(..))" />
-	</aop:config>
+	<!-- <aop:config>
+		<aop:advisor advice-ref="name.chenyuelin.aopAdvisor.DebugLoggerAdvisor" pointcut="within(name.chenyuelin.controller..*)" />
+	</aop:config> -->
 </beans>

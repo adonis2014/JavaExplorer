@@ -197,4 +197,18 @@ public class Person implements Serializable {
 		this.departments = departments;
 	}
 
+	public String toString(){
+	    StringBuilder sb=new StringBuilder(50);
+	    sb.append("{id:").append(id).append(", ");
+        sb.append("active:").append(active).append(", ");
+        sb.append("birthday:").append(birthday).append(", ");
+        sb.append("breakfastTime:").append(breakfastTime).append(", ");
+        sb.append("createTime:").append(createTime).append(", ");
+        sb.append("height:").append(height).append(", ");
+        sb.append("name:").append(name).append(", ");
+        sb.append("salary:").append(salary).append(", ");
+        sb.append("sex:").append(sex).append(", ");
+        sb.append("note:").append(note).append("}");
+	    return sb.toString();
+	}
 }
