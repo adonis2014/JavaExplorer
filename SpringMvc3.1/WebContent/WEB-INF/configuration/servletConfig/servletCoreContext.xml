@@ -19,7 +19,7 @@
 					http://www.springframework.org/schema/util
     				http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-	<context:component-scan base-package="name.chenyuelin.controller" />
+	<context:component-scan base-package="name.chenyuelin.controller,name.chenyuelin.validator" />
 
 	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
 
@@ -53,7 +53,7 @@
 
 	<!-- ÅäÖÃViewResolver -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="ignoreAcceptHeader" value="true" />
+		<property name="ignoreAcceptHeader" value="false" />
 		<property name="defaultContentType" value="#{T(org.springframework.http.MediaType).TEXT_HTML}" />
 		<property name="mediaTypes">
 			<map>
@@ -93,9 +93,15 @@
 	</bean>
 
 	<!-- ÅäÖÃExceptionResolver -->
+	<bean class="name.chenyuelin.custom.AjaxExceptionResolver">
+		<property name="warnLogCategory" value="name.chenyuelin.custom.AjaxExceptionResolver" />
+		<property name="order" value="0"/>
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
+	
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="warnLogCategory" value="name.chenyuelin.SimpleMappingExceptionResolver" />
-		<property name="order" value="0"/>
+		<property name="order" value="1"/>
 		<property name="exceptionMappings">
 			<props>
 				<prop key="org.springframework.web.HttpSessionRequiredException">sessionRequired</prop>

@@ -10,45 +10,11 @@
 <script type="text/javascript" src="lib/backbone.js"></script>
 <script type="text/javascript" src="lib/utils.js"></script>
 <script type="text/javascript">
-jQuery.param=function( a ) {  
-    var s = [ ];  
-    var encode=function(str){  
-        str=escape(str);  
-        str=str.replace(/\+/g,"%u002B");  
-        return str;  
-    };  
-    function add( key, value ){  
-        s[ s.length ] = encode(key) + '=' + encode(value);  
-    };  
-    // If an array was passed in, assume that it is an array  
-    // of form elements  
-    if ( jQuery.isArray(a) || a.jquery )  
-        // Serialize the form elements  
-        jQuery.each( a, function(){  
-            add( this.name, this.value );  
-        });  
-  
-    // Otherwise, assume that it's an object of key/value pairs  
-    else  
-        // Serialize the key/values  
-        for ( var j in a )  
-            // If the value is an array then the key names need to be repeated  
-            if ( jQuery.isArray(a[j]) )  
-                jQuery.each( a[j], function(){  
-                    add( j, this );  
-                });  
-            else  
-                add( j, jQuery.isFunction(a[j]) ? a[j]() : a[j] );  
-  
-    // Return the resulting serialization  
-    return s.join("&").replace(/%20/g, "+");  
-}
-
 	servletPath = location.pathname.substring(0, location.pathname
 			.indexOf("/static/backbonePerson.html"));
 	person = {};
 	person.sex = "male";
-	person.name = "test";
+	person.name = "";
 	//person.birthday = new Date();
 	//person.breakfastTime = new Date();
 	person.salary = 12345;
@@ -73,8 +39,9 @@ jQuery.param=function( a ) {
         		contentType : "application/json",
         		dataType : "json",
         		type : "POST",
-        		data:'{"name":"sddd","sex":"male","birthday":"1983-03-11T00:00:00.000Z","height":1.78,"breakfastTime":"1983-03-11T00:08:30.000Z","createTime":416188800000,"createTime1":416188800000,"createTime2":416188800000,"salary":12333,"note":"test data"}',
+        		data:JSON.stringify(person),
         		success : function(data, textStatus, jqXHR) {
+        			alert(jqXHR.responseText)
         		    $("div").text(JSON.stringify(data));
         		    console.debug(data);
                     console.debug(textStatus);
