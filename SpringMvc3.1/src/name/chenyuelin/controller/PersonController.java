@@ -3,34 +3,34 @@
  */
 package name.chenyuelin.controller;
 
-import java.util.List;
+import java.util.Iterator;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import name.chenyuelin.command.Person;
 import name.chenyuelin.service.UserService;
 
+import org.apache.catalina.util.RequestUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.util.WebUtils;
 
 /**
  * @author P1
@@ -46,8 +46,13 @@ public class PersonController {
 	private Validator personValidator;
 	
 	@InitBinder
-    protected void initBinder(WebDataBinder binder){  
-		binder.setValidator(personValidator);
+    protected void initBinder(WebDataBinder binder,WebRequest webRequest,HttpServletRequest request){
+	    Object target=binder.getTarget();
+	    if(target!=null){
+	        if(personValidator.supports(target.getClass())){
+	            binder.setValidator(personValidator);
+	        }
+	    }
     }
 	
 	/*@ModelAttribute

@@ -76,7 +76,7 @@
         });
         
         $("button:eq(3)").click(function(evt) {
-            $.getJSON(servletPath + "/person/1.json", escape("note=³ÂÄã"), function(data, textStatus, jqXHR) {
+            $.getJSON(servletPath + "/person/1.json", person, function(data, textStatus, jqXHR) {
                 $("div").text(JSON.stringify(data));
                 console.debug(data);
                 console.debug(textStatus);

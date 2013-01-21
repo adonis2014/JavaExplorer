@@ -41,8 +41,13 @@ public class EncodingFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 		if(request instanceof HttpServletRequest){
 			HttpServletRequest req=(HttpServletRequest)request;
-			String method=req.getMethod();
-			if(method.equals("POST")){
+			//String method=req.getMethod();
+			if("XMLHttpRequest".equals(req.getHeader("x-requested-with"))){
+                request.setCharacterEncoding("utf-8");
+            }else{
+                request.setCharacterEncoding(encoding);
+            }
+			/*if(method.equals("POST")){
 				if("XMLHttpRequest".equals(req.getHeader("x-requested-with"))){
 					request.setCharacterEncoding("utf-8");
 				}else{
@@ -56,7 +61,7 @@ public class EncodingFilter implements Filter {
 					HttpServletRequest wrapper = new HttpPutFormContentRequestWrapper(req, formParameters);
 					request=wrapper;
 				}
-			}
+			}*/
 		}
 		filterChain.doFilter(request, response);
 

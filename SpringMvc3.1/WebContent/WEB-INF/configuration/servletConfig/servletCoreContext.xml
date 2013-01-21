@@ -94,25 +94,24 @@
 
 	<!-- ÅäÖÃExceptionResolver -->
 	<bean class="name.chenyuelin.custom.AjaxExceptionResolver">
-		<property name="warnLogCategory" value="name.chenyuelin.custom.AjaxExceptionResolver" />
-		<property name="order" value="0"/>
-		<property name="messageSource" ref="messageSource"/>
+		<!-- <property name="warnLogCategory" value="name.chenyuelin.custom.AjaxExceptionResolver" /> -->
+		<property name="order" value="0" />
+		<property name="messageSource" ref="messageSource" />
 	</bean>
-	
+
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<property name="warnLogCategory" value="name.chenyuelin.SimpleMappingExceptionResolver" />
-		<property name="order" value="1"/>
+		<!-- <property name="warnLogCategory" value="name.chenyuelin.SimpleMappingExceptionResolver" /> -->
+		<property name="order" value="1" />
 		<property name="exceptionMappings">
 			<props>
 				<prop key="org.springframework.web.HttpSessionRequiredException">sessionRequired</prop>
 			</props>
 		</property>
 	</bean>
-	
-	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
-		<property name="warnLogCategory" value="name.chenyuelin.DefaultHandlerExceptionResolver" />
-	</bean>
 
+	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
+		<!-- <property name="warnLogCategory" value="name.chenyuelin.DefaultHandlerExceptionResolver" /> -->
+	</bean>
 
 	<!-- *********************************************** beans profile ********************************************** -->
 	<beans profile="mvc2.5">
@@ -179,7 +178,7 @@
 		</bean>
 
 		<bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
-			<property name="warnLogCategory" value="name.chenyuelin.ExceptionHandlerExceptionResolver" />
+			<property name="warnLogCategory" value="name.chenyuelin.exceptionResolver" />
 			<property name="order" value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}" />
 		</bean>
 	</beans>
