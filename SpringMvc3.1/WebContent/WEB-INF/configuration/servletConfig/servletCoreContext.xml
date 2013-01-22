@@ -22,7 +22,11 @@
 	<context:component-scan base-package="name.chenyuelin.controller,name.chenyuelin.validator" />
 
 	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
-
+	
+	<context:spring-configured/>
+	
+	<bean class="name.chenyuelin.configuration.ServletConfiguration"/>
+	
 <!-- 	<mvc:annotation-driven ></mvc:annotation-driven> -->
 	<!-- <bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
@@ -76,7 +80,7 @@
 					</constructor-arg>
 				</bean>
 				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
-					<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
+					<property name="objectMapper" ref="globalObjectMapper" />
 				</bean>
 			</list>
 		</property>
@@ -94,13 +98,11 @@
 
 	<!-- ÅäÖÃExceptionResolver -->
 	<bean class="name.chenyuelin.custom.AjaxExceptionResolver">
-		<!-- <property name="warnLogCategory" value="name.chenyuelin.custom.AjaxExceptionResolver" /> -->
 		<property name="order" value="0" />
 		<property name="messageSource" ref="messageSource" />
 	</bean>
 
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<!-- <property name="warnLogCategory" value="name.chenyuelin.SimpleMappingExceptionResolver" /> -->
 		<property name="order" value="1" />
 		<property name="exceptionMappings">
 			<props>
@@ -109,9 +111,7 @@
 		</property>
 	</bean>
 
-	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver">
-		<!-- <property name="warnLogCategory" value="name.chenyuelin.DefaultHandlerExceptionResolver" /> -->
-	</bean>
+	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver"/>
 
 	<!-- *********************************************** beans profile ********************************************** -->
 	<beans profile="mvc2.5">
@@ -135,7 +135,7 @@
 					<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
 					<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
 					<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-						<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
+						<property name="objectMapper" ref="globalObjectMapper" />
 					</bean>
 					<bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
 				</list>
@@ -170,7 +170,7 @@
 					<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
 					<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
 					<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-						<property name="objectMapper" value="#{T(name.chenyuelin.constants.BaseConstants).DEFAULT_OBJECT_MAPPER}" />
+						<property name="objectMapper" ref="globalObjectMapper" />
 					</bean>
 					<bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
 				</list>
