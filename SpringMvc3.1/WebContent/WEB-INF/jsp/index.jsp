@@ -6,9 +6,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
 <title>Welcome</title>
+<script type="text/javascript" src="/static/lib/jquery.min.js"></script>
+<script type="text/javascript">
+</script>
 </head>
 <body>
 <h2 align="center">Welcome to the home page.</h2>
-<a href="${pageContext.request.contextPath}/static/backbonePerson.html" target="_blank">backbonePerson.html</a>
+<a href="${pageContext.request.contextPath}/static/backbonePerson.html" target="_blank">backbonePerson.html</a><br/>
+<a href="${pageContext.request.contextPath}/management/person.htm" target="_blank">person.htm</a><br/>
 </body>
 </html>

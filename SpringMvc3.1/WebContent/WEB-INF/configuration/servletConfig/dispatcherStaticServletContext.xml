@@ -17,4 +17,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	<bean name="/help/**" class="org.springframework.web.servlet.mvc.UrlFilenameViewController">
 		<property name="prefix" value="help/"/>
 	</bean>
+	
+	<bean name="/management/**" class="org.springframework.web.servlet.mvc.UrlFilenameViewController">
+		<property name="prefix" value="spa/"/>
+	</bean>
+	
+	<bean name="/formCommit.htm" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="formCommit"/>
+	</bean>
 </beans>

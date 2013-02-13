@@ -3,6 +3,9 @@
  */
 package name.chenyuelin.service;
 
+import java.util.List;
+
+import name.chenyuelin.command.PersonCommand;
 import name.chenyuelin.dao.JpaCustomerAddressDao;
 import name.chenyuelin.dao.JpaCustomerDao;
 import name.chenyuelin.dao.JpaPersonDao;
@@ -10,6 +13,7 @@ import name.chenyuelin.entity.test.Customer;
 import name.chenyuelin.entity.test.CustomerAddress;
 import name.chenyuelin.entity.test.CustomerAddressPK;
 import name.chenyuelin.entity.test.Person;
+import name.chenyuelin.transformer.PersonTransformer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,6 +51,10 @@ public class UserService {
 		return jpaPersonDao.findPersonById((byte)id);
 	}
 	
+	public List<Person> getAllPersons(){
+		return jpaPersonDao.getAllPersons();
+	}
+	
 	public CustomerAddress findCustomerAddress(int customerId,int subId){
         return jpaCustomerAddressDao.findCustomerAddressById(new CustomerAddressPK((byte)customerId, (byte)subId));
     }
@@ -54,4 +62,19 @@ public class UserService {
 	public Customer findCustomer(int id){
         return jpaCustomerDao.findCustomerById((byte)id);
     }
+	
+	public boolean updatePerson(byte personId,PersonCommand personCommand){
+		Person person=jpaPersonDao.findPersonById(personId);
+		if(person!=null){
+			PersonTransformer.transformerCommandtoEntity(personCommand, person);
+			person=jpaPersonDao.updatePerson(person);
+			return true;
+		}
+		return false;
+		
+	}
+	
+	public boolean deletePerson(byte personId){
+		return jpaPersonDao.deletePerson(personId);
+	}
 }

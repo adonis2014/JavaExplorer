@@ -2,13 +2,17 @@ package name.chenyuelin.entity.test;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,14 +21,20 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import name.chenyuelin.converter.SqlSetLanguageConverter;
+import name.chenyuelin.enums.Language;
+import name.chenyuelin.enums.Sex;
+
+import org.eclipse.persistence.annotations.Convert;
+import org.eclipse.persistence.annotations.Converter;
 
 /**
  * The persistent class for the person database table.
  */
 @Entity
 @Table(name = "person")
+@Converter(name = "languagesConverter", converterClass = SqlSetLanguageConverter.class)
 public class Person implements Serializable {
 
 	/**
@@ -38,7 +48,6 @@ public class Person implements Serializable {
 
 	private Boolean active;
 
-	@Temporal(TemporalType.DATE)
 	private Date birthday;
 
 	@Column(name = "breakfast_time")
@@ -48,12 +57,14 @@ public class Person implements Serializable {
 	private Timestamp createTime;
 
 	@Lob()
+	@Basic(fetch=FetchType.LAZY)
 	@Column(name = "custom_data")
 	private byte[] customData;
 
 	private BigDecimal height;
 
-//	private Object languages;
+	@Convert("languagesConverter")
+	private Set<Language> languages;
 
 	private String name;
 
@@ -62,7 +73,8 @@ public class Person implements Serializable {
 
 	private int salary;
 
-	private String sex;
+	@Enumerated(EnumType.STRING)
+	private Sex sex;
 
 	private byte version;
 
@@ -133,13 +145,13 @@ public class Person implements Serializable {
 		this.height = height;
 	}
 
-	/*public Object getLanguages() {
-		return this.languages;
+	public Set<Language> getLanguages() {
+		return languages;
 	}
 
-	public void setLanguages(Object languages) {
+	public void setLanguages(Set<Language> languages) {
 		this.languages = languages;
-	}*/
+	}
 
 	public String getName() {
 		return this.name;
@@ -165,11 +177,11 @@ public class Person implements Serializable {
 		this.salary = salary;
 	}
 
-	public String getSex() {
-		return this.sex;
+	public Sex getSex() {
+		return sex;
 	}
 
-	public void setSex(String sex) {
+	public void setSex(Sex sex) {
 		this.sex = sex;
 	}
 
@@ -197,18 +209,19 @@ public class Person implements Serializable {
 		this.departments = departments;
 	}
 
-	public String toString(){
-	    StringBuilder sb=new StringBuilder(50);
-	    sb.append("{id:").append(id).append(", ");
-        sb.append("active:").append(active).append(", ");
-        sb.append("birthday:").append(birthday).append(", ");
-        sb.append("breakfastTime:").append(breakfastTime).append(", ");
-        sb.append("createTime:").append(createTime).append(", ");
-        sb.append("height:").append(height).append(", ");
-        sb.append("name:").append(name).append(", ");
-        sb.append("salary:").append(salary).append(", ");
-        sb.append("sex:").append(sex).append(", ");
-        sb.append("note:").append(note).append("}");
-	    return sb.toString();
+	public String toString() {
+		StringBuilder sb = new StringBuilder(50);
+		sb.append("{id:").append(id).append(", ");
+		sb.append("active:").append(active).append(", ");
+		sb.append("birthday:").append(birthday).append(", ");
+		sb.append("breakfastTime:").append(breakfastTime).append(", ");
+		sb.append("createTime:").append(createTime).append(", ");
+		sb.append("height:").append(height).append(", ");
+		sb.append("name:").append(name).append(", ");
+		sb.append("salary:").append(salary).append(", ");
+		sb.append("languages:").append(languages).append(", ");
+		sb.append("sex:").append(sex).append(", ");
+		sb.append("note:").append(note).append("}");
+		return sb.toString();
 	}
 }

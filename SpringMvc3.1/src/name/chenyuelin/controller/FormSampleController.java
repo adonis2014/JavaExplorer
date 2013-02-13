@@ -1,17 +1,6 @@
-/* * @(#)
-		$Id: FormSampleController.java, peter.chen Exp $
-		*****************************************************************************
-		* Copyright (c) 2013 - Owned by OverStock. All rights reserved.
-		This software is the confidential and proprietary information of
-		OverStock ("Confidential Information"). You shall not disclose such
-		Confidential Information and shall use it only in accordance with
-		the terms of the license agreement you entered into with OverStock.
-		*
-		*****************************************************************************
-		*/
 package name.chenyuelin.controller;
 
-import name.chenyuelin.command.Person;
+import name.chenyuelin.command.PersonCommand;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * 
  */
 @Controller
-@RequestMapping("/form")
+@RequestMapping("form")
 @SessionAttributes("person")
 public class FormSampleController {
     public static final Log LOG=LogFactory.getLog(FormSampleController.class);
@@ -41,12 +30,12 @@ public class FormSampleController {
     
     @RequestMapping(method=RequestMethod.GET)
     @ModelAttribute
-    public Person getForm(){
+    public PersonCommand getForm(){
         boolean isLogDebug=LOG.isDebugEnabled();
         if(isLogDebug){
             LOG.debug("getForm start.");
         }
-        Person result=new Person();
+        PersonCommand result=new PersonCommand();
         if(isLogDebug){
             LOG.debug("getForm end. New person object has created.");
         }
@@ -54,35 +43,15 @@ public class FormSampleController {
     }
     
     @RequestMapping(method=RequestMethod.POST)
-    public String processForm(@ModelAttribute Person person,SessionStatus sessionStatus){
+    public String processForm(@ModelAttribute PersonCommand person,SessionStatus sessionStatus){
         sessionStatus.setComplete();
         return "formCommit";
     }
     
     @RequestMapping(value="2",method=RequestMethod.POST)
-    public String processForm(@ModelAttribute Person person,SessionStatus sessionStatus,RedirectAttributes redirectAttributes){
-        boolean isLogDebug=LOG.isDebugEnabled();
-        if(isLogDebug){
-            StringBuilder debugInfo=new StringBuilder(50);
-            debugInfo.append("processForm start.\n Request parameters:");
-            debugInfo.append("name:").append(person.getName()).append("\t");
-            debugInfo.append("sex:").append(person.getSex()).append("\t");
-            debugInfo.append("birthday:").append(person.getBirthday()).append("\t");
-            debugInfo.append("height:").append(person.getHeight()).append("\t");
-            debugInfo.append("breakfastTime:").append(person.getBreakfastTime()).append("\t");
-            debugInfo.append("createTime:").append(person.getCreateTime()).append("\t");
-            debugInfo.append("salary:").append(person.getSalary()).append("\t");
-            debugInfo.append("note:").append(person.getNote());
-            LOG.debug(debugInfo);
-        }
+    public String processForm(@ModelAttribute PersonCommand person,SessionStatus sessionStatus,RedirectAttributes redirectAttributes){
         sessionStatus.setComplete();
         redirectAttributes.addAttribute("name", person.getName()).addFlashAttribute("message", "Account created!");
-        if(isLogDebug){
-            StringBuilder debugInfo=new StringBuilder();
-            debugInfo.append("processForm end.\n");
-            debugInfo.append("go page formCommit.");
-            LOG.debug(debugInfo);
-        }
         return "redirect:formCommit.htm";
     }
     

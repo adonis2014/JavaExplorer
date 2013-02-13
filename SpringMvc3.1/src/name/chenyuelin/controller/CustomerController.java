@@ -33,22 +33,15 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  */
 @Controller
-@RequestMapping("/customer")
+@RequestMapping("customer")
 public class CustomerController {
     public static final Log LOG=LogFactory.getLog(CustomerController.class);
     
     private UserService userService;
 
-    private CustomerTransformer transformer;
-    
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-    
-    @Autowired
-    public void setTransformer(CustomerTransformer transformer) {
-        this.transformer = transformer;
     }
     
     @RequestMapping(value="/{id}",method=RequestMethod.GET)
@@ -60,7 +53,7 @@ public class CustomerController {
     public ModelAndView getCustomerAddress(@PathVariable("customerId")int customerId,@PathVariable("subId")int subId){
         
         CustomerAddress customerAddress=userService.findCustomerAddress(customerId, subId);
-        CustomerAddressDto dto=transformer.transformerCustomerAddressToMap(customerAddress);
+        CustomerAddressDto dto=CustomerTransformer.transformerCustomerAddressToMap(customerAddress);
         ModelAndView mav=new ModelAndView("root","CustomerAddressDto",dto);
         return mav;
     }

@@ -8,7 +8,7 @@
 <title>提交成功</title>
 </head>
 <body>
-<h3 align="center">欢迎${person.name }</h3>
-${requestScope.message}
+<h3 align="center">欢迎${param.person}</h3>
+${message}
 </body>
 </html>

@@ -3,6 +3,8 @@
 	<persistence-unit name="testDB" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<mapping-file>META-INF/orm.xml</mapping-file>
+		<mapping-file>META-INF/personMapping.xml</mapping-file>
+		
 		<!-- <class>name.chenyuelin.entity.test.Account</class> -->
 		<!-- <class>name.chenyuelin.entity.test.Agent</class> -->
 		<class>name.chenyuelin.entity.test.Area</class>

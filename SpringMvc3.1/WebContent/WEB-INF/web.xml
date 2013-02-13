@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xmlns="http://java.sun.com/xml/ns/javaee" 
+		 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+		 					 http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+		 id="WebApp_ID" version="3.0">
+		 
 	<display-name>SpringMvc3.1</display-name>
 	<welcome-file-list>
 		<welcome-file>/index.htm</welcome-file>
@@ -15,12 +20,12 @@
 
 	<context-param>
 		<param-name>spring.profiles.active</param-name>
-		<param-value>dev,mvc3.1</param-value>
+		<param-value>dev</param-value>
 	</context-param>
 
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
-		<param-value>production,mvc3.1</param-value>
+		<param-value>production</param-value>
 	</context-param>
 	
 	<listener>
@@ -35,9 +40,11 @@
 			<param-value>
 					/WEB-INF/configuration/servletConfig/servletCoreContext.xml
 					/WEB-INF/configuration/servletConfig/dispatcherStaticServletContext.xml
+					/WEB-INF/configuration/servletConfig/validatorContext.xml
   				</param-value>
 		</init-param>
 		<load-on-startup>2</load-on-startup>
+		<multipart-config/>
 	</servlet>
 	<!-- <servlet-mapping> <servlet-name>SpringMVC</servlet-name> <url-pattern>*.htm</url-pattern> </servlet-mapping> <servlet-mapping> <servlet-name>SpringMVC</servlet-name> <url-pattern>*.json</url-pattern> 
 		</servlet-mapping> -->

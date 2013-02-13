@@ -60,6 +60,7 @@ public class AjaxExceptionResolver extends AbstractHandlerExceptionResolver {
 			ajaxBindingErrorMessageCollection.add(ajaxBindingErrorMessage);
 		}
 		ModelAndView mav=new ModelAndView("ajaxBindingErrorMessages","ajaxBindingErrorMessages",ajaxBindingErrorMessages);
+		response.setContentType(request.getContentType());
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		return mav;
 	}

@@ -21,7 +21,7 @@
 					
 	<context:property-placeholder location="/WEB-INF/configuration/appProperty.Properties"/>
 
-	<context:component-scan base-package="name.chenyuelin.service,name.chenyuelin.dao,name.chenyuelin.transformer" />
+	<context:component-scan base-package="name.chenyuelin.service,name.chenyuelin.dao" />
 
 	<!-- <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">

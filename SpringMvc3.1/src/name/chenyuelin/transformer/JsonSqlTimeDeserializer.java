@@ -22,7 +22,6 @@ import org.codehaus.jackson.map.JsonDeserializer;
 public class JsonSqlTimeDeserializer extends JsonDeserializer<Time> {
 	@Override
 	public Time deserialize(JsonParser jsonparser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		System.out.println(this);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		String parserText=jsonparser.getText();
         try {

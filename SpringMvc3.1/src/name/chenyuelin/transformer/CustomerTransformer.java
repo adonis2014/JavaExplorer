@@ -15,8 +15,6 @@ import name.chenyuelin.dto.CustomerAddressDto;
 import name.chenyuelin.entity.test.Area;
 import name.chenyuelin.entity.test.CustomerAddress;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @ClassName: CustomerTransformer
  * @Description: TODO(descript the function of this class)
@@ -24,9 +22,8 @@ import org.springframework.stereotype.Component;
  * @date 2013-1-4 ÏÂÎç6:21:34
  * 
  */
-@Component
-public class CustomerTransformer {
-    public CustomerAddressDto transformerCustomerAddressToMap(CustomerAddress customerAddress){
+public final class CustomerTransformer {
+    public static final CustomerAddressDto transformerCustomerAddressToMap(CustomerAddress customerAddress){
         CustomerAddressDto dto=new CustomerAddressDto();
         dto.setCustomerName(customerAddress.getCustomer().getName());
         dto.setPhone(customerAddress.getPhone());
