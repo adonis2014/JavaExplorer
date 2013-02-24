@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,15 +45,17 @@ public class CustomerController {
         this.userService = userService;
     }
     
+	@Transactional
     @RequestMapping(value="/{id}",method=RequestMethod.GET)
     public void getCustomer(@PathVariable("id")int id){
         System.out.println(userService.findCustomer(id));
     }
     
+    @Transactional
     @RequestMapping(value="address/{customerId}/{subId}",method=RequestMethod.GET)
     public ModelAndView getCustomerAddress(@PathVariable("customerId")int customerId,@PathVariable("subId")int subId){
-        
         CustomerAddress customerAddress=userService.findCustomerAddress(customerId, subId);
+        System.out.println(customerAddress.getCustomer().getSimpleOrders().size());
         CustomerAddressDto dto=CustomerTransformer.transformerCustomerAddressToMap(customerAddress);
         ModelAndView mav=new ModelAndView("root","CustomerAddressDto",dto);
         return mav;

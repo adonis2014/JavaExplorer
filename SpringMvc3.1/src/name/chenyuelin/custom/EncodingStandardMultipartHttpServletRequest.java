@@ -7,6 +7,8 @@ import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import name.chenyuelin.constants.BaseConstants;
+
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
@@ -29,7 +31,7 @@ public class EncodingStandardMultipartHttpServletRequest extends StandardMultipa
 		
 		if(StringUtils.hasLength(parameter)){
 			try {
-				parameter = new String(parameter.getBytes("ISO-8859-1"),encoding);
+				parameter = new String(parameter.getBytes(BaseConstants.STRING_ENCODING_ISO88591),encoding);
 			} catch (UnsupportedEncodingException e) {
 				throw new RuntimeException(e);
 			}

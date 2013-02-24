@@ -36,6 +36,7 @@ public class JpaCustomerAddressDao {
     private EntityManager entityManager;
     
     public CustomerAddress findCustomerAddressById(CustomerAddressPK pk){
+    	System.out.println(pk.hashCode());
         return entityManager.find(CustomerAddress.class, pk);
     }
 }

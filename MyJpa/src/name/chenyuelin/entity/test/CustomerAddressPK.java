@@ -12,6 +12,10 @@ public class CustomerAddressPK implements Serializable {
 	 */
 	private static final long serialVersionUID = -4263510130147539350L;
 
+	private static final int HASH = (int)((Integer.MIN_VALUE>>16)+Math.random()*(((long)Integer.MAX_VALUE-(long)Integer.MIN_VALUE)>>16));
+
+	private static final int PRIME = 2;
+	
 	private byte customer;
 
 	private byte subId;
@@ -55,11 +59,17 @@ public class CustomerAddressPK implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int hash = 17;
-		hash = hash * prime + (this.customer);
-		hash = hash * prime + (this.subId);
-
+		int hash = HASH << PRIME + (this.customer);
+		hash = hash << PRIME + (this.subId);
 		return hash;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb=new StringBuilder(20);
+		sb.append("{customerId:").append(customer);
+		sb.append(",subId:").append(subId).append("}");
+		return sb.toString();
+	}
+	
 }

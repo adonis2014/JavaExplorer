@@ -21,7 +21,7 @@ public class SimpleOrder implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	private byte active;
+	private boolean active;
 
 	@Column(name = "create_time")
 	private Timestamp createTime;
@@ -94,11 +94,11 @@ public class SimpleOrder implements Serializable {
 		this.id = id;
 	}
 
-	public byte getActive() {
+	public boolean getActive() {
 		return this.active;
 	}
 
-	public void setActive(byte active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 

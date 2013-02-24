@@ -25,10 +25,10 @@ public class JqueryMobilePerson implements Serializable {
 
 	private String country;
 
-//	private Object hobby;
+	private String hobby;
 
-//	@Column(name = "like_pot")
-//	private Object likePot;
+	@Column(name = "like_pot")
+	private String likePot;
 
 	private String name;
 
@@ -71,21 +71,21 @@ public class JqueryMobilePerson implements Serializable {
 		this.country = country;
 	}
 
-	/*public Object getHobby() {
+	public String getHobby() {
 		return this.hobby;
 	}
 
-	public void setHobby(Object hobby) {
+	public void setHobby(String hobby) {
 		this.hobby = hobby;
 	}
 
-	public Object getLikePot() {
+	public String getLikePot() {
 		return this.likePot;
 	}
 
-	public void setLikePot(Object likePot) {
+	public void setLikePot(String likePot) {
 		this.likePot = likePot;
-	}*/
+	}
 
 	public String getName() {
 		return this.name;

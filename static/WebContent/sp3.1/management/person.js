@@ -341,7 +341,7 @@ EditPersonFromView = Backbone.View
 				"keyup input[name='breakfastTime']" : "validateTimeAction",
 				"change input[name='height']" : "changeFloatAction",
 				"change input[name='salary']" : "changeIntAction",
-				"change input:radio" : "changeRadioAction",
+				"change input:radio[name='active']" : "changeRadioAction",
 				"change input[name='languages']:checkbox" : "changeCheckboxAction"
 			},
 

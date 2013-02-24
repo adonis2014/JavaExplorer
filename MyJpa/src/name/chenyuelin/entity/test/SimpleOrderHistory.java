@@ -2,12 +2,14 @@ package name.chenyuelin.entity.test;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.sql.Timestamp;
 
 /**
  * The persistent class for the simple_order_history database table.
  */
 @Entity
+@IdClass(SimpleOrderHistoryPK.class)
 @Table(name = "simple_order_history")
 public class SimpleOrderHistory implements Serializable {
 
@@ -16,9 +18,15 @@ public class SimpleOrderHistory implements Serializable {
 	 */
 	private static final long serialVersionUID = 4528144913640138439L;
 
-	@EmbeddedId
-	private SimpleOrderHistoryPK id;
-
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "order_id")
+	private SimpleOrder simpleOrder;
+	
+	@Id
+	@Column(name="history_sequence")
+	private byte historySequence;
+	
 	@Column(name = "area_level_0")
 	private int areaLevel0;
 
@@ -56,20 +64,7 @@ public class SimpleOrderHistory implements Serializable {
 	@Column(name = "update_user_id")
 	private byte updateUserId;
 
-	// bi-directional many-to-one association to SimpleOrder
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "order_id")
-	private SimpleOrder simpleOrder;
-
 	public SimpleOrderHistory() {
-	}
-
-	public SimpleOrderHistoryPK getId() {
-		return this.id;
-	}
-
-	public void setId(SimpleOrderHistoryPK id) {
-		this.id = id;
 	}
 
 	public int getAreaLevel0() {
@@ -182,6 +177,14 @@ public class SimpleOrderHistory implements Serializable {
 
 	public void setSimpleOrder(SimpleOrder simpleOrder) {
 		this.simpleOrder = simpleOrder;
+	}
+
+	public byte getHistorySequence() {
+		return historySequence;
+	}
+
+	public void setHistorySequence(byte historySequence) {
+		this.historySequence = historySequence;
 	}
 
 }

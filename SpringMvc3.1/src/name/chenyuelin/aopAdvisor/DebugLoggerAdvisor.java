@@ -61,7 +61,12 @@ public class DebugLoggerAdvisor implements MethodBeforeAdvice, AfterReturningAdv
             if (log != null && log.isDebugEnabled()) {
                 StringBuilder debugMessage = new StringBuilder(50);
                 debugMessage.append(method.getName()).append(" end.\nReturns:{");
-                debugMessage.append(returnValue.getClass().getSimpleName()).append(":").append(returnValue).append("}");
+                if(returnValue==null){
+                	debugMessage.append(returnValue).append("}");
+                }else{
+                	debugMessage.append(returnValue.getClass().getSimpleName()).append(":").append(returnValue).append("}");
+                }
+                
                 log.debug(debugMessage);
             }
 

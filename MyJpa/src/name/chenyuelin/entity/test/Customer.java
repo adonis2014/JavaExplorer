@@ -55,9 +55,9 @@ public class Customer implements Serializable {
 	@OneToMany(mappedBy = "customer")
 	private List<CustomerAddress> customerAddresses;
 
-	/*// bi-directional many-to-one association to SimpleOrder
+	// bi-directional many-to-one association to SimpleOrder
 	@OneToMany(mappedBy = "customer")
-	private List<SimpleOrder> simpleOrders;*/
+	private List<SimpleOrder> simpleOrders;
 
 	public Customer() {
 	}
@@ -166,12 +166,12 @@ public class Customer implements Serializable {
 		this.customerAddresses = customerAddresses;
 	}
 
-	/*public List<SimpleOrder> getSimpleOrders() {
+	public List<SimpleOrder> getSimpleOrders() {
 		return this.simpleOrders;
 	}
 
 	public void setSimpleOrders(List<SimpleOrder> simpleOrders) {
 		this.simpleOrders = simpleOrders;
-	}*/
+	}
 
 }

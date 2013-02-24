@@ -6,7 +6,6 @@ import javax.persistence.*;
 /**
  * The primary key class for the simple_order_history database table.
  */
-@Embeddable
 public class SimpleOrderHistoryPK implements Serializable {
 
 	/**
@@ -14,8 +13,12 @@ public class SimpleOrderHistoryPK implements Serializable {
 	 */
 	private static final long serialVersionUID = 1267963530177491760L;
 
+	private static final int HASH = (int)((Integer.MIN_VALUE>>16)+Math.random()*(((long)Integer.MAX_VALUE-(long)Integer.MIN_VALUE)>>16));
+
+	private static final int PRIME = 2;
+	
 	@Column(name = "order_id")
-	private int orderId;
+	private int simpleOrder;
 
 	@Column(name = "history_sequence")
 	private byte historySequence;
@@ -23,20 +26,17 @@ public class SimpleOrderHistoryPK implements Serializable {
 	public SimpleOrderHistoryPK() {
 	}
 
-	public int getOrderId() {
-		return this.orderId;
+	public SimpleOrderHistoryPK(int simpleOrder, byte historySequence) {
+		this.simpleOrder = simpleOrder;
+		this.historySequence = historySequence;
 	}
-
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
+	
+	public int getOrderId() {
+		return this.simpleOrder;
 	}
 
 	public byte getHistorySequence() {
 		return this.historySequence;
-	}
-
-	public void setHistorySequence(byte historySequence) {
-		this.historySequence = historySequence;
 	}
 
 	@Override
@@ -48,17 +48,14 @@ public class SimpleOrderHistoryPK implements Serializable {
 			return false;
 		}
 		SimpleOrderHistoryPK castOther = (SimpleOrderHistoryPK) other;
-		return (this.orderId == castOther.orderId) && (this.historySequence == castOther.historySequence);
+		return (this.simpleOrder == castOther.simpleOrder) && (this.historySequence == castOther.historySequence);
 
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int hash = 17;
-		hash = hash * prime + this.orderId;
-		hash = hash * prime + (this.historySequence);
-
+		int hash = HASH << PRIME + (this.simpleOrder);
+		hash = hash << PRIME + (this.historySequence);
 		return hash;
 	}
 }

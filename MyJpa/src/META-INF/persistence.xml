@@ -3,27 +3,26 @@
 	<persistence-unit name="testDB" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<mapping-file>META-INF/orm.xml</mapping-file>
+		<mapping-file>META-INF/utilMapping.xml</mapping-file>
 		<mapping-file>META-INF/personMapping.xml</mapping-file>
-		
-		<!-- <class>name.chenyuelin.entity.test.Account</class> -->
-		<!-- <class>name.chenyuelin.entity.test.Agent</class> -->
+
+		<class>name.chenyuelin.entity.test.Account</class>
+		<class>name.chenyuelin.entity.test.Agent</class>
 		<class>name.chenyuelin.entity.test.Area</class>
-<!-- 		<class>name.chenyuelin.entity.test.Carea</class> -->
+		<class>name.chenyuelin.entity.test.Carea</class>
 		<class>name.chenyuelin.entity.test.Customer</class>
 		<class>name.chenyuelin.entity.test.CustomerAddress</class>
-<!-- 		<class>name.chenyuelin.entity.test.CustomerAddressPK</class> -->
 		<class>name.chenyuelin.entity.test.Department</class>
-		<!-- <class>name.chenyuelin.entity.test.Hotel</class> -->
-		<!-- <class>name.chenyuelin.entity.test.JqueryMobilePerson</class> -->
+		<class>name.chenyuelin.entity.test.Hotel</class>
+		<class>name.chenyuelin.entity.test.JqueryMobilePerson</class>
 		<class>name.chenyuelin.entity.test.Person</class>
-<!-- 		<class>name.chenyuelin.entity.test.SimpleOrder</class> -->
-<!-- 		<class>name.chenyuelin.entity.test.SimpleOrderHistory</class> -->
-<!-- 		<class>name.chenyuelin.entity.test.SimpleOrderHistoryPK</class> -->
-		<!-- <class>name.chenyuelin.entity.test.T1</class> -->
-		<!-- <class>name.chenyuelin.entity.test.T2</class> -->
-		<!-- <class>name.chenyuelin.entity.test.T5</class> -->
-		<!-- <class>name.chenyuelin.entity.test.TreeTable</class> -->
-<!-- 		<class>name.chenyuelin.entity.test.UserCategory</class> -->
+		<class>name.chenyuelin.entity.test.SimpleOrder</class>
+		<class>name.chenyuelin.entity.test.SimpleOrderHistory</class>
+		<class>name.chenyuelin.entity.test.T1</class>
+		<class>name.chenyuelin.entity.test.T2</class>
+		<class>name.chenyuelin.entity.test.T5</class>
+		<class>name.chenyuelin.entity.test.TreeTable</class>
+		<class>name.chenyuelin.entity.test.UserCategory</class>
 
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
@@ -35,9 +34,14 @@
 			<property name="eclipselink.logging.level" value="FINE" />
 			<property name="eclipselink.logging.level.sql" value="ALL" />
 			<property name="eclipselink.logging.parameters" value="true" />
-			<property name="eclipselink.logging.timestamp" value="true" />
-			<property name="eclipselink.logging.session" value="true" />
-			<property name="eclipselink.logging.thread" value="true" />
+
+			<!-- Optimization #12 - turn logging off -->
+			<!-- Optimization #13 - close EntityManager on commit, to avoid cost of resume -->
+			<!-- <property name="eclipselink.persistence-context.close-on-commit" value="true" /> -->
+			<!-- Optimization #15 - avoid cost of persist on commit -->
+			<!-- <property name="eclipselink.persistence-context.persist-on-commit" value="false" /> -->
+			<!-- Optimization #14 - avoid auto flush cost on query execution -->
+			<property name="eclipselink.persistence-context.flush-mode" value="commit" />
 		</properties>
 	</persistence-unit>
 </persistence>
