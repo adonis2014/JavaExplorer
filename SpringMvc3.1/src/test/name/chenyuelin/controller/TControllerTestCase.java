@@ -1,15 +1,14 @@
 /**
  * 
  */
-package test.name.chenyuelin.service;
+package test.name.chenyuelin.controller;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
-
-import name.chenyuelin.dao.T5Dao;
+import name.chenyuelin.controller.TController;
 import name.chenyuelin.entity.test.T5;
 import name.chenyuelin.service.TService;
 
@@ -29,7 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author U1
- * @version 1.0 2013-2-24
+ * @version 1.0 2013-2-25
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"file:WebContent/WEB-INF/configuration/appConfig/applicationContext.xml",
@@ -37,19 +36,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 				   "file:WebContent/WEB-INF/configuration/servletConfig/dispatcherStaticServletContext.xml",
 				   "file:WebContent/WEB-INF/configuration/servletConfig/validatorContext.xml"})
 @ActiveProfiles(profiles={"dev","test"})
-public class TServiceTestCase {
-	@Mock
-	private T5Dao mockT5Dao;
-	
+public class TControllerTestCase {
 	@Autowired
-	private TService tService;
+	private TController tController;
 
-	@Autowired
-	private T5Dao t5Dao;
+	@Mock
+	private TService tService;
+	
+	private static TController TCONTROLLER;
 	
 	private static TService TSERVICE;
-
-	private static T5Dao T5DAO;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -63,7 +59,7 @@ public class TServiceTestCase {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		TSERVICE.setT5Dao(T5DAO);
+		TCONTROLLER.settService(TSERVICE);
 	}
 
 	/**
@@ -74,13 +70,13 @@ public class TServiceTestCase {
 		if(TSERVICE==null){
 			TSERVICE=tService;
 		}
-		if(T5DAO==null){
-			T5DAO=t5Dao;
+		if(TCONTROLLER==null){
+			TCONTROLLER=tController;
 		}
 		
 		MockitoAnnotations.initMocks(this);
 		
-		tService.setT5Dao(mockT5Dao);
+		tController.settService(tService);
 	}
 
 	/**
@@ -88,20 +84,19 @@ public class TServiceTestCase {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		Mockito.reset(mockT5Dao);
+		Mockito.reset(tService);
 	}
-	
+
 	@Test
 	public void test(){
 		//mock
 		List<T5> list=new ArrayList<T5>();
 		list.add(new T5());
 		
-		Mockito.when(mockT5Dao.listT5byT2Name(Mockito.anyString())).thenReturn(list);
+		Mockito.when(tService.listT5byT2Name(Mockito.anyString())).thenReturn(list);
 		
 		Assert.assertEquals(1, tService.listT5byT2Name("jpa%").size());
 		
 		Mockito.verify(mockT5Dao).listT5byT2Name("jpa%");
 	}
-
 }
