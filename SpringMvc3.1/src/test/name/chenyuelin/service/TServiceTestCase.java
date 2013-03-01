@@ -56,6 +56,7 @@ public class TServiceTestCase {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+	  System.out.println("TServiceTestCase");
 	}
 
 	/**

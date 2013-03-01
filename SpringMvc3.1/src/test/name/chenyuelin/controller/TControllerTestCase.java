@@ -52,6 +52,7 @@ public class TControllerTestCase {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+	  System.out.println("TControllerTestCase");
 	}
 
 	/**
@@ -97,6 +98,6 @@ public class TControllerTestCase {
 		
 		Assert.assertEquals(1, tService.listT5byT2Name("jpa%").size());
 		
-		Mockito.verify(mockT5Dao).listT5byT2Name("jpa%");
+		Mockito.verify(tService).listT5byT2Name("jpa%");
 	}
 }
