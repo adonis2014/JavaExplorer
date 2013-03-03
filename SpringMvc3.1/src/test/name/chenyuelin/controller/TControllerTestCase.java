@@ -6,6 +6,7 @@ package test.name.chenyuelin.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import junit.framework.Assert;
 import name.chenyuelin.controller.TController;
@@ -22,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -40,6 +42,9 @@ public class TControllerTestCase {
 	@Autowired
 	private TController tController;
 
+	@Autowired
+	private MessageSource messageSource;
+	
 	@Mock
 	private TService tService;
 	
@@ -90,6 +95,8 @@ public class TControllerTestCase {
 
 	@Test
 	public void test(){
+		System.out.println(messageSource.getMessage("error.requirement.name", null, Locale.CHINESE));
+		System.out.println(messageSource.getMessage("error.requirement.name", null, Locale.ENGLISH));
 		//mock
 		List<T5> list=new ArrayList<T5>();
 		list.add(new T5());

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="GB18030"?>
+<project name="MyProject" default="native" basedir=".">
+	<description>Spring3.1 MVC sample.</description>
+
+	<property name="src" location="src" />
+	<property name="build" location="build/classes" />
+	<property name="webContent" location="WebContent" />
+	<property name="webInf" location="${webContent}/WEB-INF" />
+	
+	<target name="native">
+		<property name="i18n" location="${webInf}/i18n" />
+		<native2ascii dest="${i18n}" src="${i18n}" includes="**/*.txt" ext=".properties" encoding="gbk" />
+		<echo message="Native message complete!" />
+	</target>
+</project>

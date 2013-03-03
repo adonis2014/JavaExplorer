@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="GB18030"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	   xmlns:context="http://www.springframework.org/schema/context" 
-	   xmlns:aop="http://www.springframework.org/schema/aop" 
-	   xmlns:mvc="http://www.springframework.org/schema/mvc" 
-	   xmlns:tx="http://www.springframework.org/schema/tx"
-	   xmlns:util="http://www.springframework.org/schema/util" 
-	   xmlns:cache="http://www.springframework.org/schema/cache" 
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
 					http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 					http://www.springframework.org/schema/context
 					http://www.springframework.org/schema/context/spring-context-3.1.xsd
@@ -25,44 +20,29 @@
 	<context:component-scan base-package="name.chenyuelin.controller,name.chenyuelin.validator" />
 
 	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
-	
-	<context:spring-configured/>
-	
-	<bean class="name.chenyuelin.configuration.ServletConfiguration"/>
-	
-	<cache:annotation-driven/>
-	
-	<!-- <bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
-		<property name="transactionInterceptor" ref="transactionInterceptor" />
-	</bean>
 
-	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
-		<property name="jpaTransactionManager" ref="txManager" />
-		<property name="transactionAttributeSource">
-			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
-		</property>
-	</bean> -->
+	<context:spring-configured />
 
-	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basenames">
-			<list>
-				<value>/WEB-INF/i18n/i18Test</value>
-			</list>
-		</property>
-	</bean>
+	<bean class="name.chenyuelin.configuration.ServletConfiguration" />
+
+	<cache:annotation-driven />
+
+	<!-- <bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor"> <property name="transactionInterceptor" ref="transactionInterceptor" /> </bean> <bean 
+		id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"> <property name="jpaTransactionManager" ref="txManager" /> <property name="transactionAttributeSource"> 
+		<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" /> </property> </bean> -->
 
 	<bean id="formattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="formatters">
 			<list>
-				<bean class="name.chenyuelin.FormattingAndConversion.XMLGregorianCalendarFormatAnnotationFormatterFactory"/>
+				<bean class="name.chenyuelin.FormattingAndConversion.XMLGregorianCalendarFormatAnnotationFormatterFactory" />
 			</list>
 		</property>
 	</bean>
 
 	<bean id="multipartResolver" class="name.chenyuelin.custom.EncodingStandardServletMultipartResolver">
-		<property name="encoding" value="GB18030"/>
+		<property name="encoding" value="GB18030" />
 	</bean>
-	
+
 	<!-- 配置ViewResolver -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="ignoreAcceptHeader" value="true" />
@@ -86,7 +66,7 @@
 							</property>
 							<property name="marshallerProperties">
 								<map>
-									<entry key="#{T(javax.xml.bind.Marshaller).JAXB_ENCODING}" value="gb2312"/>
+									<entry key="#{T(javax.xml.bind.Marshaller).JAXB_ENCODING}" value="gb2312" />
 								</map>
 							</property>
 						</bean>
@@ -110,7 +90,7 @@
 	</bean>
 
 	<!-- *********************************************** beans profile ********************************************** -->
-		<!-- spring 3.1 config -->
+	<!-- spring 3.1 config -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
 		<property name="order" value="0" />
 		<property name="interceptors">
@@ -158,7 +138,7 @@
 		</property>
 	</bean>
 
-	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver"/>
+	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver" />
 
 	<beans profile="dev">
 		<mvc:resources location="/static/" mapping="/static/**" order="-1" />
@@ -169,11 +149,47 @@
 			<property name="targetMethod" value="setOrder" />
 			<property name="arguments" value="#{T(java.lang.Integer).MAX_VALUE}" />
 		</bean>
+
+		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+			<property name="basenames">
+				<list>
+					<value>/WEB-INF/i18n/warning</value>
+				</list>
+			</property>
+		</bean>
+
 	</beans>
 
 	<beans profile="production">
+		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+			<property name="basenames">
+				<list>
+					<value>/WEB-INF/i18n/warning</value>
+				</list>
+			</property>
+		</bean>
 		<!-- <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" /> -->
 		<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
 	</beans>
-	
+
+	<beans profile="test">
+		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+			<property name="basenames">
+				<list>
+					<value>/WebContent/WEB-INF/i18n/warning</value>
+				</list>
+			</property>
+<!-- 			<property name="resourceLoader"> -->
+<!-- 				<bean class="org.springframework.core.io.DefaultResourceLoader"></bean> -->
+<!-- 				<bean class="org.springframework.web.context.support.ServletContextResourceLoader"> -->
+<!-- 					<constructor-arg> -->
+<!-- 						<bean class="org.springframework.mock.web.MockServletContext"> -->
+<!-- 							<constructor-arg value="/WebContent/"/> -->
+<!-- 						</bean> -->
+<!-- 					</constructor-arg> -->
+<!-- 				</bean> -->
+<!-- 			</property> -->
+		</bean>
+	</beans>
+
 </beans>
