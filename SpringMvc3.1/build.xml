@@ -9,6 +9,9 @@
 	
 	<target name="native">
 		<property name="i18n" location="${webInf}/i18n" />
+		<delete includeemptydirs="true" verbose="false">
+			<fileset dir="${i18n}" includes="**/*.properties"/>
+		</delete>
 		<native2ascii dest="${i18n}" src="${i18n}" includes="**/*.txt" ext=".properties" encoding="gbk" />
 		<echo message="Native message complete!" />
 	</target>

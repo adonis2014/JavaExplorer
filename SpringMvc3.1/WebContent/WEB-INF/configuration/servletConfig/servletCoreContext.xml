@@ -176,19 +176,9 @@
 		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 			<property name="basenames">
 				<list>
-					<value>/WebContent/WEB-INF/i18n/warning</value>
+					<value>file:WebContent/WEB-INF/i18n/warning</value>
 				</list>
 			</property>
-<!-- 			<property name="resourceLoader"> -->
-<!-- 				<bean class="org.springframework.core.io.DefaultResourceLoader"></bean> -->
-<!-- 				<bean class="org.springframework.web.context.support.ServletContextResourceLoader"> -->
-<!-- 					<constructor-arg> -->
-<!-- 						<bean class="org.springframework.mock.web.MockServletContext"> -->
-<!-- 							<constructor-arg value="/WebContent/"/> -->
-<!-- 						</bean> -->
-<!-- 					</constructor-arg> -->
-<!-- 				</bean> -->
-<!-- 			</property> -->
 		</bean>
 	</beans>
 
