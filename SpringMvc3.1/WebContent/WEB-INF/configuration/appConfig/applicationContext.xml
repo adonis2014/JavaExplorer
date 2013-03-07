@@ -44,7 +44,6 @@
 	<property name="jpaDialect">
 		<bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect" />
 	</property> -->
-	
 	</bean>
 
 	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -54,7 +53,15 @@
 	<bean id="cacheManager" class="org.springframework.cache.concurrent.ConcurrentMapCacheManager"/>
 	
 	<cache:annotation-driven/>
-
+	
+	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>WEB-INF/configuration/appProperty.properties</value>
+			</list>
+		</property>
+	</bean>
+	
 	<beans profile="production">
 		<import resource="production.xml"/>
 	</beans>

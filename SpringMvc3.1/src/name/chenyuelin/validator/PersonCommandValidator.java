@@ -35,7 +35,7 @@ public class PersonCommandValidator implements Validator {
 		if(command.getId()<1){
 			errors.rejectValue("id", "aa.bb", "id is required!");
 		}
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "aa.bb","name is required!");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "error.requirement.name","name is required!");
 		
 		if(command.getSalary()<0){
 			errors.rejectValue("salary", "aa.bb", "salary must positive!");

@@ -1,1 +1,5 @@
 error.requirement.name=姓名不能为空。
+error.requirement.id=id为能为空。
+
+error.positive.salary=收入必须为正数。
+error.positive.height=高度必须为正数。

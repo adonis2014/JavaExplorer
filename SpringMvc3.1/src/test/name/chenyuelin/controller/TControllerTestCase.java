@@ -95,6 +95,7 @@ public class TControllerTestCase {
 
 	@Test
 	public void test(){
+	  
 		System.out.println(messageSource.getMessage("error.requirement.name", null, Locale.CHINESE));
 		System.out.println(messageSource.getMessage("error.requirement.name", null, Locale.ENGLISH));
 		//mock

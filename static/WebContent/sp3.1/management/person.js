@@ -262,10 +262,6 @@ PersonTrView = Backbone.View.extend({
 		$("#dialog-edit-person").dialog("open");
 	},
 	savePersonInfoAction : function(event) {
-		/*
-		 * alert(this.model.toJSON()); $.ajax(constant.servletPath+"/person/"+this.model.id,{ data:this.model.toJSON(), contentType:"application/json", success:
-		 * function(){ alert(23); }, dataType:"json", type:"PUT" });
-		 */
 		this.model.save(null, {
 			success : function(model, response, options) {
 				model.original = $.extend(true, {}, model.attributes);

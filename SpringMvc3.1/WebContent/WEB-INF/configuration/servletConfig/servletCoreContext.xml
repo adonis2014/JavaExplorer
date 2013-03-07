@@ -31,6 +31,14 @@
 		id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor"> <property name="jpaTransactionManager" ref="txManager" /> <property name="transactionAttributeSource"> 
 		<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" /> </property> </bean> -->
 
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>/WEB-INF/i18n/warning</value>
+			</list>
+		</property>
+	</bean>
+
 	<bean id="formattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="formatters">
 			<list>
@@ -45,7 +53,7 @@
 
 	<!-- 配置ViewResolver -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="ignoreAcceptHeader" value="true" />
+		<property name="ignoreAcceptHeader" value="false" />
 		<property name="defaultContentType" value="#{T(org.springframework.http.MediaType).APPLICATION_XML_VALUE}" />
 		<property name="mediaTypes">
 			<map>
@@ -88,13 +96,20 @@
 			</list>
 		</property>
 	</bean>
-
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en_US"/>
+	</bean>
+	
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+	
 	<!-- *********************************************** beans profile ********************************************** -->
 	<!-- spring 3.1 config -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
 		<property name="order" value="0" />
 		<property name="interceptors">
 			<list>
+				<ref bean="localeChangeInterceptor"/>
 			</list>
 		</property>
 	</bean>
@@ -119,7 +134,7 @@
 	</bean>
 
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
-		<property name="warnLogCategory" value="name.chenyuelin.exceptionResolver" />
+		<!-- <property name="warnLogCategory" value="name.chenyuelin.exceptionResolver" /> -->
 		<property name="order" value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}" />
 	</bean>
 
@@ -140,6 +155,17 @@
 
 	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver" />
 
+	<beans profile="production">
+		<!-- <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" /> -->
+		<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" >
+			<property name="interceptors">
+				<list>
+					<ref bean="localeChangeInterceptor"/>
+				</list>
+			</property>
+		</bean>
+	</beans>
+
 	<beans profile="dev">
 		<mvc:resources location="/static/" mapping="/static/**" order="-1" />
 		<!-- 调用容器中bean方法 -->
@@ -150,31 +176,23 @@
 			<property name="arguments" value="#{T(java.lang.Integer).MAX_VALUE}" />
 		</bean>
 
-		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-			<property name="basenames">
+		<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+			<property name="targetObject" ref="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+			<property name="targetMethod" value="setInterceptors" />
+			<property name="arguments">
 				<list>
-					<value>/WEB-INF/i18n/warning</value>
+					<ref bean="localeChangeInterceptor"/>
 				</list>
 			</property>
 		</bean>
-
-	</beans>
-
-	<beans profile="production">
-		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-			<property name="basenames">
-				<list>
-					<value>/WEB-INF/i18n/warning</value>
-				</list>
-			</property>
-		</bean>
-		<!-- <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" /> -->
-		<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
 	</beans>
 
 	<beans profile="test">
-		<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-			<property name="basenames">
+		<!-- set  messageSource properties.-->
+		<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+			<property name="targetObject" ref="messageSource" />
+			<property name="targetMethod" value="setBasenames" />
+			<property name="arguments">
 				<list>
 					<value>file:WebContent/WEB-INF/i18n/warning</value>
 				</list>

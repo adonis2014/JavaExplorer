@@ -31,7 +31,7 @@ public class PersonUploadInformationValidator implements Validator {
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "aa.bb","name is required!");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "error.requirement.name","name is required!");
 	}
 
 }

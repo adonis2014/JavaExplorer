@@ -1,1 +1,5 @@
 error.requirement.name=name is required.
+error.requirement.id=name is required.
+
+error.positive.salary=salary must positive!
+error.positive.height=height must positive!

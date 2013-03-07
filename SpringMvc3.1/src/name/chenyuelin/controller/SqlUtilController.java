@@ -3,8 +3,6 @@
  */
 package name.chenyuelin.controller;
 
-import java.io.UnsupportedEncodingException;
-
 import name.chenyuelin.dao.JpaUtilDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +31,14 @@ public class SqlUtilController {
 	@Transactional
 	@RequestMapping(value="digestPassword/{password}",method=RequestMethod.GET)
 	@ResponseBody
-	public String digestPassword(@PathVariable("password")String password,@RequestHeader("Accept-Encoding") String acceptEncoding)throws UnsupportedEncodingException{
+	public String digestPassword(@PathVariable("password")String password,@RequestHeader("Accept-Encoding") String acceptEncoding){
 		return jpaUtilDao.digestPassword(password);
 	}
 	
 	@Transactional
 	@RequestMapping(value="digestOldPassword/{password}",method=RequestMethod.GET)
 	@ResponseBody
-	public String digestOldPassword(@PathVariable("password")String password,@RequestHeader("Accept-Encoding") String acceptEncoding)throws UnsupportedEncodingException{
+	public String digestOldPassword(@PathVariable("password")String password,@RequestHeader("Accept-Encoding") String acceptEncoding){
 		return jpaUtilDao.digestOldPassword(password);
 	}
 }
