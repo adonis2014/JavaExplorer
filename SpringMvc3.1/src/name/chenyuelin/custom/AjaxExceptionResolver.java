@@ -20,6 +20,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 /**
  * @author P1
@@ -47,7 +48,7 @@ public class AjaxExceptionResolver extends AbstractHandlerExceptionResolver {
 		for (ObjectError objectError : errorList) {
 			AjaxBindingErrorMessage ajaxBindingErrorMessage=new AjaxBindingErrorMessage();
 			ajaxBindingErrorMessage.setObjectName(objectError.getObjectName());
-			ajaxBindingErrorMessage.setMessage(messageSource.getMessage(objectError.getCode(), objectError.getArguments(), objectError.getDefaultMessage(), request.getLocale()));
+			ajaxBindingErrorMessage.setMessage(messageSource.getMessage(objectError.getCode(), objectError.getArguments(), objectError.getDefaultMessage(), RequestContextUtils.getLocale(request)));
 			ajaxBindingErrorMessageCollection.add(ajaxBindingErrorMessage);
 		}
 		List<FieldError> fieldErrorList = bindingResult.getFieldErrors();
@@ -56,7 +57,7 @@ public class AjaxExceptionResolver extends AbstractHandlerExceptionResolver {
 			ajaxBindingErrorMessage.setObjectName(fieldError.getObjectName());
 			ajaxBindingErrorMessage.setFieldName(fieldError.getField());
 			ajaxBindingErrorMessage.setRejectedValue(fieldError.getRejectedValue());
-			ajaxBindingErrorMessage.setMessage(messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), fieldError.getDefaultMessage(), request.getLocale()));
+			ajaxBindingErrorMessage.setMessage(messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), fieldError.getDefaultMessage(), RequestContextUtils.getLocale(request)));
 			ajaxBindingErrorMessageCollection.add(ajaxBindingErrorMessage);
 		}
 		ModelAndView mav=new ModelAndView("ajaxBindingErrorMessages","ajaxBindingErrorMessages",ajaxBindingErrorMessages);

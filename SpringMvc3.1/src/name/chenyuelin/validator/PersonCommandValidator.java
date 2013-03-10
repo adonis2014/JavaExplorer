@@ -38,11 +38,11 @@ public class PersonCommandValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "error.requirement.name","name is required!");
 		
 		if(command.getSalary()<0){
-			errors.rejectValue("salary", "aa.bb", "salary must positive!");
+			errors.rejectValue("salary", "error.positive.salary", "salary must positive!");
 		}
 		
 		if(command.getHeight()<=0){
-			errors.rejectValue("height", "aa.bb", "height must positive!");
+			errors.rejectValue("height", "error.positive.height", "height must positive!");
 		}
 	}
 
