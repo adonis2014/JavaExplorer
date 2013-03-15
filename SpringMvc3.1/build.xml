@@ -7,6 +7,18 @@
 	<property name="webContent" location="WebContent" />
 	<property name="webInf" location="${webContent}/WEB-INF" />
 	
+	<property name="libPath" location="D:/lib"/>
+	
+	<path id="cp">
+		<fileset dir="${libPath}/spring/dist" includes="*.jar">
+			<exclude name="org.springframework.web.portlet-3.1.3.RELEASE.jar"/>
+			<exclude name="org.springframework.web.struts-3.1.3.RELEASE.jar"/>
+			<exclude name="org.springframework.instrument-3.1.3.RELEASE.jar"/>
+			<exclude name="org.springframework.instrument.tomcat-3.1.3.RELEASE.jar"/>
+		</fileset>
+		<pathelement location="${libPath}/commons-logging-1.1.1.jar"/>
+	</path>
+	
 	<target name="native">
 		<property name="i18n" location="${webInf}/i18n" />
 		<delete includeemptydirs="true" verbose="false">
@@ -14,5 +26,11 @@
 		</delete>
 		<native2ascii dest="${i18n}" src="${i18n}" includes="**/*.txt" ext=".properties" encoding="gbk" />
 		<echo message="Native message complete!" />
+	</target>
+	
+	<target name="unitTest">
+		<junit printsummary="true" haltonfailure="true">
+			<test></test>
+		</junit>
 	</target>
 </project>
