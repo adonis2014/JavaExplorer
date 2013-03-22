@@ -69,12 +69,6 @@ public class AppUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(calculateDailyMillisecondDifference(9));
-		System.out.println(calculateDailyMillisecondDifference(10));
-		System.out.println(calculateDailyMillisecondDifference(11));
-		System.out.println(calculateWeeklyMillisecondDifference(Calendar.WEDNESDAY, 10));
-		System.out.println(calculateWeeklyMillisecondDifference(Calendar.THURSDAY, 10));
-		System.out.println(calculateWeeklyMillisecondDifference(Calendar.FRIDAY, 10));
-		System.out.println(Short.MAX_VALUE);
+		System.out.println(encryptTextToBase64("root"));
 	}
 }

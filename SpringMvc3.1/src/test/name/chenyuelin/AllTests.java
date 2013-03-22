@@ -10,10 +10,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import test.name.chenyuelin.controller.TControllerTestCase;
 import test.name.chenyuelin.service.TServiceTestCase;
+import test.name.chenyuelin.transformer.PersonTransformerTestCase;
 
 @RunWith(Suite.class)
 @SuiteClasses({TServiceTestCase.class,
-  TServiceTestCase.class,
+  PersonTransformerTestCase.class,
   TControllerTestCase.class})
 public class AllTests {
   @BeforeClass
