@@ -1,18 +1,113 @@
 <?xml version="1.0" encoding="GB18030"?>
 <project name="MyProject" default="native" basedir=".">
 	<description>Spring3.1 MVC sample.</description>
-
+	
+	<!--${DSTAMP},${TSTAMP},${TODAY}-->
+	<tstamp/>
+	
+	<property name="javaagent" value="D:/lib/spring/dist/org.springframework.instrument-3.1.3.RELEASE.jar"/>
+	
+	<property environment="env"/>
+	
 	<property name="src" location="src" />
 	<property name="build" location="build/classes" />
 	<property name="webContent" location="WebContent" />
 	<property name="webInf" location="${webContent}/WEB-INF" />
 	
+	<property name="jpa-path" location="${user.home}/git/JavaExplorer/MyJpa" />
+	<property name="tomcat-path" location="D:/Program Files/apache-tomcat-7.0.35"/>
+	
+	<property name="libPath" location="D:/lib"/>
+	<property name="testReportDir" location="unitTestReport"/>
+	
+	<path id="compile-classpath">
+		<fileset dir="${libPath}/spring/dist" includes="*.jar">
+			<exclude name="org.springframework.web.portlet-3.1.3.RELEASE.jar"/>
+			<exclude name="org.springframework.web.struts-3.1.3.RELEASE.jar"/>
+			<exclude name="org.springframework.instrument-3.1.3.RELEASE.jar"/>
+			<exclude name="org.springframework.instrument.tomcat-3.1.3.RELEASE.jar"/>
+		</fileset>
+		<pathelement location="${libPath}/commons-logging-1.1.1.jar"/>
+		<pathelement location="${libPath}/aopalliance.jar"/>
+		<pathelement location="${libPath}/asm-3.3.jar"/>
+		<pathelement location="${libPath}/aspectjrt.jar"/>
+		<pathelement location="${libPath}/aspectjweaver.jar"/>
+		<pathelement location="${libPath}/cglib-2.2.jar"/>
+		<pathelement location="${libPath}/asm-3.3.jar"/>
+		<pathelement location="${libPath}/jpa/2.4/eclipselink.jar"/>
+		<pathelement location="${libPath}/jpa/2.4/javax.persistence_2.0.4.v201112161009.jar"/>
+		<pathelement location="${libPath}/jackson-all-1.9.9.jar"/>
+		<pathelement location="${libPath}/mysql-connector-java-5.1.22/mysql-connector-java-5.1.22-bin.jar"/>
+		<fileset dir="${tomcat-path}/lib" includes="*.jar"/>
+	</path>
+
+	<path id="compile-test-classpath">
+		<pathelement location="D:/MAUI/eclipse/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/junit.jar"/>
+		<pathelement location="D:/MAUI/eclipse/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+		<pathelement location="${libPath}/mockito-1.9.0/separate-jars/mockito-core-1.9.0.jar"/>
+		<pathelement location="${libPath}/mockito-1.9.0/separate-jars/com.springsource.org.objenesis-1.0.0.jar"/>
+	</path>
+	
+	<target name="compile-jpa">
+		<mkdir dir="${jpa-path}/build2"/>
+		<copydir dest="${jpa-path}/build2/META-INF" src="${jpa-path}/src/META-INF"/>
+		<javac destdir="${jpa-path}/build2" srcdir="${jpa-path}/src" classpathref="compile-classpath" includeantruntime="false"/>
+	</target>
+	
+	<target name="pack-jpa" depends="compile-jpa">
+		<jar destfile="${jpa-path}/MyJpa.jar" basedir="${jpa-path}/build2"/>
+	</target>
+	
+	<target name="clean-jpa">
+		<delete dir="${jpa-path}/build2"/>
+		<delete file="${jpa-path}/MyJpa.jar"/>
+	</target>
+	
 	<target name="native">
-		<property name="i18n" location="${webInf}/i18n" />
+		<property name="i18n" location="${webInf}/i18n"/>
 		<delete includeemptydirs="true" verbose="false">
 			<fileset dir="${i18n}" includes="**/*.properties"/>
 		</delete>
-		<native2ascii dest="${i18n}" src="${i18n}" includes="**/*.txt" ext=".properties" encoding="gbk" />
+		<native2ascii dest="${i18n}" src="${i18n}" includes="**/*.txt" ext=".properties" encoding="gbk"/>
 		<echo message="Native message complete!" />
+	</target>
+	
+	<target name="unit-test" depends="pack-jpa">
+		<delete dir="${testReportDir}"/>
+		<mkdir dir="${testReportDir}"/>
+		<junit printsummary="true" haltonfailure="true" showoutput="false" fork="true">
+			<jvmarg value="-javaagent:D:\lib\spring\dist\org.springframework.instrument-3.1.3.RELEASE.jar"/>
+			<formatter type="brief" usefile="false"/>
+			<classpath>
+				<path refid="compile-classpath"/>
+				<path refid="compile-test-classpath"/>
+				<pathelement location="${jpa-path}/MyJpa.jar"/>
+				<pathelement location="${basedir}/build/classes"/>
+			</classpath>
+			<batchtest todir="${testReportDir}" fork="true">
+				<formatter type="xml"/>
+				<fileset dir="${build}" includes="**/*TestCase.class"/>
+			</batchtest>
+			<!--test todir="${testReportDir}" name="test.name.chenyuelin.AllTests">
+				<formatter type="xml"/>
+			</test-->
+		</junit>
+	</target>
+	
+	<target name="create-unit-test-report" depends="unit-test">
+		<junitreport todir="${testReportDir}">
+			<fileset dir="${testReportDir}" includes="TEST-*.xml"/>
+			<report format="frames" todir="${testReportDir}"/>
+		</junitreport>
+	</target>
+	
+	<target name="zip-report">
+		<zip destfile="zipReport${DSTAMP}.zip" basedir="${testReportDir}" update="true"/>
+	</target>
+	
+	<target name="send-mail">
+		<mail from="chenyuelin311@sohu.com" tolist="772441445@qq.com;40084863@qq.com" 
+			mailhost="smtp.sohu.com" user="chenyuelin311" password="82617977" 
+			subject="test" message="junit report." files="zipReport${DSTAMP}.zip"/>
 	</target>
 </project>

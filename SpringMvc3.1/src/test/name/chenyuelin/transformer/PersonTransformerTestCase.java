@@ -29,7 +29,7 @@ import org.junit.Test;
  * @author U1
  *
  */
-public class PersonTransformerCase {
+public class PersonTransformerTestCase {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

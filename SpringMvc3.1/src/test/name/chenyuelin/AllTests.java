@@ -10,38 +10,37 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import test.name.chenyuelin.controller.TControllerTestCase;
 import test.name.chenyuelin.service.TServiceTestCase;
+import test.name.chenyuelin.transformer.PersonTransformerTestCase;
 
 @RunWith(Suite.class)
-@SuiteClasses({TServiceTestCase.class,
-  TServiceTestCase.class,
-  TControllerTestCase.class})
+@SuiteClasses({ TServiceTestCase.class, PersonTransformerTestCase.class, TControllerTestCase.class })
 public class AllTests {
-  @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
-    System.out.println("TServiceTestCase");
-  }
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		System.out.println("TServiceTestCase");
+	}
 
-  /**
-   * @throws java.lang.Exception
-   */
-  @AfterClass
-  public static void tearDownAfterClass() throws Exception {
-    System.out.println("TServiceTestCase");
-  }
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		System.out.println("TServiceTestCase");
+	}
 
-  /**
-   * @throws java.lang.Exception
-   */
-  @Before
-  public void setUp() throws Exception {
-    System.out.println("TServiceTestCase");
-  }
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		System.out.println("TServiceTestCase");
+	}
 
-  /**
-   * @throws java.lang.Exception
-   */
-  @After
-  public void tearDown() throws Exception {
-    System.out.println("TServiceTestCase");
-  }
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
+		System.out.println("TServiceTestCase");
+	}
 }
