@@ -5,8 +5,6 @@
 	<!--${DSTAMP},${TSTAMP},${TODAY}-->
 	<tstamp/>
 	
-	<property name="javaagent" value="D:/lib/spring/dist/org.springframework.instrument-3.1.3.RELEASE.jar"/>
-	
 	<property environment="env"/>
 	
 	<property name="src" location="src" />
@@ -47,6 +45,10 @@
 		<pathelement location="${libPath}/mockito-1.9.0/separate-jars/mockito-core-1.9.0.jar"/>
 		<pathelement location="${libPath}/mockito-1.9.0/separate-jars/com.springsource.org.objenesis-1.0.0.jar"/>
 	</path>
+	
+	<available property="jerseySample_exists" file="JerseySample" type="dir"/>
+	<echo message="${jerseySample_exists}"></echo>
+	
 	
 	<target name="compile-jpa">
 		<mkdir dir="${jpa-path}/build2"/>
@@ -106,8 +108,29 @@
 	</target>
 	
 	<target name="send-mail">
-		<mail from="chenyuelin311@sohu.com" tolist="772441445@qq.com;40084863@qq.com" 
+		<mail from="chenyuelin311@sohu.com" tolist="772441445@qq.com,40084863@qq.com" 
 			mailhost="smtp.sohu.com" user="chenyuelin311" password="82617977" 
 			subject="test" message="junit report." files="zipReport${DSTAMP}.zip"/>
+	</target>
+	
+	<target name="cvs-checkout" unless="jerseySample_exists">
+		<echo message="cvs-checkout"/>
+		<cvs cvsroot=":pserver:developer:developer@192.168.1.254:/cvs_repository" command="checkout" dest="${basedir}" package="JerseySample" failonerror="true"/>
+	</target>
+	
+	<target name="cvs-update" if="jerseySample_exists">
+		<echo message="cvs-update"/>
+		<cvs cvsroot=":pserver:developer:developer@192.168.1.254:/cvs_repository" command="update" dest="${basedir}" package="JerseySample" failonerror="true"/>
+	</target>
+	
+	<target name="update-jerseySample" depends="cvs-checkout,cvs-update"/>
+	
+	<target name="clean">
+		<delete dir="JerseySample"/>
+		<delete dir="SpringMvcNew"/>
+		<delete dir="unitTestReport"/>
+		<delete>
+			<fileset dir="." includes="*.zip,*.jar"/>
+		</delete>
 	</target>
 </project>

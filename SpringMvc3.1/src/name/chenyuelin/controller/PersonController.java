@@ -123,11 +123,11 @@ public class PersonController {
 	}
 	
 	@Transactional
-	@RequestMapping(value="formUrlencoded",method=RequestMethod.POST,consumes="application/x-www-form-urlencoded")
-    public ModelAndView createPerson(@RequestBody MultiValueMap<String, Object> aa){
-	    ModelAndView mav=new ModelAndView("aa",aa);
-	    System.out.println("form request.");
-	    return mav;
+	@RequestMapping(method=RequestMethod.POST)
+	@ResponseBody
+    public ActionStatus addPerson(@Validated @RequestBody PersonCommand person){
+		ActionStatus actionStatus=new ActionStatus();
+	    return actionStatus;
     }
 	
 	@Transactional

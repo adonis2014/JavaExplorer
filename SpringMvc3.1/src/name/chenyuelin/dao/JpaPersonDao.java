@@ -40,6 +40,11 @@ public class JpaPersonDao {
 		return newperson;
 	}
 	
+	public Person addPerson(Person person){
+		entityManager.persist(person);
+		return person;
+	}
+	
 	public boolean deletePerson(byte id){
 		Person person=entityManager.find(Person.class, id);
 		if(person!=null){

@@ -74,6 +74,13 @@ public class UserService {
 		
 	}
 	
+	public boolean addPerson(PersonCommand personCommand){
+		Person person=new Person();
+		PersonTransformer.transformerCommandtoEntity(personCommand, person);
+		jpaPersonDao.addPerson(person);
+		return true;
+	}
+	
 	public boolean deletePerson(byte personId){
 		return jpaPersonDao.deletePerson(personId);
 	}
