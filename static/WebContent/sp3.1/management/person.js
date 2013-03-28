@@ -182,7 +182,8 @@ PersonTbodyView = Backbone.View.extend({
 			},
 			error : function(collection, xhr, options) {
 				alert("person fetch error!");
-			}
+			},
+			reset: true
 		});
 	},
 
@@ -258,8 +259,9 @@ PersonTrView = Backbone.View.extend({
 	},
 
 	modifyPersonInfoAction : function(event) {
-		app.modifyPersonview.setModel(this.model);
-		$("#dialog-edit-person").dialog("open");
+	    app.modifyPersonview.show(this.model).done($.proxy(function(attributeData){
+	        this.model.set(attributeData);
+	    },this));
 	},
 	savePersonInfoAction : function(event) {
 		this.model.save(null, {
@@ -330,7 +332,8 @@ EditPersonFromView = Backbone.View
 				"click button.ui-button-text-only:first" : "submitAction",
 				"click button.ui-button-text-only:eq(1)" : "cancelAction",
 				"click button.ui-button-text-only:last" : "showDataAction",
-
+				"click button[title='close']" : "cancelAction",
+				
 				"change input[name='name'],textarea[name='note']" : "changeTextAction",
 				"change input[name='birthday']" : "changeDateAction",
 				"change input[name='breakfastTime']" : "changeTimeAction",
@@ -353,6 +356,14 @@ EditPersonFromView = Backbone.View
 				this.model.set($.extend(true, {}, newModel.attributes));
 			},
 
+			show : function(newModel){
+			    this.setModel(newModel);
+		        this.$contentPanel.dialog("open");
+		        
+		        this.deferred = $.Deferred();
+		        return this.deferred.promise();
+			},
+			
 			changeAttributeListener : function(model) {
 				this.render();
 			},
@@ -368,14 +379,11 @@ EditPersonFromView = Backbone.View
 			},
 
 			submitAction : function(event) {
-				var targetModel = app.personCollection.get(this.model.id);
-				var newAttributes = _.clone(this.model.attributes);
-				delete newAttributes.id;
-				targetModel.set(newAttributes);
+				this.deferred.resolve(this.model.attributes);
 			},
 
 			cancelAction : function(event) {
-				// alert("cancelAction");
+				this.deferred.reject();
 			},
 
 			showDataAction : function(event) {
@@ -468,10 +476,11 @@ EditPersonFromView = Backbone.View
  * page head view this view collection is batchUpdatePersonCollection
  */
 PageHeadView = Backbone.View.extend({
-	template : _.template("<span style='margin-left: 90%'></span><button type='button' disabled='disabled'>批量更新</button>"),
+	template : _.template("<span style='margin-left: 80%'></span><button type='button' id='addBtn'>添加人员</button><button type='button' disabled='disabled' id='batchBtn'>批量更新</button>"),
 
 	events : {
-		"click button" : "batchUpdateAction"
+		"click #batchBtn" : "batchUpdateAction",
+		"click #addBtn" : "addPersonAction"
 	},
 
 	tagName : "p",
@@ -501,6 +510,9 @@ PageHeadView = Backbone.View.extend({
 				}
 			});
 		}
+	},
+	addPersonAction : function(event){
+	    
 	}
 });
 
