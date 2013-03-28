@@ -25,9 +25,11 @@ public final class PersonTransformer {
 		dto.setBreakfastTime(entity.getBreakfastTime());
 		
 		Timestamp createTime=entity.getCreateTime();
-		XMLGregorianCalendar xmlGregorianCalendar=BaseConstants.DATATYPE_FACTORY.newXMLGregorianCalendar(createTime.getYear()+1900, createTime.getMonth()+1, createTime.getDate(), 
-				createTime.getHours(), createTime.getMinutes(), createTime.getSeconds(),(int)(createTime.getTime()%1000), createTime.getTimezoneOffset());
-		dto.setCreateTime(xmlGregorianCalendar);
+		if(createTime!=null){
+			XMLGregorianCalendar xmlGregorianCalendar=BaseConstants.DATATYPE_FACTORY.newXMLGregorianCalendar(createTime.getYear()+1900, createTime.getMonth()+1, createTime.getDate(), 
+					createTime.getHours(), createTime.getMinutes(), createTime.getSeconds(),(int)(createTime.getTime()%1000), createTime.getTimezoneOffset());
+			dto.setCreateTime(xmlGregorianCalendar);
+		}
 		
 		BigDecimal heigth=entity.getHeight();
 		dto.setHeight(heigth==null?0:heigth.doubleValue());

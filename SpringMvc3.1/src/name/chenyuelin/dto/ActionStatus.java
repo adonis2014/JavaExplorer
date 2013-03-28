@@ -1,5 +1,7 @@
 package name.chenyuelin.dto;
 
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -7,19 +9,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ActionStatus {
-	private int id;
+	private Map<String, Object> returnData;
 	private boolean processSuccessfully;
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public boolean isProcessSuccessfully() {
 		return processSuccessfully;
 	}
 	public void setProcessSuccessfully(boolean processSuccessfully) {
 		this.processSuccessfully = processSuccessfully;
 	}
+	public Map<String, Object> getReturnData() {
+		return returnData;
+	}
+	public void setReturnData(Map<String, Object> returnData) {
+		this.returnData = returnData;
+	}
+	
+	
 }

@@ -100,7 +100,6 @@ public class PersonController {
 	@ResponseBody
 	public ActionStatus updatePerson(@PathVariable("id")byte id,@Validated @RequestBody PersonCommand person){
 		ActionStatus actionStatus=new ActionStatus();
-		actionStatus.setId(id);
 		boolean result=userService.updatePerson(id, person);
 		actionStatus.setProcessSuccessfully(result);
 		return actionStatus;
@@ -115,8 +114,7 @@ public class PersonController {
 		listWarp.setActionStatus(actionStatusList);
 		for(PersonCommand command:persons.getPersonCommands()){
 			ActionStatus actionStatus=new ActionStatus();
-			actionStatus.setId(command.getId());
-			actionStatus.setProcessSuccessfully(userService.updatePerson((byte)command.getId(), command));
+			actionStatus.setProcessSuccessfully(userService.updatePerson(command.getId().byteValue(), command));
 			actionStatusList.add(actionStatus);
 		}
 		return listWarp;
@@ -127,6 +125,11 @@ public class PersonController {
 	@ResponseBody
     public ActionStatus addPerson(@Validated @RequestBody PersonCommand person){
 		ActionStatus actionStatus=new ActionStatus();
+		byte id=userService.addPerson(person);
+		actionStatus.setProcessSuccessfully(true);
+		Map<String, Object> returnData=new HashMap<String, Object>();
+		returnData.put("id", id);
+		actionStatus.setReturnData(returnData);
 	    return actionStatus;
     }
 	
@@ -135,7 +138,6 @@ public class PersonController {
 	@ResponseBody
 	public ActionStatus deletePereson(@PathVariable("id")byte id){
 		ActionStatus actionStatus=new ActionStatus();
-		actionStatus.setId(id);
 		actionStatus.setProcessSuccessfully(userService.deletePerson(id));
 	    return actionStatus;
     }

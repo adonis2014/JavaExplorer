@@ -32,9 +32,6 @@ public class PersonCommandValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		PersonCommand command=(PersonCommand)target;
-		if(command.getId()<1){
-			errors.rejectValue("id", "aa.bb", "id is required!");
-		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "error.requirement.name","name is required!");
 		
 		if(command.getSalary()<0){

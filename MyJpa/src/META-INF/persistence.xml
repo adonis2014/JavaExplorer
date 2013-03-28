@@ -41,7 +41,7 @@
 			<!-- Optimization #15 - avoid cost of persist on commit -->
 			<!-- <property name="eclipselink.persistence-context.persist-on-commit" value="false" /> -->
 			<!-- Optimization #14 - avoid auto flush cost on query execution -->
-			<property name="eclipselink.persistence-context.flush-mode" value="commit" />
+			<!-- <property name="eclipselink.persistence-context.flush-mode" value="commit" /> -->
 		</properties>
 	</persistence-unit>
 </persistence>

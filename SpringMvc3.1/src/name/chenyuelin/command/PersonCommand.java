@@ -30,7 +30,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PersonCommand {
-	private int id;
+	private Integer id;
 	private String name;
 	private Sex sex;
 	
@@ -108,10 +108,10 @@ public class PersonCommand {
         this.createTime = createTime;
     }
     
-    public int getId() {
+    public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public Set<Language> getLanguages() {

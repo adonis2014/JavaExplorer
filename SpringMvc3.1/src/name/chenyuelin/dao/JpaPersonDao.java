@@ -42,6 +42,7 @@ public class JpaPersonDao {
 	
 	public Person addPerson(Person person){
 		entityManager.persist(person);
+		entityManager.flush();
 		return person;
 	}
 	

@@ -17,17 +17,17 @@ constant.offsetMillisecond = 3600000;
  */
 PersonModel = Backbone.Model.extend({
 	defaults : {
-		"name" : null,
-		"sex" : null,
-		"birthday" : null,
-		"breakfastTime" : null,
-		"createTime" : null,
-		"height" : null,
-		"languages" : null,
-		"note" : null,
-		"salary" : null,
-		"active" : null,
-		"version" : null
+		"name" : "",
+		"sex" : "male",
+		"birthday" : constant.currentDate,
+		"breakfastTime" : constant.currentDate,
+		"createTime" : constant.currentDate,
+		"height" : 0,
+		"languages" : [],
+		"note" : "",
+		"salary" : 0,
+		"active" : true,
+		"version" : 0
 	},
 
 	initialize : function(attributes, options) {
@@ -51,7 +51,7 @@ PersonModel = Backbone.Model.extend({
 			response.languages.sort();
 			return response;
 		} else {
-			return undefined;
+			return response.returnData;
 		}
 	},
 
@@ -60,9 +60,6 @@ PersonModel = Backbone.Model.extend({
 	},
 
 	validate : function(attributes, options) {
-		if (attributes.id == null) {
-			return "id is required!";
-		}
 		if (attributes.name == null) {
 			return "name is required!";
 		}
@@ -172,7 +169,8 @@ PersonTbodyView = Backbone.View.extend({
 		this.adaptScroll = options.adaptScroll;
 
 		this.collection.on("reset", this.collectionResetListener, this);
-
+		this.collection.on("add", this.collectionAddListener, this);
+		this.collection.on("remove", this.collectionRemoveListener, this);
 		this.$contentPanel = $("table>tbody", this.$el);
 
 		// fetch data from service
@@ -182,7 +180,8 @@ PersonTbodyView = Backbone.View.extend({
 			},
 			error : function(collection, xhr, options) {
 				alert("person fetch error!");
-			}
+			},
+			reset: true
 		});
 	},
 
@@ -203,6 +202,15 @@ PersonTbodyView = Backbone.View.extend({
 	},
 	collectionResetListener : function(collection, options) {
 		this.render();
+	},
+	collectionAddListener : function(model, collection, options){
+		var view = new PersonTrView({
+			model : model
+		});
+		this.$contentPanel.append(view.render().$el);
+	},
+	collectionRemoveListener : function(model, collection, options){
+		alert(collection.length);
 	}
 });
 
@@ -219,7 +227,7 @@ PersonTrView = Backbone.View.extend({
 			+ "<td class='ui-widget-content'><%=salary%></td>" + "<td class='ui-widget-content'><%=note%></td>"
 			+ "<td class='ui-widget-content'><%=version%></td>" + "<td class='ui-widget-content'><%=active?'是':'否'%></td>"
 			+ "<td class='ui-widget-content'><button type='button' class='modifyBtn'>修改</button>"
-			+ "<button type='button' class='saveBtn' disabled='disabled'>保存</button>"
+			+ "<button type='button' class='saveBtn' <%if(id!=='')print(disabled='disabled');%>>保存</button>"
 			+ "<button type='button' class='resetBtn' disabled='disabled'>还原</button>" + "<button type='button' class='deleteBtn'>删除</button></td>"),
 
 	tagName : "tr",
@@ -238,28 +246,40 @@ PersonTrView = Backbone.View.extend({
 
 		this.model.on("destroy", this.modelDestroyListener, this);
 	},
+
+		
 	changeAttributeListener : function(model) {
 		this.render();
 
-		if (!_.isEqual(this.model.original, this.model.attributes)) {
-			$(".id-style", this.$el).css({
-				color : "red",
-				"font-weight" : "bold"
-			});
+		if (this.model.isNew()) {
 			$(":button:gt(0)", this.$el).prop("disabled", false);
-			app.batchUpdatePersonCollection.push(this.model);
 		} else {
-			app.batchUpdatePersonCollection.remove(this.model);
+			if (!_.isEqual(this.model.original, this.model.attributes)) {
+				$(".id-style", this.$el).css({
+					color : "red",
+					"font-weight" : "bold"
+				});
+				$(":button:gt(0)", this.$el).prop("disabled", false);
+				app.batchUpdatePersonCollection.push(this.model);
+			} else {
+				app.batchUpdatePersonCollection.remove(this.model);
+			}
 		}
 	},
+	
 	render : function() {
-		this.$el.html(this.template(this.model.attributes));
+		var renderData=_.clone(this.model.attributes);
+		if (renderData.id == null) {
+			renderData.id = "";
+		}
+		this.$el.html(this.template(renderData));
 		return this;
 	},
 
 	modifyPersonInfoAction : function(event) {
-		app.modifyPersonview.setModel(this.model);
-		$("#dialog-edit-person").dialog("open");
+	    app.modifyPersonview.show(this.model.attributes).done($.proxy(function(attributeData){
+	        this.model.set(attributeData);
+	    },this));
 	},
 	savePersonInfoAction : function(event) {
 		this.model.save(null, {
@@ -282,11 +302,15 @@ PersonTrView = Backbone.View.extend({
 		if (confirm("是否要删除所选定的记录？")) {
 			this.model.destroy({
 				success : $.proxy(function(model, response, options) {
-					if (response.processSuccessfully) {
+					if(model.isNew()){
 						this.remove();
-						alert("delete success!");
-					} else {
-						alert("delete error!");
+					}else{
+						if (response.processSuccessfully) {
+							this.remove();
+							alert("delete success!");
+						} else {
+							alert("delete error!");
+						}
 					}
 				}, this),
 				error : function(model, xhr, options) {
@@ -330,14 +354,15 @@ EditPersonFromView = Backbone.View
 				"click button.ui-button-text-only:first" : "submitAction",
 				"click button.ui-button-text-only:eq(1)" : "cancelAction",
 				"click button.ui-button-text-only:last" : "showDataAction",
-
+				"click button[title='close']" : "cancelAction",
+				
 				"change input[name='name'],textarea[name='note']" : "changeTextAction",
 				"change input[name='birthday']" : "changeDateAction",
 				"change input[name='breakfastTime']" : "changeTimeAction",
 				"keyup input[name='breakfastTime']" : "validateTimeAction",
 				"change input[name='height']" : "changeFloatAction",
 				"change input[name='salary']" : "changeIntAction",
-				"change input:radio[name='active']" : "changeRadioAction",
+				"change input:radio" : "changeRadioAction",
 				"change input[name='languages']:checkbox" : "changeCheckboxAction"
 			},
 
@@ -349,16 +374,31 @@ EditPersonFromView = Backbone.View
 				this.model.on("change", this.changeAttributeListener, this);
 			},
 
-			setModel : function(newModel) {
-				this.model.set($.extend(true, {}, newModel.attributes));
+			setAttributes : function(attributes) {
+				this.model.set($.extend(true, {}, attributes));
 			},
 
+			show : function(newAttributes,needRender){
+			    this.setAttributes(newAttributes);
+			    if(needRender){
+			    	this.render();
+			    }
+		        this.$contentPanel.dialog("open");
+		        
+		        this.deferred = $.Deferred();
+		        return this.deferred.promise();
+			},
+			
 			changeAttributeListener : function(model) {
 				this.render();
 			},
 
 			render : function() {
-				this.$contentPanel.html(this.template(this.model.attributes));
+				var renderData=_.clone(this.model.attributes);
+				if (renderData.id == null) {
+					renderData.id = "";
+				}
+				this.$contentPanel.html(this.template(renderData));
 
 				$("input.datepicker", this.$contentPanel).datepicker({
 					dateFormat : "yy-mm-dd"
@@ -368,14 +408,11 @@ EditPersonFromView = Backbone.View
 			},
 
 			submitAction : function(event) {
-				var targetModel = app.personCollection.get(this.model.id);
-				var newAttributes = _.clone(this.model.attributes);
-				delete newAttributes.id;
-				targetModel.set(newAttributes);
+				this.deferred.resolve($.extend(true, {}, this.model.attributes));
 			},
 
 			cancelAction : function(event) {
-				// alert("cancelAction");
+				this.deferred.reject();
 			},
 
 			showDataAction : function(event) {
@@ -440,7 +477,13 @@ EditPersonFromView = Backbone.View
 			changeRadioAction : function(event) {
 				var $currentTarget = $(event.currentTarget);
 				var changeAttributeName = $currentTarget.attr("name");
-				this.model.set(changeAttributeName, $currentTarget.val() === "true", {
+				var val=$currentTarget.val();
+				if($currentTarget.val()==="true"){
+					val =true;
+				}else if($currentTarget.val()==="false"){
+					val =false;
+				}
+				this.model.set(changeAttributeName, val, {
 					validate : true,
 					silent : true
 				});
@@ -468,10 +511,11 @@ EditPersonFromView = Backbone.View
  * page head view this view collection is batchUpdatePersonCollection
  */
 PageHeadView = Backbone.View.extend({
-	template : _.template("<span style='margin-left: 90%'></span><button type='button' disabled='disabled'>批量更新</button>"),
+	template : _.template("<span style='margin-left: 80%'></span><button type='button' id='addBtn'>添加人员</button><button type='button' disabled='disabled' id='batchBtn'>批量更新</button>"),
 
 	events : {
-		"click button" : "batchUpdateAction"
+		"click #batchBtn" : "batchUpdateAction",
+		"click #addBtn" : "addPersonAction"
 	},
 
 	tagName : "p",
@@ -488,7 +532,7 @@ PageHeadView = Backbone.View.extend({
 		return this;
 	},
 	updateBatchUpdatePersonCollectionListener : function(model, collection, options) {
-		$("button", this.$el).prop("disabled", collection.length === 0);
+		$("button:last", this.$el).prop("disabled", collection.length === 0);
 	},
 	batchUpdateAction : function(event) {
 		if (confirm("是否要批量更新?")) {
@@ -501,6 +545,14 @@ PageHeadView = Backbone.View.extend({
 				}
 			});
 		}
+	},
+	addPersonAction : function(event){
+		var personModel=new PersonModel();
+		app.modifyPersonview.show(personModel.defaults,true).done(function(attributes){
+			personModel.set(attributes);
+			app.personCollection.push(personModel);
+			app.batchUpdatePersonCollection.push(personModel);
+		});
 	}
 });
 

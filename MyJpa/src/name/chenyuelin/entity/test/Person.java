@@ -53,7 +53,7 @@ public class Person implements Serializable {
 	@Column(name = "breakfast_time")
 	private Time breakfastTime;
 
-	@Column(name = "create_time")
+	@Column(name = "create_time",insertable=false,updatable=false)
 	private Timestamp createTime;
 
 	@Lob()
