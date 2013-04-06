@@ -133,4 +133,10 @@
 			<fileset dir="." includes="*.zip,*.jar"/>
 		</delete>
 	</target>
+	
+	<target name="queryTables">
+		<sql driver="com.mysql.jdbc.Driver" password="w8xk73w12pz5" url="jdbc:mysql://localhost:3306/test" userid="root" print="true">
+			show tables;
+		</sql>
+	</target>
 </project>

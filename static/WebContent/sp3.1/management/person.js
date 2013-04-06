@@ -82,6 +82,10 @@ PersonModel = Backbone.Model.extend({
 			return "argument of active is wrong!";
 		}
 		return undefined;
+	},
+	
+	sync:function(method, model, options){
+		return Backbone.Model.prototype.sync.apply(this, arguments);
 	}
 });
 
