@@ -9,9 +9,16 @@
 <link href="/static/lib/jquery-ui-1.10.0/css/redmond/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <link href="/static/lib/jquery_fixheadertable_2.0/base.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <!--[if lt IE 8]>
-<script src="/static/lib/IE8.js"></script>
+<script type="text/javascript" src="/static/lib/IE8.js"></script>
 <![endif]-->
-<script type="text/javascript" src="/static/lib/jquery.min.js"></script>
+
+<!--[if lt IE 9]>
+ <script type="text/javascript" src="/static/lib/jquery-1.9.1.min.js"></script>
+ <![endif]-->
+<!--[if gte IE 9]><!-->
+<script type="text/javascript" src="/static/lib/jquery-2.0.0.min.js"></script>
+<!--<![endif]-->
+
 <script type="text/javascript" src="/static/lib/jquery-ui-1.10.0/js/jquery-ui-1.10.0.custom.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="/static/lib/underscore-min.js"></script>
 <script type="text/javascript" src="/static/lib/backbone-min.js"></script>
