@@ -21,7 +21,7 @@ import name.chenyuelin.transformer.Jaxb2SqlTimeAdapter;
 import name.chenyuelin.transformer.JsonSqlDateDeserializer;
 import name.chenyuelin.transformer.JsonSqlTimeDeserializer;
 
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * @author P1

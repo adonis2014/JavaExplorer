@@ -11,12 +11,13 @@
 		*/
 package name.chenyuelin.configuration;
 
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @ClassName: servletConfiguration
@@ -33,7 +34,7 @@ public class ServletConfiguration {
     @Bean(name="globalObjectMapper")
     public ObjectMapper createGlobalObjectMapper(){
         ObjectMapper objectMapper=new ObjectMapper();
-        objectMapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         /*objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.getSerializationConfig().setDateFormat(myDateFormat);
