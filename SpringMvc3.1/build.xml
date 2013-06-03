@@ -1,142 +1,125 @@
 <?xml version="1.0" encoding="GB18030"?>
-<project name="MyProject" default="native" basedir=".">
+<project name="Spring3MvcSample" default="native" basedir=".">
+	
 	<description>Spring3.1 MVC sample.</description>
-	
-	<!--${DSTAMP},${TSTAMP},${TODAY}-->
-	<tstamp/>
-	
-	<property environment="env"/>
-	
-	<property name="src" location="src" />
-	<property name="build" location="build/classes" />
-	<property name="webContent" location="WebContent" />
-	<property name="webInf" location="${webContent}/WEB-INF" />
-	
-	<property name="jpa-path" location="${user.home}/git/JavaExplorer/MyJpa" />
-	<property name="tomcat-path" location="D:/Program Files/apache-tomcat-7.0.35"/>
-	
-	<property name="libPath" location="D:/lib"/>
-	<property name="testReportDir" location="unitTestReport"/>
+
+	<import file="../base.xml"/>
 	
 	<path id="compile-classpath">
-		<fileset dir="${libPath}/spring/dist" includes="*.jar">
-			<exclude name="org.springframework.web.portlet-3.1.3.RELEASE.jar"/>
-			<exclude name="org.springframework.web.struts-3.1.3.RELEASE.jar"/>
-			<exclude name="org.springframework.instrument-3.1.3.RELEASE.jar"/>
-			<exclude name="org.springframework.instrument.tomcat-3.1.3.RELEASE.jar"/>
+		<fileset dir="J:/libs/spring/spring-framework-3.2.2.RELEASE/libs/" includes="*.jar">
+			<exclude name="spring-webmvc-portlet-3.2.2.RELEASE.jar"/>
+			<exclude name="spring-struts-3.2.2.RELEASE.jar"/>
+			<exclude name="spring-instrument-3.2.2.RELEASE.jar"/>
+			<exclude name="spring-instrument-tomcat-3.2.2.RELEASE.jar"/>
 		</fileset>
-		<pathelement location="${libPath}/commons-logging-1.1.1.jar"/>
-		<pathelement location="${libPath}/aopalliance.jar"/>
-		<pathelement location="${libPath}/asm-3.3.jar"/>
-		<pathelement location="${libPath}/aspectjrt.jar"/>
-		<pathelement location="${libPath}/aspectjweaver.jar"/>
-		<pathelement location="${libPath}/cglib-2.2.jar"/>
-		<pathelement location="${libPath}/asm-3.3.jar"/>
-		<pathelement location="${libPath}/jpa/2.4/eclipselink.jar"/>
-		<pathelement location="${libPath}/jpa/2.4/javax.persistence_2.0.4.v201112161009.jar"/>
-		<pathelement location="${libPath}/jackson-all-1.9.9.jar"/>
-		<pathelement location="${libPath}/mysql-connector-java-5.1.22/mysql-connector-java-5.1.22-bin.jar"/>
-		<fileset dir="${tomcat-path}/lib" includes="*.jar"/>
+		<pathelement location="E:/libs/commons-logging-1.1.1/commons-logging-1.1.1.jar"/>
+		<pathelement location="E:/libs/aopalliance/aopalliance.jar"/>
+		<pathelement location="E:/libs/asm3.3/asm-3.3.jar"/>
+		<fileset dir="E:/libs/aspectj-1.6.9/aspectj1.6/lib/">
+			<include name="aspectjweaver.jar"/>
+			<include name="aspectjrt.jar"/>
+			<include name="aspectjtools.jar"/>
+		</fileset>
+		<pathelement location="E:/libs/cglib-2.2/cglib-2.2.jar"/>
+		<pathelement location="E:/libs/asm3.3/asm-3.3.jar"/>
+		<fileset dir="E:/libs/jpa/eclipselink-plugins-2.4.1.v20121003-ad44345">
+			<include name="org.eclipse.persistence.core_2.4.1.v20121003-ad44345.jar"/>
+			<include name="org.eclipse.persistence.jpa.jpql_2.0.1.v20121003-ad44345.jar"/>
+			<include name="org.eclipse.persistence.jpa_2.4.1.v20121003-ad44345.jar"/>
+			<include name="javax.persistence_2.0.4.v201112161009.jar"/>
+			<include name="org.eclipse.persistence.antlr_3.2.0.v201206041011.jar"/>
+			<include name="org.eclipse.persistence.asm_3.3.1.v201206041142.jar"/>
+		</fileset>
+		<fileset dir="J:/libs/json/jackson/2.2">
+			<include name="jackson-annotations-2.2.0.jar"/>
+			<include name="jackson-core-2.2.0.jar"/>
+			<include name="jackson-databind-2.2.0.jar"/>
+		</fileset>
+		<pathelement location="E:/libs/mysql-connector-java-5.1.23/mysql-connector-java-5.1.23-bin.jar"/>
+		<fileset dir="D:/Program Files/apache-tomcat-7.0.35/lib" includes="*.jar"/>
+		<fileset dir="E:/libs/poi-3.7">
+			<include name="poi-ooxml-3.7-20101029.jar"/>
+			<include name="poi-3.7-20101029.jar"/>
+			<include name="poi-scratchpad-3.7-20101029.jar"/>
+			<include name="poi-ooxml-schemas-3.7-20101029.jar"/>
+		</fileset>
+		<fileset dir="${work-dist-directory}" includes="*.jar"/>
 	</path>
 
-	<path id="compile-test-classpath">
-		<pathelement location="D:/MAUI/eclipse/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/junit.jar"/>
-		<pathelement location="D:/MAUI/eclipse/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
-		<pathelement location="${libPath}/mockito-1.9.0/separate-jars/mockito-core-1.9.0.jar"/>
-		<pathelement location="${libPath}/mockito-1.9.0/separate-jars/com.springsource.org.objenesis-1.0.0.jar"/>
+	<path id="test-classpath">
+		<path refid="compile-classpath"/>
+		<pathelement location="${project-class-directory}"/>
+		<pathelement location="F:/work/eclipse/eclipse-jee-helios/plugins/org.junit_4.8.1.v4_8_1_v20100427-1100/junit.jar"/>
+		<pathelement location="F:/work/eclipse/eclipse-jee-helios/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+		<fileset dir="E:/libs/mockito-1.9.0/separate-jars">
+			<include name="mockito-core-1.9.0.jar"/>
+			<include name="com.springsource.org.objenesis-1.0.0.jar"/>
+		</fileset>
+		<pathelement location="E:/libs/powermock-mockito-1.4.12-full.jar"/>
+		<pathelement location="E:/libs/hibernate-release-4.1.5.SP1/lib/required/javassist-3.15.0-GA.jar"/>
 	</path>
-	
-	<available property="jerseySample_exists" file="JerseySample" type="dir"/>
-	<echo message="${jerseySample_exists}"></echo>
-	
-	
-	<target name="compile-jpa">
-		<mkdir dir="${jpa-path}/build2"/>
-		<copydir dest="${jpa-path}/build2/META-INF" src="${jpa-path}/src/META-INF"/>
-		<javac destdir="${jpa-path}/build2" srcdir="${jpa-path}/src" classpathref="compile-classpath" includeantruntime="false"/>
-	</target>
-	
-	<target name="pack-jpa" depends="compile-jpa">
-		<jar destfile="${jpa-path}/MyJpa.jar" basedir="${jpa-path}/build2"/>
-	</target>
-	
-	<target name="clean-jpa">
-		<delete dir="${jpa-path}/build2"/>
-		<delete file="${jpa-path}/MyJpa.jar"/>
-	</target>
-	
+
+
 	<target name="native">
-		<property name="i18n" location="${webInf}/i18n"/>
-		<delete includeemptydirs="true" verbose="false">
-			<fileset dir="${i18n}" includes="**/*.properties"/>
-		</delete>
-		<native2ascii dest="${i18n}" src="${i18n}" includes="**/*.txt" ext=".properties" encoding="gbk"/>
-		<echo message="Native message complete!" />
+		<native2ascii dest="WebContent/WEB-INF/i18n" src="WebContent/WEB-INF/i18n" includes="**/*.txt" ext=".properties" encoding="gbk"/>
 	</target>
 	
-	<target name="unit-test" depends="pack-jpa">
-		<delete dir="${testReportDir}"/>
-		<mkdir dir="${testReportDir}"/>
-		<junit printsummary="true" haltonfailure="true" showoutput="false" fork="true">
-			<jvmarg value="-javaagent:D:\lib\spring\dist\org.springframework.instrument-3.1.3.RELEASE.jar"/>
+	<target name="test" depends="compile-test">
+		<junit printsummary="true" haltonfailure="true" showoutput="false">
+			<!--jvmarg value="-javaagent:J:/libs/spring/spring-framework-3.2.2.RELEASE/libs/spring-instrument-3.2.2.RELEASE.jar"/-->
 			<formatter type="brief" usefile="false"/>
 			<classpath>
-				<path refid="compile-classpath"/>
-				<path refid="compile-test-classpath"/>
-				<pathelement location="${jpa-path}/MyJpa.jar"/>
-				<pathelement location="${basedir}/build/classes"/>
+				<path refid="test-classpath"/>
+				<pathelement location="${project-test-directory}"/>
 			</classpath>
-			<batchtest todir="${testReportDir}" fork="true">
+			<batchtest todir="${unit-test-reports-directory}">
 				<formatter type="xml"/>
-				<fileset dir="${build}" includes="**/*TestCase.class"/>
+				<fileset dir="${project-test-directory}" includes="test/**/*TestCase.class"/>
 			</batchtest>
 			<!--test todir="${testReportDir}" name="test.name.chenyuelin.AllTests">
 				<formatter type="xml"/>
 			</test-->
 		</junit>
 	</target>
-	
-	<target name="create-unit-test-report" depends="unit-test">
-		<junitreport todir="${testReportDir}">
-			<fileset dir="${testReportDir}" includes="TEST-*.xml"/>
-			<report format="frames" todir="${testReportDir}"/>
+
+	<target name="create-test-report">
+		<junitreport todir="${unit-test-reports-directory}">
+			<fileset dir="${unit-test-reports-directory}" includes="TEST-*.xml"/>
+			<report format="frames" todir="${unit-test-reports-directory}"/>
 		</junitreport>
 	</target>
-	
-	<target name="zip-report">
+
+
+	<target name="package" depends="compile">
+		<jar destfile="${jpa-path}/MyJpa.jar" basedir="${jpa-path}/build2"/>
+	</target>
+
+	<!--target name="zip-report">
 		<zip destfile="zipReport${DSTAMP}.zip" basedir="${testReportDir}" update="true"/>
 	</target>
-	
+
 	<target name="send-mail">
 		<mail from="chenyuelin311@sohu.com" tolist="772441445@qq.com,40084863@qq.com" 
 			mailhost="smtp.sohu.com" user="chenyuelin311" password="82617977" 
 			subject="test" message="junit report." files="zipReport${DSTAMP}.zip"/>
 	</target>
-	
+
 	<target name="cvs-checkout" unless="jerseySample_exists">
 		<echo message="cvs-checkout"/>
 		<cvs cvsroot=":pserver:developer:developer@192.168.1.254:/cvs_repository" command="checkout" dest="${basedir}" package="JerseySample" failonerror="true"/>
 	</target>
-	
+
 	<target name="cvs-update" if="jerseySample_exists">
 		<echo message="cvs-update"/>
 		<cvs cvsroot=":pserver:developer:developer@192.168.1.254:/cvs_repository" command="update" dest="${basedir}" package="JerseySample" failonerror="true"/>
 	</target>
-	
+
 	<target name="update-jerseySample" depends="cvs-checkout,cvs-update"/>
-	
-	<target name="clean">
-		<delete dir="JerseySample"/>
-		<delete dir="SpringMvcNew"/>
-		<delete dir="unitTestReport"/>
-		<delete>
-			<fileset dir="." includes="*.zip,*.jar"/>
-		</delete>
-	</target>
-	
+
 	<target name="queryTables">
 		<sql driver="com.mysql.jdbc.Driver" password="w8xk73w12pz5" url="jdbc:mysql://localhost:3306/test" userid="root" print="true">
 			show tables;
 		</sql>
-	</target>
+	</target-->
+	
 </project>

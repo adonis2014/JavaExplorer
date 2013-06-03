@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="GB18030"?>
+<project name="MyJpa" default="create-work-directory" basedir=".">
+	<description>MyJpa build.</description>
+	
+	<import file="../base.xml"/>
+	
+	<tstamp/>
+
+	<property environment="env"/>
+
+	<path id="compile-classpath">
+		<fileset dir="E:/libs/jpa/eclipselink-plugins-2.4.1.v20121003-ad44345">
+			<include name="org.eclipse.persistence.core_2.4.1.v20121003-ad44345.jar"/>
+			<include name="org.eclipse.persistence.jpa.jpql_2.0.1.v20121003-ad44345.jar"/>
+			<include name="org.eclipse.persistence.jpa_2.4.1.v20121003-ad44345.jar"/>
+			<include name="javax.persistence_2.0.4.v201112161009.jar"/>
+			<include name="org.eclipse.persistence.antlr_3.2.0.v201206041011.jar"/>
+			<include name="org.eclipse.persistence.asm_3.3.1.v201206041142.jar"/>
+		</fileset>
+		<pathelement location="E:/libs/commons-logging-1.1.1/commons-logging-1.1.1.jar"/>
+	</path>
+
+	<path id="test-classpath">
+		<pathelement location="F:/work/eclipse/eclipse-jee-helios/plugins/org.junit_4.8.1.v4_8_1_v20100427-1100/junit.jar"/>
+		<pathelement location="F:/work/eclipse/eclipse-jee-helios/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+		<fileset dir="E:/libs/mockito-1.9.0/separate-jars">
+			<include name="mockito-core-1.9.0.jar"/>
+			<include name="com.springsource.org.objenesis-1.0.0.jar"/>
+		</fileset>
+	</path>
+</project>

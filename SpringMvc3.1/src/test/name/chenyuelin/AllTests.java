@@ -8,12 +8,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import test.name.chenyuelin.controller.TControllerTestCase;
 import test.name.chenyuelin.service.TServiceTestCase;
 import test.name.chenyuelin.transformer.PersonTransformerTestCase;
 
 @RunWith(Suite.class)
-@SuiteClasses({ TServiceTestCase.class, PersonTransformerTestCase.class, TControllerTestCase.class })
+@SuiteClasses({ TServiceTestCase.class, PersonTransformerTestCase.class })
 public class AllTests {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
