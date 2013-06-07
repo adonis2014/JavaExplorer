@@ -3,7 +3,7 @@
 	<description>Base Build.</description>
 
 	<tstamp/>
-
+	
 	<property environment="env"/>
 
 	<property name="ant-build-space-name" value="AntBuildSpace"/>
@@ -34,7 +34,7 @@
 		<mkdir dir="${integration-test-reports-directory}" taskname="Create integration test reports directory."/>
 	</target>
 
-	<target name="initialize" depends="create-project-directory,clean">
+	<target name="initialize" depends="create-project-directory">
 		<echo message="${ant.project.name} ${TODAY}"/>
 	</target>
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="GB18030"?>
 <project name="Spring3MvcSample" default="native" basedir=".">
-	
+
 	<description>Spring3.1 MVC sample.</description>
 
 	<import file="../base.xml"/>
-	
+
 	<path id="compile-classpath">
 		<fileset dir="J:/libs/spring/spring-framework-3.2.2.RELEASE/libs/" includes="*.jar">
 			<exclude name="spring-webmvc-portlet-3.2.2.RELEASE.jar"/>
@@ -63,22 +63,20 @@
 	<target name="native">
 		<native2ascii dest="WebContent/WEB-INF/i18n" src="WebContent/WEB-INF/i18n" includes="**/*.txt" ext=".properties" encoding="gbk"/>
 	</target>
-	
+
 	<target name="test" depends="compile-test">
 		<junit printsummary="true" haltonfailure="true" showoutput="false">
 			<!--jvmarg value="-javaagent:J:/libs/spring/spring-framework-3.2.2.RELEASE/libs/spring-instrument-3.2.2.RELEASE.jar"/-->
 			<formatter type="brief" usefile="false"/>
+			<formatter type="xml"/>
 			<classpath>
 				<path refid="test-classpath"/>
 				<pathelement location="${project-test-directory}"/>
 			</classpath>
-			<batchtest todir="${unit-test-reports-directory}">
-				<formatter type="xml"/>
+			<!--batchtest todir="${unit-test-reports-directory}">
 				<fileset dir="${project-test-directory}" includes="test/**/*TestCase.class"/>
-			</batchtest>
-			<!--test todir="${testReportDir}" name="test.name.chenyuelin.AllTests">
-				<formatter type="xml"/>
-			</test-->
+			</batchtest-->
+			<test todir="${unit-test-reports-directory}" name="test.name.chenyuelin.AllTests"/>
 		</junit>
 	</target>
 
@@ -89,6 +87,30 @@
 		</junitreport>
 	</target>
 
+	<target name="integration-test" depends="compile-test">
+		<junit printsummary="true" haltonfailure="true" showoutput="false" fork="true">
+			<jvmarg value="-javaagent:J:/libs/spring/spring-framework-3.2.2.RELEASE/libs/spring-instrument-3.2.2.RELEASE.jar"/>
+			<formatter type="brief" usefile="false"/>
+			<formatter type="xml"/>
+			<classpath>
+				<path refid="test-classpath"/>
+				<pathelement location="${project-test-directory}"/>
+			</classpath>
+			<batchtest todir="${integration-test-reports-directory}">
+				<fileset dir="${project-test-directory}" includes="integrationTest/**/*Test.class"/>
+			</batchtest>
+			<!--test todir="${testReportDir}" name="test.name.chenyuelin.AllTests">
+						<formatter type="xml"/>
+					</test-->
+		</junit>
+	</target>
+
+	<target name="create-integration-test-report">
+		<junitreport todir="${integration-test-reports-directory}">
+			<fileset dir="${integration-test-reports-directory}" includes="TEST-*.xml"/>
+			<report format="frames" todir="${integration-test-reports-directory}"/>
+		</junitreport>
+	</target>
 
 	<target name="package" depends="compile">
 		<jar destfile="${jpa-path}/MyJpa.jar" basedir="${jpa-path}/build2"/>
@@ -121,5 +143,5 @@
 			show tables;
 		</sql>
 	</target-->
-	
+
 </project>
