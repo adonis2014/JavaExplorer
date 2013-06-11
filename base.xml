@@ -2,67 +2,101 @@
 <project name="baseBuild" default="initialize" basedir=".">
 	<description>Base Build.</description>
 
-	<tstamp/>
-	
-	<property environment="env"/>
+	<tstamp />
 
-	<property name="ant-build-space-name" value="AntBuildSpace"/>
+	<property environment="env" />
 
-	<property name="work-directory" location="${env.TMP}/${ant-build-space-name}"/>
-	<property name="work-dist-directory" location="${work-directory}/dist"/>
-	<property name="project-directory" location="${work-directory}/${ant.project.name}"/>
-	<property name="project-class-directory" location="${project-directory}/class"/>
-	<property name="project-test-directory" location="${project-directory}/test"/>
-	<property name="project-reports-directory" location="${project-directory}/reports"/>
-	<property name="unit-test-reports-directory" location="${project-reports-directory}/unitTest"/>
-	<property name="integration-test-reports-directory" location="${project-reports-directory}/integrationTest"/>
-	
-	<available property="work.directory.present" file="${work-directory}" type="dir"/>
-	<available property="work.project.directory.present" file="${project-directory}" type="dir"/>
+	<property name="ant-build-space" value="${env.TMP}" />
+	<property name="ant-build-space-name" value="AntBuildSpace" />
+
+	<property name="work-directory" location="${ant-build-space}/${ant-build-space-name}" />
+	<property name="work-dist-directory" location="${work-directory}/dist" />
+	<property name="project-directory" location="${work-directory}/${ant.project.name}" />
+	<property name="project-class-directory" location="${project-directory}/class" />
+	<property name="project-test-directory" location="${project-directory}/test" />
+	<property name="project-reports-directory" location="${project-directory}/reports" />
+	<property name="unit-test-reports-directory" location="${project-reports-directory}/unitTest" />
+	<property name="integration-test-reports-directory" location="${project-reports-directory}/integrationTest" />
+
+	<!-- <property name="test.reportable" value="true"/> -->
+	<available property="work.directory.present" file="${work-directory}" type="dir" />
+	<available property="work.project.directory.present" file="${project-directory}" type="dir" />
 
 	<target name="create-work-directory" unless="work.directory.present">
-		<mkdir dir="${work-directory}" taskname="Create work directory."/>
-		<mkdir dir="${work-dist-directory}" taskname="Create dist directory."/>
+		<mkdir dir="${work-directory}" taskname="Create work directory." />
+		<mkdir dir="${work-dist-directory}" taskname="Create dist directory." />
 	</target>
 
 	<target name="create-project-directory" depends="create-work-directory" unless="work.project.directory.present">
-		<mkdir dir="${project-directory}" taskname="Create MyJpa directory."/>
-		<mkdir dir="${project-class-directory}" taskname="Create class directory."/>
-		<mkdir dir="${project-test-directory}" taskname="Create test directory."/>
-		<mkdir dir="${project-reports-directory}" taskname="Create reports directory."/>
-		<mkdir dir="${unit-test-reports-directory}" taskname="Create unit test reports directory."/>
-		<mkdir dir="${integration-test-reports-directory}" taskname="Create integration test reports directory."/>
+		<mkdir dir="${project-directory}" taskname="Create MyJpa directory." />
+		<mkdir dir="${project-class-directory}" taskname="Create class directory." />
+		<mkdir dir="${project-test-directory}" taskname="Create test directory." />
+		<mkdir dir="${project-reports-directory}" taskname="Create reports directory." />
+		<mkdir dir="${unit-test-reports-directory}" taskname="Create unit test reports directory." />
+		<mkdir dir="${integration-test-reports-directory}" taskname="Create integration test reports directory." />
 	</target>
 
 	<target name="initialize" depends="create-project-directory">
-		<echo message="${ant.project.name} ${TODAY}"/>
+		<echo message="${ant.project.name} ${TODAY}" />
+		<echo message="Generate directory complete." />
 	</target>
 
 	<target name="compile" depends="initialize">
-		<javac srcdir="src" destdir="${project-class-directory}" classpathref="compile-classpath" includeantruntime="false" excludes="test/**/*,integrationTest/**/*"/>
+		<javac srcdir="src" destdir="${project-class-directory}" classpathref="compile-classpath" includeantruntime="false" excludes="test/**/*,integrationTest/**/*" />
+		<copy todir="${project-class-directory}" includeEmptyDirs="false">
+			<fileset dir="src" excludes="**/*.java,META-INF/**/*,test/**/*,integrationTest/**/*" />
+		</copy>
 	</target>
 
 	<target name="compile-test" depends="compile">
-		<javac srcdir="src" destdir="${project-test-directory}" classpathref="test-classpath" includeantruntime="false" excludes="name/**/*"/>
+		<javac srcdir="src" destdir="${project-test-directory}" classpathref="test-classpath" includeantruntime="false" excludes="name/**/*" />
+		<copy todir="${project-test-directory}" includeEmptyDirs="false">
+			<fileset dir="src" excludes="**/*.java,META-INF/**/*" includes="test/**/*,integrationTest/**/*"/>
+		</copy>
+	</target>
+
+	<target name="test" depends="compile-test">
+		<junit printsummary="true" haltonfailure="true" showoutput="false">
+			<formatter type="brief" usefile="false" />
+			<formatter type="xml" if="test.reportable"/>
+			<classpath>
+				<path refid="test-classpath" />
+				<pathelement location="${project-test-directory}" />
+			</classpath>
+			<batchtest todir="${unit-test-reports-directory}">
+				<fileset dir="${project-test-directory}" includes="test/**/*TestCase.class" />
+			</batchtest>
+			<!--<test todir="${unit-test-reports-directory}" name="test.name.chenyuelin.AllTests" /> -->
+		</junit>
+	</target>
+
+	<target name="create-test-report" depends="test" if="test.reportable">
+		<junitreport todir="${unit-test-reports-directory}">
+			<fileset dir="${unit-test-reports-directory}" includes="TEST-*.xml" />
+			<report format="frames" todir="${unit-test-reports-directory}" />
+		</junitreport>
+		<delete includeemptydirs="true">
+			<fileset dir="${unit-test-reports-directory}" includes="*.xml" />
+		</delete>
 	</target>
 
 	<target name="package" depends="compile">
 		<jar destfile="${work-dist-directory}/${DSTAMP}${ant.project.name}.jar" basedir="${project-class-directory}">
-			<metainf dir="src/META-INF"/>
+			<metainf dir="src/META-INF" />
 		</jar>
 	</target>
 
-	<target name="clean">
+	<target name="clean" if="work.project.directory.present">
 		<delete includeemptydirs="true">
-			<fileset dir="${project-class-directory}" includes="**/*"/>
-			<fileset dir="${project-test-directory}" includes="**/*"/>
-			<fileset dir="${unit-test-reports-directory}" includes="**/*"/>
-			<fileset dir="${integration-test-reports-directory}" includes="**/*"/>
-			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}.jar"/>
+			<fileset dir="${project-class-directory}" includes="**/*" />
+			<fileset dir="${project-test-directory}" includes="**/*" />
+			<fileset dir="${unit-test-reports-directory}" includes="**/*" />
+			<fileset dir="${integration-test-reports-directory}" includes="**/*" />
+			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}.jar" />
 		</delete>
 	</target>
 
 	<target name="destroy">
-		<delete dir="${project-directory}"/>
+		<delete dir="${project-directory}" />
 	</target>
 </project>

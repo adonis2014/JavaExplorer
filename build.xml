@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="GB18030"?>
+<project name="AllBuild" default="initialize" basedir=".">
+	<tstamp />
+
+	<property environment="env" />
+
+	<property name="ant-build-space" value="${env.TMP}" />
+	<property name="ant-build-space-name" value="AntBuildSpace" />
+	<property name="work-directory" location="${ant-build-space}/${ant-build-space-name}" />
+
+	<target name="initialize">
+		<echo message="Initializing all..." />
+		<echo message="Work directory is ${work-directory}"/>
+		<ant dir="MyJpa" target="initialize"/>
+		<ant dir="SpringMvc3.1" target="initialize"/>
+	</target>
+
+	<target name="compile" depends="initialize">
+		<ant dir="MyJpa">
+			<target name="compile"/>
+			<target name="package"/>
+		</ant>
+		<ant dir="SpringMvc3.1" target="compile"/>
+	</target>
+
+	<target name="compile-test" depends="compile">
+		<ant dir="MyJpa" target="compile-test"/>
+		<ant dir="SpringMvc3.1" target="compile-test"/>
+	</target>
+
+
+	<target name="test" depends="compile-test">
+		<ant dir="MyJpa" target="test"/>
+		<ant dir="SpringMvc3.1" target="test"/>
+	</target>
+
+	<target name="package" depends="compile">
+		<ant dir="SpringMvc3.1" target="package"/>
+	</target>
+
+	<target name="clean" if="work.project.directory.present">
+		<ant dir="MyJpa" target="clean"/>
+		<ant dir="SpringMvc3.1" target="clean"/>
+	</target>
+
+	<target name="destroy">
+		<delete dir="${work-directory}" />
+	</target>
+</project>
