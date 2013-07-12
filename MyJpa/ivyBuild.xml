@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" default="initialize" basedir="." name="myJpa">
+	
+	<import file="../base.xml" />
+	
+	<target name="initialize" depends="baseBuild.initialize">
+		<ivy:resolve />
+		<ivy:cachepath conf="compile" pathid="compile-classpath" />
+	</target>
+	
+	<target name="install" depends="package">
+		<echo message="aaaaaaaaaaaaaaaaaaaa"></echo>
+		<!--ivy:publish resolver="shared" conf="master"/-->
+		<ivy:publish resolver="local" conf="master" artifactspattern="${work-dist-directory}/[artifact].[ext]" overwrite="true"/>
+	</target>
+</project>
