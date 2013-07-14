@@ -9,8 +9,8 @@
 	</target>
 	
 	<target name="install" depends="package">
-		<echo message="aaaaaaaaaaaaaaaaaaaa"></echo>
+		<echo message="${ivy.module}"/>
 		<!--ivy:publish resolver="shared" conf="master"/-->
-		<ivy:publish resolver="local" conf="master" artifactspattern="${work-dist-directory}/[artifact].[ext]" overwrite="true"/>
+		<ivy:publish resolver="shared" conf="master" revision="1.0" artifactspattern="${work-dist-directory}/${DSTAMP}[artifact].[ext]" overwrite="true"/>
 	</target>
 </project>
