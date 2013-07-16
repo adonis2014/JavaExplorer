@@ -39,8 +39,8 @@
 	<target name="initialize" depends="create-project-directory">
 		<echo message="${ant.project.name} ${TODAY}" />
 		<echo message="Generate directory complete." />
-		<ivy:resolve />
-		<ivy:buildnumber organisation="chenyuelin" module="${ivy.module}"/>
+		<ivy:resolve useCacheOnly="true"/>
+		<ivy:buildnumber organisation="chenyuelin" module="${ivy.module}" />
 	</target>
 
 	<target name="compile" depends="initialize">
@@ -53,14 +53,14 @@
 	<target name="compile-test" depends="compile">
 		<javac srcdir="src" destdir="${project-test-directory}" classpathref="test-classpath" includeantruntime="false" excludes="name/**/*" />
 		<copy todir="${project-test-directory}" includeEmptyDirs="false">
-			<fileset dir="src" excludes="**/*.java,META-INF/**/*" includes="test/**/*,integrationTest/**/*"/>
+			<fileset dir="src" excludes="**/*.java,META-INF/**/*" includes="test/**/*,integrationTest/**/*" />
 		</copy>
 	</target>
 
 	<target name="test" depends="compile-test">
 		<junit printsummary="true" haltonfailure="true" showoutput="false">
 			<formatter type="brief" usefile="false" />
-			<formatter type="xml" if="test.reportable"/>
+			<formatter type="xml" if="test.reportable" />
 			<classpath>
 				<path refid="test-classpath" />
 				<pathelement location="${project-test-directory}" />
@@ -96,6 +96,10 @@
 			<fileset dir="${integration-test-reports-directory}" includes="**/*" />
 			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}.jar" />
 		</delete>
+	</target>
+
+	<target name="clean-ivy-cache">
+		<ivy:cleancache />
 	</target>
 
 	<target name="destroy">

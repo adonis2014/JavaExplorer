@@ -64,6 +64,9 @@
 		<ivy:cachepath conf="compile" pathid="compile-classpath" />
 		<ivy:cachepath conf="test" pathid="test-classpath" />
 		<ivy:cachepath conf="runtime" pathid="runtime-classpath" />
+		<echo message="${ivy.cache.dir}"/>
+		<echo message="${ivy.default.ivy.user.dir}"/>
+		<echo message="${ivy.jar.dir}"/>
 	</target>
 
 	<target name="native">
@@ -72,11 +75,12 @@
 
 	<target name="integration-test" depends="compile-test">
 		<junit printsummary="true" haltonfailure="true" showoutput="false" fork="true">
-			<jvmarg value="-javaagent:J:/libs/spring/spring-framework-3.2.2.RELEASE/libs/spring-instrument-3.2.2.RELEASE.jar" />
+			<jvmarg value="-javaagent:${ivy.cache.dir}/org.springframework/spring-instrument/jars/spring-instrument-3.2.3.RELEASE.jar" />
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" if="test.reportable"/>
 			<classpath>
 				<path refid="test-classpath" />
+				<path refid="runtime" />
 				<pathelement location="${project-test-directory}" />
 			</classpath>
 			<!--batchtest todir="${integration-test-reports-directory}">

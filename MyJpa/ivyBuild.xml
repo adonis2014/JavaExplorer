@@ -5,7 +5,6 @@
 
 	<target name="initialize" depends="baseBuild.initialize">
 		<echo message="${ivy.dep.file}"/>
-		<ivy:buildnumber organisation="chenyuelin" module="${ivy.module}"/>
 		<echo message="${ivy.module}"/>
 		<echo message="${ivy.revision}"/>
 		<echo message="${ivy.new.revision}"/>
