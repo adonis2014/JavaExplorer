@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" default="initialize" basedir="." name="myJpa">
-	
+<project xmlns:ivy="antlib:org.apache.ivy.ant" default="initialize" basedir="." name="myjpa">
+
 	<import file="../base.xml" />
-	
+
 	<target name="initialize" depends="baseBuild.initialize">
-		<ivy:resolve />
+		<echo message="${ivy.dep.file}"/>
+		<ivy:buildnumber organisation="chenyuelin" module="${ivy.module}"/>
+		<echo message="${ivy.module}"/>
+		<echo message="${ivy.revision}"/>
+		<echo message="${ivy.new.revision}"/>
+		<echo message="${ivy.build.number}"/>
+		<echo message="${ivy.new.build.number}"/>
 		<ivy:cachepath conf="compile" pathid="compile-classpath" />
 	</target>
-	
+
 	<target name="install" depends="package">
-		<echo message="${ivy.module}"/>
 		<!--ivy:publish resolver="shared" conf="master"/-->
-		<ivy:publish resolver="shared" conf="master" revision="1.0" artifactspattern="${work-dist-directory}/${DSTAMP}[artifact].[ext]" overwrite="true"/>
+		<ivy:publish resolver="shared" conf="master" artifactspattern="${work-dist-directory}/${DSTAMP}${ant.project.name}.[ext]" overwrite="true"/>
 	</target>
 </project>

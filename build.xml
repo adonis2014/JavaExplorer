@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="GB18030"?>
-<project name="AllBuild" default="initialize" basedir=".">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="AllBuild" default="initialize" basedir=".">
 	<tstamp />
 
 	<property environment="env" />
@@ -45,5 +45,9 @@
 
 	<target name="destroy">
 		<delete dir="${work-directory}" />
+	</target>
+	
+	<target name="clean-cache">
+		<ivy:cleancache />
 	</target>
 </project>

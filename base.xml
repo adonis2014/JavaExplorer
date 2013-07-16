@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="GB18030"?>
-<project name="baseBuild" default="initialize" basedir=".">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="baseBuild" default="initialize" basedir=".">
 	<description>Base Build.</description>
 
 	<tstamp />
@@ -39,6 +39,8 @@
 	<target name="initialize" depends="create-project-directory">
 		<echo message="${ant.project.name} ${TODAY}" />
 		<echo message="Generate directory complete." />
+		<ivy:resolve />
+		<ivy:buildnumber organisation="chenyuelin" module="${ivy.module}"/>
 	</target>
 
 	<target name="compile" depends="initialize">
