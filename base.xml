@@ -4,6 +4,8 @@
 
 	<tstamp />
 
+	<property name="offline" value="false" />
+
 	<property environment="env" />
 
 	<property name="ant-build-space" value="${env.TMP}" />
@@ -37,14 +39,14 @@
 	</target>
 
 	<target name="initialize" depends="create-project-directory">
-		<echo message="${ant.project.name} ${TODAY}" />
+		<echo message="${ant.project.name} ${TODAY} ${DSTAMP}" />
 		<echo message="Generate directory complete." />
-		<ivy:resolve useCacheOnly="true"/>
-		<ivy:buildnumber organisation="chenyuelin" module="${ivy.module}" />
+		<ivy:resolve useCacheOnly="${offline}"/>
+		<!-- <ivy:buildnumber organisation="chenyuelin" module="${ivy.module}" /> -->
 	</target>
 
 	<target name="compile" depends="initialize">
-		<javac srcdir="src" destdir="${project-class-directory}" classpathref="compile-classpath" includeantruntime="false" excludes="test/**/*,integrationTest/**/*" />
+		<javac srcdir="src" destdir="${project-class-directory}" classpathref="expand-compile-classpath" includeantruntime="false" excludes="test/**/*,integrationTest/**/*" />
 		<copy todir="${project-class-directory}" includeEmptyDirs="false">
 			<fileset dir="src" excludes="**/*.java,META-INF/**/*,test/**/*,integrationTest/**/*" />
 		</copy>
@@ -83,7 +85,7 @@
 	</target>
 
 	<target name="package" depends="compile">
-		<jar destfile="${work-dist-directory}/${DSTAMP}${ant.project.name}.jar" basedir="${project-class-directory}">
+		<jar destfile="${work-dist-directory}/${ant.project.name}.jar" basedir="${project-class-directory}">
 			<metainf dir="src/META-INF" />
 		</jar>
 	</target>

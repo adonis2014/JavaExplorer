@@ -11,10 +11,14 @@
 		<echo message="${ivy.build.number}"/>
 		<echo message="${ivy.new.build.number}"/>
 		<ivy:cachepath conf="compile" pathid="compile-classpath" />
-	</target>
 
+		<path id="expand-compile-classpath">
+			<path refid="compile-classpath"/>
+		</path>
+	</target>
+	
 	<target name="install" depends="package">
 		<!--ivy:publish resolver="shared" conf="master"/-->
-		<ivy:publish resolver="shared" conf="master" artifactspattern="${work-dist-directory}/${DSTAMP}${ant.project.name}.[ext]" overwrite="true"/>
+		<ivy:publish resolver="shared" conf="master" artifactspattern="${work-dist-directory}/${ant.project.name}.[ext]" overwrite="true"/>
 	</target>
 </project>

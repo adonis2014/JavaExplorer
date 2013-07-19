@@ -5,60 +5,9 @@
 
 	<import file="../base.xml" />
 
-	<!--path id="compile-classpath">
-		<fileset dir="J:/libs/spring/spring-framework-3.2.2.RELEASE/libs/" includes="*.jar">
-			<exclude name="spring-webmvc-portlet-3.2.2.RELEASE.jar" />
-			<exclude name="spring-struts-3.2.2.RELEASE.jar" />
-			<exclude name="spring-instrument-3.2.2.RELEASE.jar" />
-			<exclude name="spring-instrument-tomcat-3.2.2.RELEASE.jar" />
-			<exclude name="*javadoc.jar" />
-			<exclude name="*sources.jar" />
-		</fileset>
-		<pathelement location="E:/libs/commons-logging-1.1.1/commons-logging-1.1.1.jar" />
-		<pathelement location="E:/libs/aopalliance/aopalliance.jar" />
-		<pathelement location="E:/libs/asm3.3/asm-3.3.jar" />
-		<fileset dir="E:/libs/aspectj-1.6.9/aspectj1.6/lib/">
-			<include name="aspectjweaver.jar" />
-			<include name="aspectjrt.jar" />
-			<include name="aspectjtools.jar" />
-		</fileset>
-		<pathelement location="E:/libs/cglib-2.2/cglib-2.2.jar" />
-		<fileset dir="E:/libs/jpa/eclipselink-plugins-2.4.1.v20121003-ad44345">
-			<include name="org.eclipse.persistence.core_2.4.1.v20121003-ad44345.jar" />
-			<include name="org.eclipse.persistence.jpa.jpql_2.0.1.v20121003-ad44345.jar" />
-			<include name="org.eclipse.persistence.jpa_2.4.1.v20121003-ad44345.jar" />
-			<include name="javax.persistence_2.0.4.v201112161009.jar" />
-			<include name="org.eclipse.persistence.antlr_3.2.0.v201206041011.jar" />
-			<include name="org.eclipse.persistence.asm_3.3.1.v201206041142.jar" />
-		</fileset>
-		<fileset dir="J:/libs/json/jackson/2.2">
-			<include name="jackson-annotations-2.2.0.jar" />
-			<include name="jackson-core-2.2.0.jar" />
-			<include name="jackson-databind-2.2.0.jar" />
-		</fileset>
-		<pathelement location="E:/libs/mysql-connector-java-5.1.23/mysql-connector-java-5.1.23-bin.jar" />
-		<fileset dir="D:/Program Files/apache-tomcat-7.0.35/lib" includes="*.jar" />
-		<fileset dir="E:/libs/poi-3.7">
-			<include name="poi-ooxml-3.7-20101029.jar" />
-			<include name="poi-3.7-20101029.jar" />
-			<include name="poi-scratchpad-3.7-20101029.jar" />
-			<include name="poi-ooxml-schemas-3.7-20101029.jar" />
-		</fileset>
-		<fileset dir="${work-dist-directory}" includes="*.jar" />
-	</path>
+	<property name="tomcat.home" location="${env.TOMCAT_HOME}"/>
 
-	<path id="test-classpath">
-		<path refid="compile-classpath" />
-		<pathelement location="${project-class-directory}" />
-		<pathelement location="F:/work/eclipse/eclipse-jee-helios/plugins/org.junit_4.8.1.v4_8_1_v20100427-1100/junit.jar" />
-		<pathelement location="F:/work/eclipse/eclipse-jee-helios/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar" />
-		<fileset dir="E:/libs/mockito-1.9.0/separate-jars">
-			<include name="mockito-core-1.9.0.jar" />
-			<include name="com.springsource.org.objenesis-1.0.0.jar" />
-		</fileset>
-		<pathelement location="E:/libs/powermock-mockito-1.4.12-full.jar" />
-		<pathelement location="E:/libs/hibernate-release-4.1.5.SP1/lib/required/javassist-3.15.0-GA.jar" />
-	</path-->
+	<property name="spring.version" value="3.2.3.RELEASE"/>
 
 	<target name="initialize" depends="baseBuild.initialize">
 		<ivy:cachepath conf="compile" pathid="compile-classpath" />
@@ -67,6 +16,14 @@
 		<echo message="${ivy.cache.dir}"/>
 		<echo message="${ivy.default.ivy.user.dir}"/>
 		<echo message="${ivy.jar.dir}"/>
+
+		<path id="expand-compile-classpath">
+			<path refid="compile-classpath"/>
+			<path refid="test-classpath"/>
+			<path refid="runtime-classpath"/>
+		</path>
+		
+		<echo message="${toString:expand-compile-classpath}"></echo>
 	</target>
 
 	<target name="native">
@@ -75,12 +32,11 @@
 
 	<target name="integration-test" depends="compile-test">
 		<junit printsummary="true" haltonfailure="true" showoutput="false" fork="true">
-			<jvmarg value="-javaagent:${ivy.cache.dir}/org.springframework/spring-instrument/jars/spring-instrument-3.2.3.RELEASE.jar" />
+			<jvmarg value="-javaagent:${ivy.cache.dir}/org.springframework/spring-instrument/jars/spring-instrument-${spring.version}.jar" />
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" if="test.reportable"/>
 			<classpath>
-				<path refid="test-classpath" />
-				<path refid="runtime" />
+				<path refid="expand-compile-classpath" />
 				<pathelement location="${project-test-directory}" />
 			</classpath>
 			<!--batchtest todir="${integration-test-reports-directory}">
