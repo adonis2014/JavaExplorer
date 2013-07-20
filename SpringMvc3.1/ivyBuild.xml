@@ -21,6 +21,9 @@
 			<path refid="compile-classpath"/>
 			<path refid="test-classpath"/>
 			<path refid="runtime-classpath"/>
+			<path>
+				<fileset dir="${tomcat.home}/lib" includes="*.jar"></fileset>
+			</path>
 		</path>
 		
 		<echo message="${toString:expand-compile-classpath}"></echo>

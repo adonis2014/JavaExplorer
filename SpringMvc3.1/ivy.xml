@@ -35,6 +35,7 @@
 		<dependency org="org.springframework" name="spring-jdbc" rev="${spring.version}" conf="compile->master,sources" />
 		<dependency org="org.springframework" name="spring-jms" rev="${spring.version}" conf="compile->master,sources" />
 		<dependency org="org.springframework" name="spring-orm" rev="${spring.version}" conf="compile->master,sources" />
+		<dependency org="org.springframework" name="spring-oxm" rev="${spring.version}" conf="compile->master,sources" />
 		<dependency org="org.springframework" name="spring-tx" rev="${spring.version}" conf="compile->master,sources" />
 		<dependency org="org.springframework" name="spring-web" rev="${spring.version}" conf="compile->master,sources" />
 		<dependency org="org.springframework" name="spring-webmvc" rev="${spring.version}" conf="compile->master,sources" />
