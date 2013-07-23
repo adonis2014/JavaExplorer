@@ -45,6 +45,11 @@
 		<!-- <ivy:buildnumber organisation="chenyuelin" module="${ivy.module}" /> -->
 	</target>
 
+	<target name="ivy-report" depends="initialize">
+		<!-- <property name="ivy.report.todir" value="${env.TMP}" /> -->
+		<ivy:report />
+	</target>
+
 	<target name="compile" depends="initialize">
 		<javac srcdir="src" destdir="${project-class-directory}" classpathref="expand-compile-classpath" includeantruntime="false" excludes="test/**/*,integrationTest/**/*" />
 		<copy todir="${project-class-directory}" includeEmptyDirs="false">
@@ -53,7 +58,7 @@
 	</target>
 
 	<target name="compile-test" depends="compile">
-		<javac srcdir="src" destdir="${project-test-directory}" classpathref="test-classpath" includeantruntime="false" excludes="name/**/*" />
+		<javac srcdir="src" destdir="${project-test-directory}" classpathref="expand-test-classpath" includeantruntime="false" excludes="name/**/*" />
 		<copy todir="${project-test-directory}" includeEmptyDirs="false">
 			<fileset dir="src" excludes="**/*.java,META-INF/**/*" includes="test/**/*,integrationTest/**/*" />
 		</copy>
@@ -64,7 +69,7 @@
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" if="test.reportable" />
 			<classpath>
-				<path refid="test-classpath" />
+				<path refid="expand-test-classpath" />
 				<pathelement location="${project-test-directory}" />
 			</classpath>
 			<batchtest todir="${unit-test-reports-directory}">

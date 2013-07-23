@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 
 import name.chenyuelin.command.PersonCommand;
@@ -30,6 +31,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -63,7 +65,7 @@ public class PersonController {
 	private Map<Class<?>, Validator> validatorMap;
 	
 	@InitBinder
-    protected void initBinder(WebDataBinder binder,WebRequest webRequest){
+    protected void initBinder(WebDataBinder binder,WebRequest webRequest,HttpServletRequest request){
 	    Object target=binder.getTarget();
 	    if(target!=null){
 	    	Validator validator=validatorMap.get(target.getClass());
