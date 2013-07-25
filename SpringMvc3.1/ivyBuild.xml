@@ -75,7 +75,7 @@
 		<echo message="${war.libs}"/>
 		<echo message="${toString:compile-classpath}"/>
 		<echo message="${classpath.extra.lib.id}"/-->
-		<ivy:buildnumber organisation="chenyuelin" module="jpa" />
+		<ivy:findrevision organisation="chenyuelin" module="jpa" revision="latest.integration" property="ivy.jpa.version"/>
 		<war destfile="${package.dir}/${DSTAMP}${ant.project.name}.war" basedir="WebContent" excludes="WEB-INF/i18n/**/*.txt">
 			<classes dir="${project-class-directory}" />
 			<lib file="${ivy.cache.dir}/aopalliance/aopalliance/jars/aopalliance-1.0.jar"/>
@@ -113,7 +113,7 @@
 			<lib file="${ivy.cache.dir}/org.apache.poi/poi-ooxml-schemas/jars/poi-ooxml-schemas-3.9.jar" />
 			<lib file="${ivy.cache.dir}/org.apache.poi/poi-scratchpad/jars/poi-scratchpad-3.9.jar" />
 			
-			<lib file="${ivy.shared.default.root}/chenyuelin/jpa/${ivy.revision}/jars/jpa.jar" />
+			<lib file="${ivy.shared.default.root}/chenyuelin/jpa/${ivy.jpa.version}/jars/jpa.jar" />
 		</war>
 	</target>
 
