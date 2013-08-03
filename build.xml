@@ -11,36 +11,41 @@
 	<target name="initialize">
 		<echo message="Initializing all..." />
 		<echo message="Work directory is ${work-directory}"/>
-		<ant dir="MyJpa" target="initialize"/>
-		<ant dir="SpringMvc3.1" target="initialize"/>
+		<subant buildpath="MyJpa" target="initialize" antfile="ivyBuild.xml"/>
+		<subant buildpath="SpringMvc3.1" target="initialize" antfile="ivyBuild.xml"/>
+		<!--<ant dir="MyJpa" target="initialize"/>
+		<ant dir="SpringMvc3.1" target="initialize"/>-->
 	</target>
 
-	<target name="compile" depends="initialize">
-		<ant dir="MyJpa">
-			<target name="compile"/>
-			<target name="package"/>
-		</ant>
-		<ant dir="SpringMvc3.1" target="compile"/>
+	<target name="compile">
+		<subant buildpath="MyJpa" target="install" antfile="ivyBuild.xml"/>
+		<subant buildpath="SpringMvc3.1" target="compile" antfile="ivyBuild.xml"/>
 	</target>
 
-	<target name="compile-test" depends="compile">
-		<ant dir="MyJpa" target="compile-test"/>
-		<ant dir="SpringMvc3.1" target="compile-test"/>
-	</target>
-
-
-	<target name="test" depends="compile-test">
-		<ant dir="MyJpa" target="test"/>
-		<ant dir="SpringMvc3.1" target="test"/>
+	<target name="test">
+		<subant buildpath="MyJpa" antfile="ivyBuild.xml">
+			<target name="test"/>
+			<target name="install"/>
+		</subant>
+		<subant buildpath="SpringMvc3.1" antfile="ivyBuild.xml">
+			<target name="test"/>
+			<target name="integration-test"/>
+		</subant>
+		
+		<!--<ant dir="MyJpa" target="test"/>
+		<ant dir="SpringMvc3.1" target="test"/>-->
 	</target>
 
 	<target name="package" depends="compile">
-		<ant dir="SpringMvc3.1" target="package"/>
+		<subant buildpath="MyJpa" target="initialize" antfile="ivyBuild.xml"/>
+		<subant buildpath="SpringMvc3.1" target="package" antfile="ivyBuild.xml"/>
 	</target>
 
-	<target name="clean" if="work.project.directory.present">
-		<ant dir="MyJpa" target="clean"/>
-		<ant dir="SpringMvc3.1" target="clean"/>
+	<target name="clean">
+		<subant buildpath="MyJpa" target="clean" antfile="ivyBuild.xml"/>
+		<subant buildpath="SpringMvc3.1" target="clean" antfile="ivyBuild.xml" inheritAll="false"/>
+		<!--<ant dir="MyJpa" target="clean"/>
+		<ant dir="SpringMvc3.1" target="clean"/>-->
 	</target>
 
 	<target name="destroy">

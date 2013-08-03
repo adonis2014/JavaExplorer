@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" default="initialize" basedir="." name="myjpa">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" default="initialize" name="myjpa">
 
 	<import file="../base.xml" />
 
@@ -11,9 +11,14 @@
 		<echo message="${ivy.build.number}"/>
 		<echo message="${ivy.new.build.number}"/>
 		<ivy:cachepath conf="compile" pathid="compile-classpath" />
-
+		<ivy:cachepath conf="test" pathid="test-classpath" />
+		
 		<path id="expand-compile-classpath">
 			<path refid="compile-classpath"/>
+		</path>
+		
+		<path id="expand-test-classpath">
+			<path refid="test-classpath" />
 		</path>
 	</target>
 	

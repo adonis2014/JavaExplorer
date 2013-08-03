@@ -34,11 +34,20 @@
 	</target>
 
 	<target name="native">
-		<native2ascii dest="WebContent/WEB-INF/i18n" src="WebContent/WEB-INF/i18n" includes="**/*.txt" ext=".properties" encoding="gbk" />
+		<property name="nativeDirectory" value="WebContent/WEB-INF/i18n"/>
+		<delete>
+			<fileset dir="${nativeDirectory}" includes="**/*.properties"/>
+		</delete>
+		<native2ascii dest="${nativeDirectory}" src="${nativeDirectory}" includes="**/*.txt" ext=".properties" encoding="gbk" />
 	</target>
 
+	<target name="compile" depends="baseBuild.compile">
+		<antcall target="native"/>
+	</target>
+	
 	<target name="integration-test" depends="compile-test">
-		<junit printsummary="true" haltonfailure="true" showoutput="false" fork="true">
+		<echo>${basedir}</echo>
+		<junit printsummary="true" haltonfailure="true" showoutput="false" fork="true" dir="${basedir}">
 			<jvmarg value="-javaagent:${ivy.cache.dir}/org.springframework/spring-instrument/jars/spring-instrument-${spring.version}.jar" />
 			<formatter type="brief" usefile="false" />
 			<formatter type="xml" if="test.reportable"/>
