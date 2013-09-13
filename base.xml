@@ -41,7 +41,25 @@
 	<target name="initialize" depends="create-project-directory">
 		<echo message="${ant.project.name} ${TODAY} ${DSTAMP}" />
 		<echo message="Generate directory complete." />
-		<ivy:resolve useCacheOnly="${offline}"/>
+
+		<!-- ivy root directory -->
+		<!--<property name ="ivy.default.ivy.user.dir" value ="/path/to/ivy/user/dir" /> -->
+
+		<!-- ivy cache dir. -->
+		<!--<property name ="${ivy.cache.dir}" value ="/path/to/ivy/user/dir/cache" /> -->
+
+		<!-- set local directory. -->
+		<!-- <property name ="ivy.local.default.root" value ="/opt/ivy/repository/local" /> -->
+		<!-- <property name ="ivy.local.default.ivy.pattern" value ="[module]/[revision]/ivy.xml" /> -->
+		<!-- <property name ="ivy.local.default.artifact.pattern" value ="[module]/[revision]/[artifact].[ext]" /> -->
+
+		<!-- set shared dir -->
+		<!-- <property name ="ivy.shared.default.root" value ="/opt/ivy/repository/shared" /> -->
+		<!-- <property name ="ivy.shared.default.ivy.pattern" value ="[organisation]/[module]/[revision]/ivy.xml" /> -->
+		<!-- <property name ="ivy.shared.default.artifact.pattern" value ="[organisation]/[module]/[revision]/[artifact].[ext]" /> -->
+
+		<ivy:resolve useCacheOnly="${offline}" />
+
 		<!-- <ivy:buildnumber organisation="chenyuelin" module="${ivy.module}" /> -->
 	</target>
 
