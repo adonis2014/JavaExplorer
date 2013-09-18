@@ -31,7 +31,7 @@ import org.springframework.web.context.WebApplicationContext;
  * @author U1
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration("src")
+@WebAppConfiguration("WebContent")
 @ContextHierarchy({
 		@ContextConfiguration("file:WebContent/WEB-INF/configuration/appConfig/applicationContext.xml"),
 		@ContextConfiguration({ "file:WebContent/WEB-INF/configuration/servletConfig/servletCoreContext.xml",
@@ -64,6 +64,7 @@ public class PersonTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		System.out.println(wac.getServletContext().getRealPath("index.html"));
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		System.out.println(123);
 	}
