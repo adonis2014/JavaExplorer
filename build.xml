@@ -15,6 +15,12 @@
 		<subant buildpath="SpringMvc3.1" target="initialize" antfile="ivyBuild.xml"/>
 		<!--<ant dir="MyJpa" target="initialize"/>
 		<ant dir="SpringMvc3.1" target="initialize"/>-->
+		
+		<ivy:buildlist reference="build-path" restartFrom="SpringControl">
+		      <fileset dir="." includes="**/ivyBuild.xml"/>
+		</ivy:buildlist>
+		<echo message="${ivy.sorted.modules}"/>
+		<echo message="${ivy.buildlist.ivyfilepath}"/>
 	</target>
 
 	<target name="compile">
