@@ -5,6 +5,8 @@
 	<tstamp />
 
 	<property name="offline" value="false" />
+	<property name="ivy.win.parent.path" location="d:/" />
+	<property name="ivy.win.dir.name" value=".ivy2" />
 
 	<property environment="env" />
 
@@ -38,7 +40,22 @@
 		<mkdir dir="${integration-test-reports-directory}" taskname="Create integration test reports directory." />
 	</target>
 
-	<target name="initialize" depends="create-project-directory">
+	<target name="chickWinIvyPath">
+		<condition property="isWindowsOS" value="true">
+			<os family="windows" />
+		</condition>
+		
+		<available file="${ivy.win.parent.path}" type="dir" property="ivy.win.parent.path.exist" />
+		
+		<condition property="ivy.default.ivy.user.dir" value="${ivy.win.parent.path}/${ivy.win.dir.name}">
+			<and>
+				<isset property="isWindowsOS" />
+				<isset property="ivy.win.parent.path.exist" />
+			</and>
+		</condition>
+	</target>
+
+	<target name="initialize" depends="create-project-directory,chickWinIvyPath">
 		<echo message="${ant.project.name} ${TODAY} ${DSTAMP}" />
 		<echo message="Generate directory complete." />
 
