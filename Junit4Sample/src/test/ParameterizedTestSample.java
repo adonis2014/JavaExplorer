@@ -1,7 +1,7 @@
 package test;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -25,7 +25,7 @@ public class ParameterizedTestSample {
 	}
 
 	@Parameters
-	public static Collection<Object[]> primeNumbers() {
+	public static List<Object[]> primeNumbers() {
 		return Arrays.asList(new Object[][] { 
 				{ "sample1", 1 }, 
 				{ "sample2", 2 }, 

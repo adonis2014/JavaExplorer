@@ -11,8 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
@@ -33,8 +31,8 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration("WebContent")
 @ContextHierarchy({
-		@ContextConfiguration("file:WebContent/WEB-INF/configuration/appConfig/applicationContext.xml"),
-		@ContextConfiguration({ "file:WebContent/WEB-INF/configuration/servletConfig/servletCoreContext.xml",
+		@ContextConfiguration(locations="file:WebContent/WEB-INF/configuration/appConfig/applicationContext.xml"),
+		@ContextConfiguration(locations={ "file:WebContent/WEB-INF/configuration/servletConfig/servletCoreContext.xml",
 				"file:WebContent/WEB-INF/configuration/servletConfig/dispatcherStaticServletContext.xml",
 				"file:WebContent/WEB-INF/configuration/servletConfig/validatorContext.xml" }) })
 @ActiveProfiles(profiles = { "dev", "test" })
