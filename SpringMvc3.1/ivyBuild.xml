@@ -6,7 +6,10 @@
 	<import file="../base.xml" />
 
 	<property name="spring.version" value="3.2.3.RELEASE"/>
-
+	<property name="spring.security.version" value="3.1.4.RELEASE"/>
+	<property name="eclipseLink.version" value="2.5.1"/>
+	<property name="jackson.version" value="latest.integration"/>
+	
 	<property name="package.dir" value="${env.USERPROFILE}"/>
 	
 	<target name="initialize" depends="baseBuild.initialize">
