@@ -83,7 +83,7 @@
 		</pathconvert>
 		<fileset dir="${ivy.cache.dir}" id="classpath.extra.lib.id">
 			<include name="${war.libs}"/>
-		</fileset>
+		</fileset> 
 		<echo message="${war.libs}"/>
 		<echo message="${toString:compile-classpath}"/>
 		<echo message="${classpath.extra.lib.id}"/-->

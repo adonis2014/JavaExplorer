@@ -12,6 +12,7 @@
 	<publications defaultconf="master">
 		<artifact />
 	</publications>
+	
 	<dependencies>
 		<dependency org="commons-logging" name="commons-logging" rev="1.1.3" conf="compile->master;sources" />
 		<dependency org="aopalliance" name="aopalliance" rev="1.0" conf="compile->master;sources" />
