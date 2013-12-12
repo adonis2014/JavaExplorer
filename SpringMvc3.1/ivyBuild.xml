@@ -5,7 +5,7 @@
 
 	<import file="../base.xml" />
 
-	<property name="spring.version" value="3.2.3.RELEASE"/>
+	<property name="spring.version" value="3.2.5.RELEASE"/>
 	<property name="spring.security.version" value="3.1.4.RELEASE"/>
 	<property name="eclipseLink.version" value="2.5.1"/>
 	<property name="jackson.version" value="latest.integration"/>
@@ -100,11 +100,11 @@
 			<lib file="${ivy.cache.dir}/com.fasterxml.jackson.core/jackson-databind/jars/jackson-databind-2.2.2.jar" />
 			
 			<lib file="${ivy.cache.dir}/org.eclipse.persistence/javax.persistence/jars/javax.persistence-2.1.0.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.antlr/jars/org.eclipse.persistence.antlr-2.5.0.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.asm/jars/org.eclipse.persistence.asm-2.5.0.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.core/jars/org.eclipse.persistence.core-2.5.0.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.jpa/jars/org.eclipse.persistence.jpa-2.5.0.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.jpa.jpql/jars/org.eclipse.persistence.jpa.jpql-2.5.0.jar" />
+			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.antlr/jars/org.eclipse.persistence.antlr-${eclipseLink.version}.jar" />
+			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.asm/jars/org.eclipse.persistence.asm-${eclipseLink.version}.jar" />
+			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.core/jars/org.eclipse.persistence.core-${eclipseLink.version}.jar" />
+			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.jpa/jars/org.eclipse.persistence.jpa-${eclipseLink.version}.jar" />
+			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.jpa.jpql/jars/org.eclipse.persistence.jpa.jpql-${eclipseLink.version}.jar" />
 			
 			<lib file="${ivy.cache.dir}/org.springframework/spring-aop/jars/spring-aop-${spring.version}.jar" />
 			<lib file="${ivy.cache.dir}/org.springframework/spring-aspects/jars/spring-aspects-${spring.version}.jar" />

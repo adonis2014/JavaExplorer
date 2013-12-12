@@ -38,6 +38,7 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
+					/WEB-INF/configuration/servletConfig/security.xml
 					/WEB-INF/configuration/servletConfig/servletCoreContext.xml
 					/WEB-INF/configuration/servletConfig/dispatcherStaticServletContext.xml
 					/WEB-INF/configuration/servletConfig/validatorContext.xml
@@ -46,8 +47,16 @@
 		<load-on-startup>2</load-on-startup>
 		<multipart-config/>
 	</servlet>
-	<!-- <servlet-mapping> <servlet-name>SpringMVC</servlet-name> <url-pattern>*.htm</url-pattern> </servlet-mapping> <servlet-mapping> <servlet-name>SpringMVC</servlet-name> <url-pattern>*.json</url-pattern> 
-		</servlet-mapping> -->
+
+	<!-- <servlet-mapping>
+		<servlet-name>SpringMVC</servlet-name>
+		<url-pattern>*.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SpringMVC</servlet-name>
+		<url-pattern>*.json</url-pattern>
+	</servlet-mapping> -->
+	
 	<servlet-mapping>
 		<servlet-name>SpringMVC</servlet-name>
 		<url-pattern>/</url-pattern>
@@ -66,6 +75,23 @@
 		<servlet-name>SpringMVC</servlet-name>
 	</filter-mapping>
 
-	<!-- <filter> <filter-name>HiddenHttpMethodFilter</filter-name> <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class> </filter> <filter-mapping> <filter-name>HiddenHttpMethodFilter</filter-name> 
-		<servlet-name>SpringMVC</servlet-name> </filter-mapping> -->
+	<!-- Spring security filter. -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<servlet-name>SpringMVC</servlet-name>
+		<!-- <url-pattern>/*</url-pattern> -->
+	</filter-mapping>
+
+	<!-- <filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<servlet-name>SpringMVC</servlet-name>
+	</filter-mapping> -->
 </web-app>
