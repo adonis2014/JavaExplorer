@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="GB18030"?>
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="Junit4 Sample" default="initialize" basedir=".">
+
+	<description>Spring3.1 MVC sample.</description>
+
+	<import file="base.xml" />
+
+	<property name="package.dir" value="${env.USERPROFILE}"/>
+	
+	<target name="initialize" depends="baseBuild.initialize">
+		<ivy:cachepath conf="compile" pathid="compile-classpath" />
+		<ivy:cachepath conf="test" pathid="test-classpath" />
+		<ivy:cachepath conf="runtime" pathid="runtime-classpath" />
+		<echo message="${ivy.cache.dir}"/>
+		<echo message="${ivy.default.ivy.user.dir}"/>
+		<echo message="${ivy.jar.dir}"/>
+		<echo message="${ivy.instance}"/>
+		<echo message="${ivy.shared.default.root}"/>
+		
+		<path id="expand-compile-classpath">
+			<!--path refid="compile-classpath"/-->
+			<path refid="test-classpath"/>
+			<path refid="runtime-classpath"/>
+		</path>
+
+		<path id="expand-test-classpath">
+			<path refid="test-classpath" />
+			<path refid="runtime-classpath" />
+		</path>
+
+		<ivy:cachefileset setid="compile-classpath-files" conf="compile" type="jar" />
+	</target>
+
+	<!--target name="zip-report">
+		<zip destfile="zipReport${DSTAMP}.zip" basedir="${testReportDir}" update="true"/>
+	</target>
+
+	<target name="send-mail">
+		<mail from="chenyuelin311@sohu.com" tolist="772441445@qq.com,40084863@qq.com" 
+			mailhost="smtp.sohu.com" user="chenyuelin311" password="82617977" 
+			subject="test" message="junit report." files="zipReport${DSTAMP}.zip"/>
+	</target>
+
+	<target name="cvs-checkout" unless="jerseySample_exists">
+		<echo message="cvs-checkout"/>
+		<cvs cvsroot=":pserver:developer:developer@192.168.1.254:/cvs_repository" command="checkout" dest="${basedir}" package="JerseySample" failonerror="true"/>
+	</target>
+
+	<target name="cvs-update" if="jerseySample_exists">
+		<echo message="cvs-update"/>
+		<cvs cvsroot=":pserver:developer:developer@192.168.1.254:/cvs_repository" command="update" dest="${basedir}" package="JerseySample" failonerror="true"/>
+	</target>
+
+	<target name="update-jerseySample" depends="cvs-checkout,cvs-update"/>
+
+	<target name="queryTables">
+		<sql driver="com.mysql.jdbc.Driver" password="w8xk73w12pz5" url="jdbc:mysql://localhost:3306/test" userid="root" print="true">
+			show tables;
+		</sql>
+	</target-->
+
+</project>

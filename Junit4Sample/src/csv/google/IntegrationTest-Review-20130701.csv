@@ -1,0 +1,26 @@
+Project Module,Developer,Areas,Issues
+Sku Editor,Ariel He,1. Test data,
+,,2. Test data usage,
+,,3. Test script,
+,,4. Report,issue 1.对于异常的输出没有明确结果的，需要加一些描述信息，说明预期抛出的异常和实际捕获的异常等信息。
+TranslationAttribute,Steven Mei,1. Test data,
+,,2. Test data usage,issue 1.断言文件中并未包含addTranslationAttributeNameBadRequest的场景，该场景数据写死在了测试脚本中。
+,,3. Test script,
+,,4. Report,
+NameEdit,Bill Zheng,1. Test data,
+,,2. Test data usage,issue 1.断言文件中并未包含testAddPluaNameThrowException和testUpdatePluraNameThrowExcepation 的场景，场景数据写死在了数据脚本中
+,,3. Test script,
+,,4. Report,issue 1.testGetExportDataException漏写了Reporter内容。
+Report,Peter Chen,1. Test data,issue 1.断言数据文件中，未写场景注释。
+,,1. Test data,issue 2.断言数据文件中数据未按设计原则设计，Report数据应以6开头。
+,,2. Test data usage,
+,,3. Test script,
+,,4. Report,
+PAM,Neil Liu,1. Test data,issue 1.缺少UpdateTaxnonmyAttribute的异常场景
+,,2. Test data usage,
+,,3. Test script,
+,,4. Report,issue 1.report部分应包含，输入，预期结果，实际结果三部分。
+Mass,Alex.lu ,1. Test data,issue 1.断言文件中增加注释，说明场景。
+,,2. Test data usage,
+,,3. Test script,
+,,4. Report,

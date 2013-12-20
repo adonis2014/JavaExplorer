@@ -49,6 +49,9 @@
 		<dependency org="org.springframework.security" name="spring-security-core" rev="${spring.security.version}" conf="compile->master;sources"/>
 		<dependency org="org.springframework.security" name="spring-security-web" rev="${spring.security.version}" conf="compile->master;sources"/>
 		<dependency org="org.springframework.security" name="spring-security-config" rev="${spring.security.version}" conf="compile->master;sources"/>
+		
+		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master;sources"/>
+		<dependency org="org.hibernate" name="hibernate-validator" rev="5.0.2.Final" conf="compile->master;sources"/>
 
 		<dependency org="org.apache.poi" name="poi" rev="3.9" conf="compile->master;sources" />
 		<dependency org="org.apache.poi" name="poi-ooxml" rev="3.9" conf="compile->master;sources" />
