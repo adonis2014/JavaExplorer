@@ -11,29 +11,29 @@
 	<target name="initialize">
 		<echo message="Initializing all..." />
 		<echo message="Work directory is ${work-directory}"/>
-		<subant buildpath="MyJpa" target="initialize" antfile="ivyBuild.xml"/>
-		<subant buildpath="SpringMvc3.1" target="initialize" antfile="ivyBuild.xml"/>
+		<subant buildpath="MyJpa" target="initialize" antfile="build.xml"/>
+		<subant buildpath="SpringMvc3.1" target="initialize" antfile="build.xml"/>
 		<!--<ant dir="MyJpa" target="initialize"/>
 		<ant dir="SpringMvc3.1" target="initialize"/>-->
 		
 		<ivy:buildlist reference="build-path" restartFrom="SpringControl">
-		      <fileset dir="." includes="**/ivyBuild.xml"/>
+		      <fileset dir="." includes="**/build.xml"/>
 		</ivy:buildlist>
 		<echo message="${ivy.sorted.modules}"/>
 		<echo message="${ivy.buildlist.ivyfilepath}"/>
 	</target>
 
 	<target name="compile">
-		<subant buildpath="MyJpa" target="install" antfile="ivyBuild.xml"/>
-		<subant buildpath="SpringMvc3.1" target="compile" antfile="ivyBuild.xml"/>
+		<subant buildpath="MyJpa" target="install" antfile="build.xml"/>
+		<subant buildpath="SpringMvc3.1" target="compile" antfile="build.xml"/>
 	</target>
 
 	<target name="test">
-		<subant buildpath="MyJpa" antfile="ivyBuild.xml">
+		<subant buildpath="MyJpa" antfile="build.xml">
 			<target name="test"/>
 			<target name="install"/>
 		</subant>
-		<subant buildpath="SpringMvc3.1" antfile="ivyBuild.xml">
+		<subant buildpath="SpringMvc3.1" antfile="build.xml">
 			<target name="test"/>
 			<target name="integration-test"/>
 		</subant>
@@ -43,13 +43,13 @@
 	</target>
 
 	<target name="package" depends="compile">
-		<subant buildpath="MyJpa" target="initialize" antfile="ivyBuild.xml"/>
-		<subant buildpath="SpringMvc3.1" target="package" antfile="ivyBuild.xml"/>
+		<subant buildpath="MyJpa" target="initialize" antfile="build.xml"/>
+		<subant buildpath="SpringMvc3.1" target="package" antfile="build.xml"/>
 	</target>
 
 	<target name="clean">
-		<subant buildpath="MyJpa" target="clean" antfile="ivyBuild.xml"/>
-		<subant buildpath="SpringMvc3.1" target="clean" antfile="ivyBuild.xml" inheritAll="false"/>
+		<subant buildpath="MyJpa" target="clean" antfile="build.xml"/>
+		<subant buildpath="SpringMvc3.1" target="clean" antfile="build.xml" inheritAll="false"/>
 		<!--<ant dir="MyJpa" target="clean"/>
 		<ant dir="SpringMvc3.1" target="clean"/>-->
 	</target>
