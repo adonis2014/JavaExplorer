@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" default="initialize" name="myjpa">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" default="initialize" name="DataPersistence">
 
 	<import file="../base.xml" />
 
@@ -21,9 +21,9 @@
 			<path refid="test-classpath" />
 		</path>
 	</target>
-	
+
 	<target name="install" depends="package">
-		<!--ivy:publish resolver="shared" conf="master"/-->
-		<ivy:publish resolver="shared" conf="master" artifactspattern="${work-dist-directory}/${ant.project.name}.[ext]" overwrite="true" />
+		<echo>${ivy.status}</echo>
+		<ivy:publish resolver="local" conf="master" artifactspattern="${work-dist-directory}/${ant.project.name}.[ext]" overwrite="true" status="milestone"/>
 	</target>
 </project>

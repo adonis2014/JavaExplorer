@@ -5,10 +5,11 @@
 
 	<import file="../base.xml" />
 
-	<property name="spring.version" value="3.2.5.RELEASE"/>
-	<property name="spring.security.version" value="3.1.4.RELEASE"/>
+	<property name="spring.version" value="3.2.+"/>
+	<property name="spring.security.version" value="3.2.+"/>
 	<property name="eclipseLink.version" value="2.5.1"/>
-	<property name="jackson.version" value="latest.integration"/>
+	<property name="jackson.version" value="2.3.0"/>
+	<property name="poi.version" value="3.9"/>
 	
 	<property name="package.dir" value="${env.USERPROFILE}"/>
 	

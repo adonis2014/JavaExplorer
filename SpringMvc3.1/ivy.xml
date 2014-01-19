@@ -14,10 +14,10 @@
 	</publications>
 	
 	<dependencies>
-		<dependency org="commons-logging" name="commons-logging" rev="latest.integration" conf="compile->master;sources" />
-		<dependency org="aopalliance" name="aopalliance" rev="1.0" conf="compile->master;sources" />
-		<dependency org="org.aspectj" name="aspectjrt" rev="1.7.3" conf="compile->master;sources" />
-		<dependency org="org.aspectj" name="aspectjweaver" rev="1.7.3" conf="compile->master,sources" />
+		<dependency org="commons-logging" name="commons-logging" rev="1.+" conf="compile->master;sources" />
+		<dependency org="aopalliance" name="aopalliance" rev="latest.release" conf="compile->master;sources" />
+		<dependency org="org.aspectj" name="aspectjrt" rev="latest.release" conf="compile->master;sources" />
+		<dependency org="org.aspectj" name="aspectjweaver" rev="latest.release" conf="compile->master,sources" />
 		
 		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="${jackson.version}" conf="compile->master;sources" />
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="${jackson.version}" conf="compile->master;sources" />
@@ -29,7 +29,7 @@
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.asm" rev="${eclipseLink.version}" conf="compile->master;sources" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.antlr" rev="${eclipseLink.version}" conf="compile->master;sources" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="${eclipseLink.version}" conf="compile->master;sources" />
-		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="2.1.0" conf="compile->master;sources" />
+		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="latest.release" conf="compile->master;sources" />
 
 		<dependency org="org.springframework" name="spring-aop" rev="${spring.version}" conf="compile->master;sources" />
 		<dependency org="org.springframework" name="spring-aspects" rev="${spring.version}" conf="compile->master;sources" />
@@ -53,17 +53,17 @@
 		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master;sources"/>
 		<dependency org="org.hibernate" name="hibernate-validator" rev="5.0.2.Final" conf="compile->master;sources"/>
 
-		<dependency org="org.apache.poi" name="poi" rev="3.9" conf="compile->master;sources" />
-		<dependency org="org.apache.poi" name="poi-ooxml" rev="3.9" conf="compile->master;sources" />
-		<dependency org="org.apache.poi" name="poi-ooxml-schemas" rev="3.9" conf="compile->master;sources" />
-		<dependency org="org.apache.poi" name="poi-scratchpad" rev="3.9" conf="compile->master;sources" />
+		<dependency org="org.apache.poi" name="poi" rev="${poi.version}" conf="compile->master;sources" />
+		<dependency org="org.apache.poi" name="poi-ooxml" rev="${poi.version}" conf="compile->master;sources" />
+		<dependency org="org.apache.poi" name="poi-ooxml-schemas" rev="${poi.version}" conf="compile->master;sources" />
+		<dependency org="org.apache.poi" name="poi-scratchpad" rev="${poi.version}" conf="compile->master;sources" />
 
-		<dependency org="chenyuelin" name="jpa" rev="latest.integration" conf="compile->master" />
+		<dependency org="chenyuelin" name="jpa" rev="latest.revision" conf="compile->master" changing="true"/>
 
-		<dependency org="junit" name="junit" rev="4.11" conf="test->master;sources" />
-		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.3" conf="test->master;sources" />
-		<dependency org="org.mockito" name="mockito-core" rev="1.9.5" conf="test->master;sources" />
-		<dependency org="org.objenesis" name="objenesis" rev="1.3" conf="test->master;sources"/>
+		<dependency org="junit" name="junit" rev="latest.release" conf="test->master;sources" />
+		<dependency org="org.hamcrest" name="hamcrest-core" rev="latest.release" conf="test->master;sources" />
+		<dependency org="org.mockito" name="mockito-core" rev="latest.release" conf="test->master;sources" />
+		<dependency org="org.objenesis" name="objenesis" rev="latest.release" conf="test->master;sources"/>
 		<dependency org="org.powermock" name="powermock-core" rev="1.5.1" conf="test->master;sources" />
 		<dependency org="org.powermock" name="powermock-module-junit4" rev="1.5.1" conf="test->master;sources" />
 		<dependency org="org.powermock" name="powermock-module-junit4-common" rev="1.5.1" conf="test->master;sources" />
@@ -73,7 +73,7 @@
 		<dependency org="org.springframework" name="spring-test" rev="${spring.version}" conf="test->master;sources" />
 		<dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="test->master" />
 
-		<dependency org="mysql" name="mysql-connector-java" rev="latest.integration" conf="runtime->master;sources" />
+		<dependency org="mysql" name="mysql-connector-java" rev="latest.release" conf="runtime->master;sources" />
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="runtime->default;sources" />
 	</dependencies>
 </ivy-module>

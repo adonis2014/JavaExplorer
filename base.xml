@@ -75,7 +75,7 @@
 		<!-- <property name ="ivy.shared.default.ivy.pattern" value ="[organisation]/[module]/[revision]/ivy.xml" /> -->
 		<!-- <property name ="ivy.shared.default.artifact.pattern" value ="[organisation]/[module]/[revision]/[artifact].[ext]" /> -->
 
-		<ivy:resolve useCacheOnly="${offline}" />
+		<ivy:resolve useCacheOnly="${offline}"/>
 
 		<!-- <ivy:buildnumber organisation="chenyuelin" module="${ivy.module}" /> -->
 	</target>
@@ -136,8 +136,9 @@
 			<fileset dir="${project-test-directory}" includes="**/*" />
 			<fileset dir="${unit-test-reports-directory}" includes="**/*" />
 			<fileset dir="${integration-test-reports-directory}" includes="**/*" />
-			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}.jar" />
+			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}.*" />
 		</delete>
+		
 	</target>
 
 	<target name="clean-ivy-cache">
