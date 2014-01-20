@@ -3,15 +3,9 @@
 	<description>Base Build.</description>
 
 	<tstamp />
-
-	<property name="offline" value="false" />
-	<property name="ivy.win.parent.path" location="d:/" />
-	<property name="ivy.win.dir.name" value=".ivy2" />
-
 	<property environment="env" />
-
-	<property name="ant-build-space" value="${env.TMP}" />
-	<property name="ant-build-space-name" value="AntBuildSpace" />
+	
+	<property file="../base.properties"/>
 
 	<property name="work-directory" location="${ant-build-space}/${ant-build-space-name}" />
 	<property name="work-dist-directory" location="${work-directory}/dist" />
@@ -75,7 +69,7 @@
 		<!-- <property name ="ivy.shared.default.ivy.pattern" value ="[organisation]/[module]/[revision]/ivy.xml" /> -->
 		<!-- <property name ="ivy.shared.default.artifact.pattern" value ="[organisation]/[module]/[revision]/[artifact].[ext]" /> -->
 
-		<ivy:resolve useCacheOnly="${offline}"/>
+		<ivy:resolve useCacheOnly="${offline}" resolvemode="dynamic"/>
 
 		<!-- <ivy:buildnumber organisation="chenyuelin" module="${ivy.module}" /> -->
 	</target>

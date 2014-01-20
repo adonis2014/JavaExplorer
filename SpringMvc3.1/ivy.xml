@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-	<info organisation="chenyuelin" module="SpringControl" revision="1.0" status="integration" publication="20140116153553"/>
+	<info organisation="chenyuelin" module="SpringControl" revision="1.0.0" status="integration" publication="20140116153553"/>
 	<configurations>
 		<conf name="compile" visibility="private" />
 		<conf name="test" extends="compile" visibility="private" />
@@ -14,10 +14,10 @@
 	</publications>
 	
 	<dependencies>
-		<dependency org="commons-logging" name="commons-logging" rev="1.+" conf="compile->master;sources" />
-		<dependency org="aopalliance" name="aopalliance" rev="latest.release" conf="compile->master;sources" />
-		<dependency org="org.aspectj" name="aspectjrt" rev="latest.release" conf="compile->master;sources" />
-		<dependency org="org.aspectj" name="aspectjweaver" rev="latest.release" conf="compile->master,sources" />
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.3" conf="compile->master;sources" />
+		<dependency org="aopalliance" name="aopalliance" rev="1.0" conf="compile->master;sources" />
+		<dependency org="org.aspectj" name="aspectjrt" rev="${org.aspectj.version}" conf="compile->master;sources" />
+		<dependency org="org.aspectj" name="aspectjweaver" rev="${org.aspectj.version}" conf="compile->master,sources" />
 		
 		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="${jackson.version}" conf="compile->master;sources" />
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="${jackson.version}" conf="compile->master;sources" />
@@ -29,7 +29,7 @@
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.asm" rev="${eclipseLink.version}" conf="compile->master;sources" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.antlr" rev="${eclipseLink.version}" conf="compile->master;sources" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="${eclipseLink.version}" conf="compile->master;sources" />
-		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="latest.release" conf="compile->master;sources" />
+		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="${org.javax.persistence.version}" conf="compile->master;sources" />
 
 		<dependency org="org.springframework" name="spring-aop" rev="${spring.version}" conf="compile->master;sources" />
 		<dependency org="org.springframework" name="spring-aspects" rev="${spring.version}" conf="compile->master;sources" />
@@ -58,22 +58,22 @@
 		<dependency org="org.apache.poi" name="poi-ooxml-schemas" rev="${poi.version}" conf="compile->master;sources" />
 		<dependency org="org.apache.poi" name="poi-scratchpad" rev="${poi.version}" conf="compile->master;sources" />
 
-		<dependency org="chenyuelin" name="jpa" rev="latest.revision" conf="compile->master" changing="true"/>
+		<dependency org="chenyuelin" name="DataPersistence"  rev="latest.revision" conf="compile->master" changing="true"/>
 
-		<dependency org="junit" name="junit" rev="latest.release" conf="test->master;sources" />
-		<dependency org="org.hamcrest" name="hamcrest-core" rev="latest.release" conf="test->master;sources" />
-		<dependency org="org.mockito" name="mockito-core" rev="latest.release" conf="test->master;sources" />
-		<dependency org="org.objenesis" name="objenesis" rev="latest.release" conf="test->master;sources"/>
-		<dependency org="org.powermock" name="powermock-core" rev="1.5.1" conf="test->master;sources" />
-		<dependency org="org.powermock" name="powermock-module-junit4" rev="1.5.1" conf="test->master;sources" />
-		<dependency org="org.powermock" name="powermock-module-junit4-common" rev="1.5.1" conf="test->master;sources" />
-		<dependency org="org.powermock" name="powermock-api-mockito" rev="1.5.1" conf="test->master;sources" />
-		<dependency org="org.powermock" name="powermock-api-support" rev="1.5.1" conf="test->master;sources" />
-		<dependency org="org.powermock" name="powermock-reflect" rev="1.5.1" conf="test->master;sources" />
+		<dependency org="junit" name="junit" rev="4.11" conf="test->master;sources" />
+		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.3" conf="test->master;sources" />
+		<dependency org="org.mockito" name="mockito-core" rev="1.9.5" conf="test->master;sources" />
+		<dependency org="org.objenesis" name="objenesis" rev="2.1" conf="test->master;sources"/>
+		<dependency org="org.powermock" name="powermock-core" rev="${org.powermock.version}" conf="test->master;sources" />
+		<dependency org="org.powermock" name="powermock-module-junit4" rev="${org.powermock.version}" conf="test->master;sources" />
+		<dependency org="org.powermock" name="powermock-module-junit4-common" rev="${org.powermock.version}" conf="test->master;sources" />
+		<dependency org="org.powermock" name="powermock-api-mockito" rev="${org.powermock.version}" conf="test->master;sources" />
+		<dependency org="org.powermock" name="powermock-api-support" rev="${org.powermock.version}" conf="test->master;sources" />
+		<dependency org="org.powermock" name="powermock-reflect" rev="${org.powermock.version}" conf="test->master;sources" />
 		<dependency org="org.springframework" name="spring-test" rev="${spring.version}" conf="test->master;sources" />
 		<dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="test->master" />
 
-		<dependency org="mysql" name="mysql-connector-java" rev="latest.release" conf="runtime->master;sources" />
+		<dependency org="mysql" name="mysql-connector-java" rev="5.1.28" conf="runtime->master;sources" />
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="runtime->default;sources" />
 	</dependencies>
 </ivy-module>

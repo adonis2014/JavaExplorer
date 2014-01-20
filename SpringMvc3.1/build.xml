@@ -5,13 +5,7 @@
 
 	<import file="../base.xml" />
 
-	<property name="spring.version" value="3.2.+"/>
-	<property name="spring.security.version" value="3.2.+"/>
-	<property name="eclipseLink.version" value="2.5.1"/>
-	<property name="jackson.version" value="2.3.0"/>
-	<property name="poi.version" value="3.9"/>
-	
-	<property name="package.dir" value="${env.USERPROFILE}"/>
+	<property file="build.properties"/>
 	
 	<target name="initialize" depends="baseBuild.initialize">
 		<ivy:cachepath conf="compile" pathid="compile-classpath" />
