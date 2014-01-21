@@ -3,6 +3,8 @@
 
 	<import file="../base.xml" />
 
+	<property file="build.properties"/>
+	
 	<target name="initialize" depends="baseBuild.initialize">
 		<echo message="${ivy.dep.file}"/>
 		<echo message="${ivy.module}"/>

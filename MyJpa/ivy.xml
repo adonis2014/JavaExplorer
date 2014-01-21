@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-	<info organisation="chenyuelin" module="DataPersistence" revision="1.0.0" status="milestone" publication="20140119153750"/>
+	<info organisation="chenyuelin" module="DataPersistence" revision="1.0.0" status="integration" publication="20140119153750"/>
 	
 	<configurations>
 		<conf name="compile" visibility="private" />
