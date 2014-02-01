@@ -4,7 +4,7 @@
 	<import file="../base.xml" />
 
 	<property file="build.properties"/>
-	
+
 	<target name="initialize" depends="baseBuild.initialize">
 		<echo message="${ivy.dep.file}"/>
 		<echo message="${ivy.module}"/>
@@ -12,20 +12,21 @@
 		<echo message="${ivy.new.revision}"/>
 		<echo message="${ivy.build.number}"/>
 		<echo message="${ivy.new.build.number}"/>
-		<ivy:cachepath conf="compile" pathid="compile-classpath" />
-		<ivy:cachepath conf="test" pathid="test-classpath" />
-		
-		<path id="expand-compile-classpath">
-			<path refid="compile-classpath"/>
-		</path>
-		
-		<path id="expand-test-classpath">
-			<path refid="test-classpath" />
-		</path>
+		<echo message="${toString:ivy.instance}" />
 	</target>
 
-	<target name="install" depends="package">
-		<echo>${ivy.status}</echo>
-		<ivy:publish resolver="local" conf="master" artifactspattern="${work-dist-directory}/${ant.project.name}.[ext]" overwrite="true" status="milestone"/>
+	<target name="deliver" depends="resolve">
+		<echo message="${ivy.deliver.ivy.pattern}" level="verbose"/>
+		<ivy:deliver conf="*" deliverpattern="${work-dist-directory}/[artifact]-[type].ext"/>
 	</target>
+
+	<target name="publish" depends="package">
+		<echo message="${ivy.publish.src.artifacts.pattern}" level="verbose"/>
+		<ivy:publish resolver="local" conf="master${comma.source}" forcedeliver="true" artifactspattern="${project-dist-directory}/[artifact].[ext]" overwrite="true"/>
+	</target>
+
+	<target name="install" depends="publish">
+		<ivy:install organisation="${ivy.organisation}" module="${ivy.module}" revision="${ivy.revision}" from="local" to="shared" overwrite="true"/>
+	</target>
+
 </project>

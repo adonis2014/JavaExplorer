@@ -4,7 +4,7 @@
 
 	<tstamp />
 	<property environment="env" />
-	
+
 	<property file="../base.properties"/>
 
 	<property name="work-directory" location="${ant-build-space}/${ant-build-space-name}" />
@@ -12,6 +12,7 @@
 	<property name="project-directory" location="${work-directory}/${ant.project.name}" />
 	<property name="project-class-directory" location="${project-directory}/class" />
 	<property name="project-test-directory" location="${project-directory}/test" />
+	<property name="project-dist-directory" location="${project-directory}/${distribution-directory-name}" />
 	<property name="project-reports-directory" location="${project-directory}/reports" />
 	<property name="unit-test-reports-directory" location="${project-reports-directory}/unitTest" />
 	<property name="integration-test-reports-directory" location="${project-reports-directory}/integrationTest" />
@@ -26,70 +27,83 @@
 	</target>
 
 	<target name="create-project-directory" depends="create-work-directory" unless="work.project.directory.present">
-		<mkdir dir="${project-directory}" taskname="Create MyJpa directory." />
+		<mkdir dir="${project-directory}" taskname="Create project directory." />
 		<mkdir dir="${project-class-directory}" taskname="Create class directory." />
 		<mkdir dir="${project-test-directory}" taskname="Create test directory." />
+		<mkdir dir="${project-dist-directory}" taskname="Create distribution directory." />
 		<mkdir dir="${project-reports-directory}" taskname="Create reports directory." />
 		<mkdir dir="${unit-test-reports-directory}" taskname="Create unit test reports directory." />
 		<mkdir dir="${integration-test-reports-directory}" taskname="Create integration test reports directory." />
 	</target>
 
-	<target name="chickWinIvyPath">
-		<condition property="isWindowsOS" value="true">
-			<os family="windows" />
+	<target name="initialize" depends="create-project-directory" description="Generate work directory ann set Ivy properties.">
+		<condition property="comma.source" value=",sources" else="">
+			<isset property="packaging.source"/>
 		</condition>
-		
+
+		<condition property="semicolon.source" value=";sources" else="">
+			<not>
+				<equals arg1="${comma.source}" arg2=""/>
+			</not>
+		</condition>
+
+		<!-- Set ivy default user dir property -->
 		<available file="${ivy.win.parent.path}" type="dir" property="ivy.win.parent.path.exist" />
-		
+
 		<condition property="ivy.default.ivy.user.dir" value="${ivy.win.parent.path}/${ivy.win.dir.name}">
 			<and>
-				<isset property="isWindowsOS" />
+				<os family="windows" />
 				<isset property="ivy.win.parent.path.exist" />
 			</and>
 		</condition>
-	</target>
+		<!-- end -->
 
-	<target name="initialize" depends="create-project-directory,chickWinIvyPath">
 		<echo message="${ant.project.name} ${TODAY} ${DSTAMP}" />
 		<echo message="Generate directory complete." />
-
-		<!-- ivy root directory -->
-		<!--<property name ="ivy.default.ivy.user.dir" value ="/path/to/ivy/user/dir" /> -->
-
-		<!-- ivy cache dir. -->
-		<!--<property name ="${ivy.cache.dir}" value ="/path/to/ivy/user/dir/cache" /> -->
-
-		<!-- set local directory. -->
-		<!-- <property name ="ivy.local.default.root" value ="/opt/ivy/repository/local" /> -->
-		<!-- <property name ="ivy.local.default.ivy.pattern" value ="[module]/[revision]/ivy.xml" /> -->
-		<!-- <property name ="ivy.local.default.artifact.pattern" value ="[module]/[revision]/[artifact].[ext]" /> -->
-
-		<!-- set shared dir -->
-		<!-- <property name ="ivy.shared.default.root" value ="/opt/ivy/repository/shared" /> -->
-		<!-- <property name ="ivy.shared.default.ivy.pattern" value ="[organisation]/[module]/[revision]/ivy.xml" /> -->
-		<!-- <property name ="ivy.shared.default.artifact.pattern" value ="[organisation]/[module]/[revision]/[artifact].[ext]" /> -->
-
-		<ivy:resolve useCacheOnly="${offline}" resolvemode="dynamic"/>
-
-		<!-- <ivy:buildnumber organisation="chenyuelin" module="${ivy.module}" /> -->
+		<echo message="${basedir}" />
+		
+		<ivy:settings />
 	</target>
 
+	<target name="resolve" depends="initialize">
+		<ivy:resolve useCacheOnly="${offline}"/>
+		<ivy:artifactproperty name="artifact.path.[artifact]" value="${ivy.cache.dir}/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
+
+		<ivy:cachepath conf="compile" pathid="compile-classpath" />
+		<ivy:cachepath conf="provided" pathid="provided-classpath" />
+		<ivy:cachepath conf="runtime" pathid="runtime-classpath" />
+		<ivy:cachepath conf="test" pathid="test-classpath" />
+
+		<path id="expand-compile-classpath">
+			<path refid="provided-classpath" />
+			<path refid="compile-classpath" />
+		</path>
+
+		<path id="expand-test-classpath">
+			<path location="${project-class-directory}"/>
+			<path refid="test-classpath" />
+			<path refid="provided-classpath" />
+		</path>
+	</target>
+
+	<!--
 	<target name="ivy-report" depends="initialize">
-		<!-- <property name="ivy.report.todir" value="${env.TMP}" /> -->
+		<property name="ivy.report.todir" value="${env.TMP}" />
 		<ivy:report />
 	</target>
-
-	<target name="compile" depends="initialize">
+	-->
+	
+	<target name="compile" depends="resolve">
 		<javac srcdir="src" destdir="${project-class-directory}" classpathref="expand-compile-classpath" includeantruntime="false" excludes="test/**/*,integrationTest/**/*" />
 		<copy todir="${project-class-directory}" includeEmptyDirs="false">
-			<fileset dir="src" excludes="**/*.java,META-INF/**/*,test/**/*,integrationTest/**/*" />
+			<fileset dir="src" excludes="**/*.java,META-INF/**,test/**,integrationTest/**" />
 		</copy>
 	</target>
 
 	<target name="compile-test" depends="compile">
-		<javac srcdir="src" destdir="${project-test-directory}" classpathref="expand-test-classpath" includeantruntime="false" excludes="name/**/*" />
+		<javac srcdir="src" destdir="${project-test-directory}" classpathref="expand-test-classpath" includeantruntime="false" includes="test/**"/>
 		<copy todir="${project-test-directory}" includeEmptyDirs="false">
-			<fileset dir="src" excludes="**/*.java,META-INF/**/*" includes="test/**/*,integrationTest/**/*" />
+			<fileset dir="src" excludes="**/*.java,META-INF/**" includes="test/**,*.*"/>
 		</copy>
 	</target>
 
@@ -108,7 +122,7 @@
 		</junit>
 	</target>
 
-	<target name="create-test-report" depends="test" if="test.reportable">
+	<target name="generate-test-report" depends="test" if="test.reportable">
 		<junitreport todir="${unit-test-reports-directory}">
 			<fileset dir="${unit-test-reports-directory}" includes="TEST-*.xml" />
 			<report format="frames" todir="${unit-test-reports-directory}" />
@@ -118,8 +132,13 @@
 		</delete>
 	</target>
 
-	<target name="package" depends="compile">
-		<jar destfile="${work-dist-directory}/${ant.project.name}.jar" basedir="${project-class-directory}">
+	<target name="package-source" depends="initialize" if="packaging.source">
+		<echo message="Packaging this project source..."/>
+		<zip destfile="${project-dist-directory}/${ant.project.name}-source.zip" basedir="src" update="true"/>
+	</target>
+
+	<target name="package" depends="package-source,generate-test-report">
+		<jar destfile="${project-dist-directory}/${ant.project.name}.jar" basedir="${project-class-directory}">
 			<metainf dir="src/META-INF" />
 		</jar>
 	</target>
@@ -130,16 +149,16 @@
 			<fileset dir="${project-test-directory}" includes="**/*" />
 			<fileset dir="${unit-test-reports-directory}" includes="**/*" />
 			<fileset dir="${integration-test-reports-directory}" includes="**/*" />
-			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}.*" />
+			<fileset dir="${project-dist-directory}" includes="**/*" />
+			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}*.*" />
 		</delete>
-		
-	</target>
 
-	<target name="clean-ivy-cache">
-		<ivy:cleancache />
 	</target>
 
 	<target name="destroy">
 		<delete dir="${project-directory}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}*.*" />
+		</delete>
 	</target>
 </project>

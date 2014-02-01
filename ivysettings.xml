@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="GB18030"?>
 <ivysettings>
-<latest-strategies>
-		<latest-revision name="my-latest-revision" usedefaultspecialmeanings="false">
-			<specialMeaning name="m" value="-1"/>
-    <specialMeaning name="rc" value="1"/>
-    <specialMeaning name="final" value="2"/>
-    <specialMeaning name="" value="3"/>
-		</latest-revision>
-	</latest-strategies>
-	<settings defaultResolver="default" defaultLatestStrategy="my-latest-revision"/>
-	<include url="ivysettings-public.xml"/>
-	<include url="${ivy.default.settings.dir}/ivysettings-shared.xml"/>
-	<include url="${ivy.default.settings.dir}/ivysettings-local.xml"/>
-	<include url="${ivy.default.settings.dir}/ivysettings-main-chain.xml"/>
-	<include url="${ivy.default.settings.dir}/ivysettings-default-chain.xml"/>
+	<resolvers>
+		<chain name="public" returnFirst="true" dual="true">
+			<ibiblio name="public-oschina" m2compatible="true" root="http://maven.oschina.net/content/groups/public/" />
+			<ibiblio name="public-maven" m2compatible="true" />
+		</chain>
+	</resolvers>
+
+	<settings defaultResolver="default" />
+	
+	<include url="${ivy.default.settings.dir}/ivysettings-shared.xml" />
+	<include url="${ivy.default.settings.dir}/ivysettings-local.xml" />
+	<include url="${ivy.default.settings.dir}/ivysettings-main-chain.xml" />
+	<include url="${ivy.default.settings.dir}/ivysettings-default-chain.xml" />
+
 </ivysettings>

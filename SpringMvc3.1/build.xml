@@ -1,79 +1,66 @@
 <?xml version="1.0" encoding="GB18030"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="Spring3MvcSample" default="native" basedir=".">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="SpringMvc3.1" default="native" basedir=".">
 
 	<description>Spring3.1 MVC sample.</description>
 
 	<import file="../base.xml" />
 
-	<property file="build.properties"/>
-	
+	<property file="build.properties" />
+
 	<target name="initialize" depends="baseBuild.initialize">
-		<ivy:cachepath conf="compile" pathid="compile-classpath" />
-		<ivy:cachepath conf="test" pathid="test-classpath" />
-		<ivy:cachepath conf="runtime" pathid="runtime-classpath" />
-		<echo message="${ivy.cache.dir}"/>
-		<echo message="${ivy.default.ivy.user.dir}"/>
-		<echo message="${ivy.jar.dir}"/>
-		<echo message="${ivy.instance}"/>
-		<echo message="${ivy.shared.default.root}"/>
-		
-		<path id="expand-compile-classpath">
-			<!--path refid="compile-classpath"/-->
-			<path refid="test-classpath"/>
-			<path refid="runtime-classpath"/>
-		</path>
-
-		<path id="expand-test-classpath">
-			<path refid="test-classpath" />
-			<path refid="runtime-classpath" />
-		</path>
-
-		<ivy:cachefileset setid="compile-classpath-files" conf="compile" type="jar" />
+		<echo message="${ivy.cache.dir}" />
+		<echo message="${ivy.default.ivy.user.dir}" />
+		<echo message="${ivy.jar.dir}" />
+		<echo message="${ivy.shared.default.root}" />
 	</target>
 
 	<target name="native">
-		<property name="nativeDirectory" value="WebContent/WEB-INF/i18n"/>
+		<property name="nativeDirectory" value="WebContent/WEB-INF/i18n" />
 		<delete>
-			<fileset dir="${nativeDirectory}" includes="**/*.properties"/>
+			<fileset dir="${nativeDirectory}" includes="**/*.properties" />
 		</delete>
 		<native2ascii dest="${nativeDirectory}" src="${nativeDirectory}" includes="**/*.txt" ext=".properties" encoding="gbk" />
 	</target>
 
-	<target name="compile" depends="baseBuild.compile">
-		<antcall target="native"/>
+	<target name="compile" depends="baseBuild.compile,native">
+		<!--<antcall target="native" />-->
+		<echo message="Compile complete!"/>
 	</target>
-	
-	<target name="integration-test" depends="compile-test">
-		<echo>${basedir}</echo>
+
+	<target name="compile-test" depends="compile">
+		<javac srcdir="src" destdir="${project-test-directory}" classpathref="expand-test-classpath" includeantruntime="false" includes="integrationTest/**"/>
+		<copy todir="${project-test-directory}" includeEmptyDirs="false">
+			<fileset dir="src" excludes="**/*.java,META-INF/**/*" includes="integrationTest/**" />
+		</copy>
+	</target>
+
+	<target name="test" depends="compile-test,baseBuild.test">
 		<junit printsummary="true" haltonfailure="true" showoutput="false" fork="true" dir="${basedir}">
-			<jvmarg value="-javaagent:${ivy.cache.dir}/org.springframework/spring-instrument/jars/spring-instrument-${spring.version}.jar" />
+			<jvmarg value="-javaagent:${artifact.path.spring-instrument}" />
 			<formatter type="brief" usefile="false" />
-			<formatter type="xml" if="test.reportable"/>
+			<formatter type="xml" if="test.reportable" />
 			<classpath>
-				<path refid="expand-compile-classpath" />
-				<path refid="test-classpath" />
-				<path refid="runtime-classpath" />
-				<pathelement location="${project-class-directory}" />
+				<path refid="expand-test-classpath" />
 				<pathelement location="${project-test-directory}" />
 			</classpath>
 			<!--batchtest todir="${integration-test-reports-directory}">
 				<fileset dir="${project-test-directory}" includes="integrationTest/**/*Test.class" />
 			</batchtest-->
-			<test todir="${testReportDir}" name="integrationTest.AllTests"/>
+			<test todir="${integration-test-reports-directory}" name="integrationTest.AllTests" />
 		</junit>
 	</target>
 
-	<target name="create-integration-test-report" depends="integration-test" if="test.reportable">
+	<target name="generate-test-report" depends="test,baseBuild.generate-test-report" if="test.reportable">
 		<junitreport todir="${integration-test-reports-directory}">
 			<fileset dir="${integration-test-reports-directory}" includes="TEST-*.xml" />
 			<report format="frames" todir="${integration-test-reports-directory}" />
 		</junitreport>
 		<delete includeemptydirs="true">
-			<fileset dir="${unit-test-reports-directory}" includes="*.xml" />
+			<fileset dir="${integration-test-reports-directory}" includes="*.xml" />
 		</delete>
 	</target>
 
-	<target name="package" depends="compile">
+	<target name="package" depends="generate-test-report">
 		<!--pathconvert pathsep="," property="war.libs" refid="compile-classpath">
 		</pathconvert>
 		<fileset dir="${ivy.cache.dir}" id="classpath.extra.lib.id">
@@ -82,45 +69,47 @@
 		<echo message="${war.libs}"/>
 		<echo message="${toString:compile-classpath}"/>
 		<echo message="${classpath.extra.lib.id}"/-->
-		<ivy:findrevision organisation="chenyuelin" module="jpa" revision="latest.integration" property="ivy.jpa.version"/>
-		<war destfile="${package.dir}/${DSTAMP}${ant.project.name}.war" basedir="WebContent" excludes="WEB-INF/i18n/**/*.txt">
+
+		<ivy:findrevision organisation="${ivy.organisation}" module="DataPersistence" revision="latest.integration" property="ivy.data.persistence.version" />
+
+		<war destfile="${work-dist-directory}/${DSTAMP}${ant.project.name}.war" basedir="WebContent" excludes="WEB-INF/i18n/**/*.txt">
 			<classes dir="${project-class-directory}" />
-			<lib file="${ivy.cache.dir}/aopalliance/aopalliance/jars/aopalliance-1.0.jar"/>
-			<lib file="${ivy.cache.dir}/commons-logging/commons-logging/jars/commons-logging-1.1.3.jar" />
-			<lib file="${ivy.cache.dir}/org.aspectj/aspectjrt/jars/aspectjrt-1.7.3.jar" />
-			<lib file="${ivy.cache.dir}/org.aspectj/aspectjweaver/jars/aspectjweaver-1.7.3.jar" />
-			
-			<lib file="${ivy.cache.dir}/com.fasterxml.jackson.core/jackson-annotations/jars/jackson-annotations-2.2.2.jar" />
-			<lib file="${ivy.cache.dir}/com.fasterxml.jackson.core/jackson-core/jars/jackson-core-2.2.2.jar" />
-			<lib file="${ivy.cache.dir}/com.fasterxml.jackson.core/jackson-databind/jars/jackson-databind-2.2.2.jar" />
-			
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/javax.persistence/jars/javax.persistence-2.1.0.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.antlr/jars/org.eclipse.persistence.antlr-${eclipseLink.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.asm/jars/org.eclipse.persistence.asm-${eclipseLink.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.core/jars/org.eclipse.persistence.core-${eclipseLink.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.jpa/jars/org.eclipse.persistence.jpa-${eclipseLink.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.eclipse.persistence/org.eclipse.persistence.jpa.jpql/jars/org.eclipse.persistence.jpa.jpql-${eclipseLink.version}.jar" />
-			
-			<lib file="${ivy.cache.dir}/org.springframework/spring-aop/jars/spring-aop-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-aspects/jars/spring-aspects-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-beans/jars/spring-beans-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-context/jars/spring-context-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-core/jars/spring-core-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-expression/jars/spring-expression-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-jdbc/jars/spring-jdbc-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-jms/jars/spring-jms-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-orm/jars/spring-orm-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-oxm/jars/spring-oxm-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-tx/jars/spring-tx-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-web/jars/spring-web-${spring.version}.jar" />
-			<lib file="${ivy.cache.dir}/org.springframework/spring-webmvc/jars/spring-webmvc-${spring.version}.jar" />
-			
-			<lib file="${ivy.cache.dir}/org.apache.poi/poi/jars/poi-3.9.jar" />
-			<lib file="${ivy.cache.dir}/org.apache.poi/poi-ooxml/jars/poi-ooxml-3.9.jar" />
-			<lib file="${ivy.cache.dir}/org.apache.poi/poi-ooxml-schemas/jars/poi-ooxml-schemas-3.9.jar" />
-			<lib file="${ivy.cache.dir}/org.apache.poi/poi-scratchpad/jars/poi-scratchpad-3.9.jar" />
-			
-			<lib file="${ivy.shared.default.root}/chenyuelin/jpa/${ivy.jpa.version}/jars/jpa.jar" />
+			<lib file="${artifact.path.aopalliance}" />
+			<lib file="${artifact.path.commons-logging}" />
+			<lib file="${artifact.path.aspectjrt}" />
+			<lib file="${artifact.path.aspectjweaver}" />
+
+			<lib file="${artifact.path.jackson-annotations}" />
+			<lib file="${artifact.path.jackson-core}" />
+			<lib file="${artifact.path.jackson-databind}" />
+
+			<lib file="${artifact.path.javax.persistence}" />
+			<lib file="${artifact.path.org.eclipse.persistence.antlr}" />
+			<lib file="${artifact.path.org.eclipse.persistence.asm}" />
+			<lib file="${artifact.path.org.eclipse.persistence.core}" />
+			<lib file="${artifact.path.org.eclipse.persistence.jpa}" />
+			<lib file="${artifact.path.org.eclipse.persistence.jpa.jpql}" />
+
+			<lib file="${artifact.path.spring-aop}" />
+			<lib file="${artifact.path.spring-aspects}" />
+			<lib file="${artifact.path.spring-beans}" />
+			<lib file="${artifact.path.spring-context}" />
+			<lib file="${artifact.path.spring-core}" />
+			<lib file="${artifact.path.spring-expression}" />
+			<lib file="${artifact.path.spring-jdbc}" />
+			<lib file="${artifact.path.spring-jms}" />
+			<lib file="${artifact.path.spring-orm}" />
+			<lib file="${artifact.path.spring-oxm}" />
+			<lib file="${artifact.path.spring-tx}" />
+			<lib file="${artifact.path.spring-web}" />
+			<lib file="${artifact.path.spring-webmvc}" />
+
+			<lib file="${artifact.path.poi}" />
+			<lib file="${artifact.path.poi-ooxml}" />
+			<lib file="${artifact.path.poi-ooxml-schemas}" />
+			<lib file="${artifact.path.poi-scratchpad}" />
+
+			<lib file="${artifact.path.DataPersistence}" />
 		</war>
 	</target>
 

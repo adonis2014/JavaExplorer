@@ -1,64 +1,44 @@
 <?xml version="1.0" encoding="GB18030"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="AllBuild" default="initialize" basedir=".">
-	<tstamp />
-
-	<property environment="env" />
-
-	<property name="ant-build-space" value="${env.TMP}" />
-	<property name="ant-build-space-name" value="AntBuildSpace" />
-	<property name="work-directory" location="${ant-build-space}/${ant-build-space-name}" />
+	<property name="ivy.win.parent.path" value="d:"/>
+	<property name="ivy.win.dir.name" value=".ivy2"/>
 
 	<target name="initialize">
-		<echo message="Initializing all..." />
-		<echo message="Work directory is ${work-directory}"/>
-		<subant buildpath="MyJpa" target="initialize" antfile="build.xml"/>
-		<subant buildpath="SpringMvc3.1" target="initialize" antfile="build.xml"/>
-		<!--<ant dir="MyJpa" target="initialize"/>
-		<ant dir="SpringMvc3.1" target="initialize"/>-->
-		
-		<ivy:buildlist reference="build-path" restartFrom="SpringControl">
-		      <fileset dir="." includes="**/build.xml"/>
-		</ivy:buildlist>
-		<echo message="${ivy.sorted.modules}"/>
-		<echo message="${ivy.buildlist.ivyfilepath}"/>
-	</target>
+		<available file="${ivy.win.parent.path}" type="dir" property="ivy.win.parent.path.exist" />
+		<condition property="ivy.default.ivy.user.dir" value="${ivy.win.parent.path}/${ivy.win.dir.name}">
+			<and>
+				<os family="windows" />
+				<isset property="ivy.win.parent.path.exist" />
+			</and>
+		</condition>
 
-	<target name="compile">
-		<subant buildpath="MyJpa" target="install" antfile="build.xml"/>
-		<subant buildpath="SpringMvc3.1" target="compile" antfile="build.xml"/>
+		<ivy:settings file="ivysettings.xml" />
+
+		<ivy:buildlist reference="build-path">
+			<fileset dir="." includes="*/build.xml" excludes="Junit4Sample/build.xml"/>
+		</ivy:buildlist>
+		
+		<echo>${toString:build-path}</echo>
 	</target>
 
 	<target name="test">
-		<subant buildpath="MyJpa" antfile="build.xml">
-			<target name="test"/>
-			<target name="install"/>
-		</subant>
-		<subant buildpath="SpringMvc3.1" antfile="build.xml">
-			<target name="test"/>
-			<target name="integration-test"/>
-		</subant>
-		
-		<!--<ant dir="MyJpa" target="test"/>
-		<ant dir="SpringMvc3.1" target="test"/>-->
+		<subant buildpath="MyJpa" target="publish" antfile="build.xml" />
+		<subant buildpath="SpringMvc3.1" target="generate-test-report" antfile="build.xml" />
 	</target>
 
-	<target name="package" depends="compile">
-		<subant buildpath="MyJpa" target="initialize" antfile="build.xml"/>
-		<subant buildpath="SpringMvc3.1" target="package" antfile="build.xml"/>
+	<target name="distribution" depends="test">
+		<subant buildpath="SpringMvc3.1" target="package" antfile="build.xml" />
 	</target>
 
 	<target name="clean">
-		<subant buildpath="MyJpa" target="clean" antfile="build.xml"/>
-		<subant buildpath="SpringMvc3.1" target="clean" antfile="build.xml" inheritAll="false"/>
-		<!--<ant dir="MyJpa" target="clean"/>
-		<ant dir="SpringMvc3.1" target="clean"/>-->
+		<subant target="clean">
+			<fileset dir="." includes="*/build.xml" excludes="Junit4Sample/build.xml" />
+		</subant>
 	</target>
 
-	<target name="destroy">
-		<delete dir="${work-directory}" />
-	</target>
-	
-	<target name="clean-cache">
+	<!--
+	<target name="clean-cache" depends="initialize">
 		<ivy:cleancache />
 	</target>
+	-->
 </project>
