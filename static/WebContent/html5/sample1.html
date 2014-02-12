@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="GB18030">
+<title>html5 sample1</title>
+<script src="../lib/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/core.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/lib-typedarrays.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/md5.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/sha1.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/evpkdf.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/cipher-core.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/format-hex.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/mode-cfb.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/mode-ecb.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/pad-iso10126-min.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/pad-nopadding-min.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/aes.js"></script>
+<script>
+	csvContent = "a,b,大\ne,d,f";
+	utf8CsvContent = CryptoJS.enc.Latin1.parse(csvContent);
+	base64CsvContent = CryptoJS.enc.Base64.stringify(utf8CsvContent);
+	charsetUtf8CsvContent = encodeURIComponent(csvContent);
+
+	$().ready(function() {
+		alert(charsetUtf8CsvContent + "\n" + getGBKEscape(csvContent));
+		$("a:first").attr("href", "data:application/octet-stream," + csvContent);
+		$("a:eq(1)").attr("href", "data:text/csv;base64," + base64CsvContent);
+		$("a:eq(2)").attr("href", "data:text/csv;charset=utf8," + getGBKEscape(csvContent));
+
+		$iframe = $("#iframe1");
+		form = $("form");
+	});
+</script>
+</head>
+<body>
+	<h1>hello!</h1>
+	<form action="iframe1" target="iframe1">
+		<input type="hidden" name="aa" value="天才"> <input type="submit">
+	</form>
+
+	<iframe id="iframe1"></iframe>
+	<a download="test.csv">test.csv</a>
+	<a download="test.csv">test.csv</a>
+	<a download="test.csv">test.csv</a>
+
+	<a href="data:text/plain,Hello Data URL!" download="hello.txt">hello</a>
+	<a href="data:text/html;charset=utf8,%3Ch1%3E%E4%BD%A0%E5%A5%BD%3C/h1%3E" download="URL escaped.html">URL escaped</a>
+	<a
+		href="data:image/gif;base64,R0lGODdhMAAwAPAAAAAAAP///ywAAAAAMAAwAAAC8IyPqcvt3wCcDkiLc7C0qwyGHhSWpjQu5yqmCYsapyuvUUlvONmOZtfzgFzByTB10QgxOR0TqBQejhRNzOfkVJ+5YiUqrXF5Y5lKh/DeuNcP5yLWGsEbtLiOSpa/TPg7JpJHxyendzWTBfX0cxOnKPjgBzi4diinWGdkF8kjdfnycQZXZeYGejmJlZeGl9i2icVqaNVailT6F5iJ90m6mvuTS4OK05M0vDk0Q4XUtwvKOzrcd3iq9uisF81M1OIcR7lEewwcLp7tuNNkM3uNna3F2JQFo97Vriy/Xl4/f1cf5VWzXyym7PHhhx4dbgYKAAA7"
+		download="Larry.gif">Larry</a>
+	<a href="data:application/octet-stream,12345" download="octet-stream.bin">octet-stream</a>
+
+	<audio src="01.inori.mp3" controls="controls"></audio>
+</body>
+<script type="text/javascript">
+	function getGBKEscape(s) {
+		var iframe = document.createElement("iframe");
+		iframe.src = "about:blank";
+		iframe.setAttribute("style", "display:none;visibility:hidden;");
+		document.body.appendChild(iframe);
+		var d = iframe.contentWindow.document;
+		d.charset = d.characterSet = "gbk";
+		d.write("<body><a href='?" + s + "'>gbk</a></body>");
+		d.close();
+		var url = d.body.firstChild.href;
+		var gbk = url.substr(url.lastIndexOf("?") + 1);
+		document.body.removeChild(iframe);
+		return gbk;
+	}
+</script>
+</html>

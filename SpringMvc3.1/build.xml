@@ -27,7 +27,7 @@
 		<echo message="Compile complete!"/>
 	</target>
 
-	<target name="compile-test" depends="compile">
+	<target name="compile-test" depends="compile,baseBuild.compile-test">
 		<javac srcdir="src" destdir="${project-test-directory}" classpathref="expand-test-classpath" includeantruntime="false" includes="integrationTest/**"/>
 		<copy todir="${project-test-directory}" includeEmptyDirs="false">
 			<fileset dir="src" excludes="**/*.java,META-INF/**/*" includes="integrationTest/**" />

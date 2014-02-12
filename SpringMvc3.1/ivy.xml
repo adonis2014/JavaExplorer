@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-	<info organisation="chenyuelin" module="${ant.project.name}" revision="1.0.0-dev1"/>
+	<info module="${ant.project.name}" revision="1.0.0-dev1" />
 	<configurations>
 		<conf name="default" extends="master,runtime" />
 		<conf name="master" />
@@ -15,13 +15,13 @@
 	<publications defaultconf="master">
 		<artifact />
 	</publications>
-	
+
 	<dependencies>
 		<dependency org="commons-logging" name="commons-logging" rev="1.1.3" conf="compile->master${semicolon.source}" />
 		<dependency org="aopalliance" name="aopalliance" rev="1.0" conf="compile->master${semicolon.source}" />
 		<dependency org="org.aspectj" name="aspectjrt" rev="${org.aspectj.version}" conf="compile->master${semicolon.source}" />
 		<dependency org="org.aspectj" name="aspectjweaver" rev="${org.aspectj.version}" conf="compile->master${semicolon.source}" />
-		
+
 		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="${jackson.version}" conf="compile->master${semicolon.source}" />
 		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="${jackson.version}" conf="compile->master${semicolon.source}" />
 		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="${jackson.version}" conf="compile->master${semicolon.source}" />
@@ -49,12 +49,12 @@
 		<dependency org="org.springframework" name="spring-webmvc" rev="${spring.version}" conf="compile->master${semicolon.source}" />
 		<dependency org="org.springframework" name="spring-instrument" rev="${spring.version}" conf="system->master" />
 
-		<dependency org="org.springframework.security" name="spring-security-core" rev="${spring.security.version}" conf="compile->master${semicolon.source}"/>
-		<dependency org="org.springframework.security" name="spring-security-web" rev="${spring.security.version}" conf="compile->master${semicolon.source}"/>
-		<dependency org="org.springframework.security" name="spring-security-config" rev="${spring.security.version}" conf="compile->master${semicolon.source}"/>
-		
-		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master${semicolon.source}"/>
-		<dependency org="org.hibernate" name="hibernate-validator" rev="5.0.2.Final" conf="compile->master${semicolon.source}"/>
+		<dependency org="org.springframework.security" name="spring-security-core" rev="${spring.security.version}" conf="compile->master${semicolon.source}" />
+		<dependency org="org.springframework.security" name="spring-security-web" rev="${spring.security.version}" conf="compile->master${semicolon.source}" />
+		<dependency org="org.springframework.security" name="spring-security-config" rev="${spring.security.version}" conf="compile->master${semicolon.source}" />
+
+		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master${semicolon.source}" />
+		<dependency org="org.hibernate" name="hibernate-validator" rev="5.0.2.Final" conf="compile->master${semicolon.source}" />
 
 		<dependency org="org.apache.poi" name="poi" rev="${poi.version}" conf="compile->master${semicolon.source}" />
 		<dependency org="org.apache.poi" name="poi-ooxml" rev="${poi.version}" conf="compile->master${semicolon.source}" />
@@ -63,12 +63,12 @@
 
 		<dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${semicolon.source}" />
 
-		<dependency org="chenyuelin" name="DataPersistence" rev="latest.revision" conf="compile->master" changing="true"/>
+		<dependency org="chenyuelin" name="DataPersistence" rev="latest.revision" conf="compile->master" changing="true" />
 
 		<dependency org="junit" name="junit" rev="4.11" conf="test->master${semicolon.source}" />
 		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.3" conf="test->master${semicolon.source}" />
 		<dependency org="org.mockito" name="mockito-core" rev="1.9.5" conf="test->master${semicolon.source}" />
-		<dependency org="org.objenesis" name="objenesis" rev="2.1" conf="test->master${semicolon.source}"/>
+		<dependency org="org.objenesis" name="objenesis" rev="2.1" conf="test->master${semicolon.source}" />
 		<dependency org="org.powermock" name="powermock-core" rev="${org.powermock.version}" conf="test->master${semicolon.source}" />
 		<dependency org="org.powermock" name="powermock-module-junit4" rev="${org.powermock.version}" conf="test->master${semicolon.source}" />
 		<dependency org="org.powermock" name="powermock-module-junit4-common" rev="${org.powermock.version}" conf="test->master${semicolon.source}" />
@@ -79,6 +79,7 @@
 		<dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="test->master" />
 
 		<dependency org="mysql" name="mysql-connector-java" rev="5.1.28" conf="runtime->master${semicolon.source}" />
+		<!-- <dependency org="ojdbc" name="ojdbc" rev="14" conf="runtime->default${semicolon.source}" /> -->
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="provided->default${semicolon.source}" />
 	</dependencies>
 </ivy-module>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-	<info organisation="chenyuelin" module="${ant.project.name}" revision="1.0.0-dev1"/>
-	
+	<info module="${ant.project.name}" revision="1.0.0-dev1"/>
 	<configurations>
 		<conf name="default" extends="master,runtime" />
 		<conf name="master" />
@@ -13,10 +12,12 @@
 		<conf name="sources" />
 		<conf name="javadoc" />
 	</configurations>
+	
 	<publications defaultconf="master">
 		<artifact/>
 		<artifact name="${ivy.module}-source" conf="sources" type="source" ext="zip"/>
 	</publications>
+	
 	<dependencies>
 		<dependency org="commons-logging" name="commons-logging" rev="${commons-logging.version}" conf="compile->master${semicolon.source}" />
 

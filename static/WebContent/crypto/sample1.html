@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="GB18030" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
+<title>crypto sample1</title>
+<script type="text/javascript" src="../lib/CryptoJS/components/core.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/lib-typedarrays.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/md5.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/sha1.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/evpkdf.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/cipher-core.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/format-hex.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/mode-cfb.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/mode-ecb.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/pad-iso10126-min.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/pad-nopadding-min.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/aes.js"></script>
+
+<script type="text/javascript">
+	var salt=CryptoJS.lib.WordArray.random(128 / 8);
+	console.info("WordArray.random\t" + salt.toString(CryptoJS.enc.Hex));
+	var md5 = CryptoJS.algo.MD5.create();
+	md5.update("Message Part 1");
+	md5.update("Message Part 2");
+	md5.update("Message Part 3");
+	console.info("md5\t" + md5.finalize().toString(CryptoJS.enc.Hex));
+
+	var key = CryptoJS.enc.Hex.parse('55402a3a669e0ae689c2b6135ca0ab1696d56d1883cb7ceb05749b992973835f');
+	//key="陈岳林";
+	var iv = CryptoJS.enc.Hex.parse('892cfe81b33687889db438fdb33cef6c');//892cfe81b33687889db438fdb33cef6c
+	//var salt = CryptoJS.lib.WordArray.random(64/8);
+	var encryptMode = {
+		iv:iv,
+		mode : CryptoJS.mode.ECB,
+		padding : CryptoJS.pad.NoPadding
+	};
+	var encrypted = CryptoJS.AES.encrypt("陈岳麟", key, encryptMode);
+	console.info("陈岳麟encrypt\t" + encrypted.toString());
+	console.info("key:\t"+encrypted.key.toString(CryptoJS.enc.Hex));
+	console.info("iv:\t"+encrypted.iv.toString(CryptoJS.enc.Hex));
+	//console.info("salt:\t"+encrypted.salt.toString(CryptoJS.enc.Hex));
+	console.info("ciphertext:\t"+encrypted.ciphertext.toString());
+	
+	var words = CryptoJS.AES.decrypt(encrypted, key, encryptMode);
+	console.info("陈岳麟decrypt\t" + words.toString(CryptoJS.enc.Utf8));
+	//var wordArray = CryptoJS.lib.WordArray.create("你好");
+	//alert("Random WordArray" +"\nHex: "+ wordArray + "\n\nBase 64: " + CryptoJS.enc.Base64.stringify(wordArray) +"\n\nLatin 1: " + CryptoJS.enc.Latin1.stringify(wordArray) + "\n\nUTF-8: " + CryptoJS.enc.Utf8.stringify(wordArray) + "\n\nUTF-16: " + CryptoJS.enc.Utf16.stringify(wordArray));
+	var hash = CryptoJS.SHA1("Message");
+
+	var words = CryptoJS.enc.Hex.parse('47cb80c8f59cdf411178ffc1711965e0');
+	var hex = CryptoJS.enc.Hex.stringify(words);
+	var words = CryptoJS.enc.Base64.parse('SGVsbG8sIFdvcmxkIQ==');
+	var base64 = CryptoJS.enc.Base64.stringify(words);
+	
+	var words = CryptoJS.enc.Latin1.parse('Hello, World!');
+	var latin1 = CryptoJS.enc.Latin1.stringify(words);
+
+	var words = CryptoJS.enc.Utf8.parse('𤭢');
+	var utf8 = CryptoJS.enc.Utf8.stringify(words);
+
+	/*
+	var encrypted = CryptoJS.AES.encrypt("Message", "Secret Passphrase");
+
+	var decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
+
+	 alert("value:"+encrypted+"\nkey:"+encrypted.key+"\niv:"+encrypted.iv+"\nsalt:"+encrypted.salt+"\nciphertext:"+encrypted.ciphertext);
+	 alert(CryptoJS.enc.Hex.stringify(encrypted.key));
+	 alert(encrypted.ciphertext.toString(CryptoJS.enc.Hex));
+	 alert(decrypted.toString(CryptoJS.enc.Utf8)); */
+</script>
+</head>
+<body>
+	<h1 align="center">crypto test</h1>
+</body>
+</html>

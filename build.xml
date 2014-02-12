@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="GB18030"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="AllBuild" default="initialize" basedir=".">
+	<property name="ant-build-space" value="${env.TMP}"/>
+	<property name="ant-build-space-name" value="AntBuildSpace"/>
+	<property name="work-directory" location="${ant-build-space}/${ant-build-space-name}" />
 	<property name="ivy.win.parent.path" value="d:"/>
 	<property name="ivy.win.dir.name" value=".ivy2"/>
-
+	
 	<target name="initialize">
 		<available file="${ivy.win.parent.path}" type="dir" property="ivy.win.parent.path.exist" />
 		<condition property="ivy.default.ivy.user.dir" value="${ivy.win.parent.path}/${ivy.win.dir.name}">
@@ -36,6 +39,10 @@
 		</subant>
 	</target>
 
+	<target name="destroy">
+		<delete dir="${work-directory}" />
+	</target>
+	
 	<!--
 	<target name="clean-cache" depends="initialize">
 		<ivy:cleancache />

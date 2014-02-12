@@ -31,9 +31,17 @@
 		<properties>
 			<!-- <property name="eclipselink.logging.logger" value="JavaLogger" /> -->
 			<!-- <property name="eclipselink.logging.file" value="output.log" /> -->
-			<property name="eclipselink.logging.level" value="FINE" />
+			<property name="eclipselink.logging.level" value="ALL" />
 			<property name="eclipselink.logging.level.sql" value="ALL" />
+			<property name="eclipselink.logging.level.jpa" value="ALL" />
+			<property name="eclipselink.logging.level.transaction" value="ALL" />
+			<property name="eclipselink.logging.level.query" value="ALL" />
+			<property name="eclipselink.logging.level.cache" value="ALL" />
 			<property name="eclipselink.logging.parameters" value="true" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test"/>
+			<property name="javax.persistence.jdbc.user" value="developer"/>
+			<property name="javax.persistence.jdbc.password" value="developer"/>
 
 			<!-- Optimization #12 - turn logging off -->
 			<!-- Optimization #13 - close EntityManager on commit, to avoid cost of resume -->

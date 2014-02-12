@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="GB18030">
+<title>Insert title here</title>
+<script src="../lib/jquery-2.0.0.min.js"></script>
+<script>
+	/* $(window).unload(function() {
+		alert(123);
+	}); */
+	
+	/*onunload=function(){
+		alert('onunload');
+	}*/
+	
+	onbeforeunload=function(){
+		return "是否要离开本页面？";
+	}
+	
+	/*$(window).on("onbeforeunload",function(){
+		alert(123);
+		return "d";
+	});*/
+</script>
+</head>
+<body>
+	<h1>hello world!</h1>
+</body>
+</html>
