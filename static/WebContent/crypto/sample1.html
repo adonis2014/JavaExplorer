@@ -27,9 +27,10 @@
 	md5.update("Message Part 3");
 	console.info("md5\t" + md5.finalize().toString(CryptoJS.enc.Hex));
 
-	var key = CryptoJS.enc.Hex.parse('55402a3a669e0ae689c2b6135ca0ab1696d56d1883cb7ceb05749b992973835f');
-	//key="≥¬‘¿¡÷";
+	var key = CryptoJS.enc.Hex.parse('C00DEC4C2F261F4AF38A113EA544FA697A7837D60F8A96EA8DC53C0D5D2C1B91');
+	key="≥¬‘¿¡÷";
 	var iv = CryptoJS.enc.Hex.parse('892cfe81b33687889db438fdb33cef6c');//892cfe81b33687889db438fdb33cef6c
+	iv=CryptoJS.lib.WordArray.random(128 / 8);
 	//var salt = CryptoJS.lib.WordArray.random(64/8);
 	var encryptMode = {
 		iv:iv,

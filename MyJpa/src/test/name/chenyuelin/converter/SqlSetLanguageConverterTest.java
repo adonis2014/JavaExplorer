@@ -3,13 +3,16 @@
  */
 package test.name.chenyuelin.converter;
 
-import static org.junit.Assert.fail;
+import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
+import name.chenyuelin.entity.test.Customer;
 import name.chenyuelin.entity.test.Person;
+import name.chenyuelin.enums.Language;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -59,10 +62,27 @@ public class SqlSetLanguageConverterTest {
 	}
 
 	@Test
-	public void test() {
+	public void testPerson() {
 		Person person = ENTITY_MANAGER.find(Person.class, (byte) 1);
 		Assert.assertNotNull(person);
-		System.out.println(person);
+		Collection<Language> languages = person.getLanguages();
+		Assert.assertEquals(2, languages.size());
+		Assert.assertTrue(languages.contains(Language.english));
+		Assert.assertTrue(languages.contains(Language.chinese));
+
+		languages = person.getLanguages2();
+		Assert.assertEquals(2, languages.size());
+		Assert.assertTrue(languages.contains(Language.english));
+		Assert.assertTrue(languages.contains(Language.chinese));
 	}
 
+	@Test
+	public void testCustomer() {
+		TypedQuery<Customer> query=ENTITY_MANAGER.createNamedQuery("getCustomer", Customer.class);
+		query.setParameter("id",1);
+		query.setParameter("password",123456);
+//		query.setParameter(1,"*6A7A490FB9DC8C33C2B025A91737077A7E9CC5E5");
+		Customer customer=query.getSingleResult();
+		Assert.assertNotNull(customer);
+	}
 }

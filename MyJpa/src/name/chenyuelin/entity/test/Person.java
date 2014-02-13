@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -22,6 +22,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import name.chenyuelin.converter.JpaSqlSetConverter;
 import name.chenyuelin.converter.SqlSetLanguageConverter;
 import name.chenyuelin.enums.Language;
 import name.chenyuelin.enums.Sex;
@@ -64,8 +65,12 @@ public class Person implements Serializable {
 	private BigDecimal height;
 
 	@Convert("languagesConverter")
-	private Set<Language> languages;
+	private Collection<Language> languages;
 
+	@javax.persistence.Convert(converter=JpaSqlSetConverter.class)
+	@Column(name = "languages",insertable=false,updatable=false)
+	private Collection<Language> languages2;
+	
 	private String name;
 
 	@Lob()
@@ -145,11 +150,11 @@ public class Person implements Serializable {
 		this.height = height;
 	}
 
-	public Set<Language> getLanguages() {
+	public Collection<Language> getLanguages() {
 		return languages;
 	}
 
-	public void setLanguages(Set<Language> languages) {
+	public void setLanguages(Collection<Language> languages) {
 		this.languages = languages;
 	}
 
@@ -223,5 +228,13 @@ public class Person implements Serializable {
 		sb.append("sex:").append(sex).append(", ");
 		sb.append("note:").append(note).append("}");
 		return sb.toString();
+	}
+
+	public Collection<Language> getLanguages2() {
+		return languages2;
+	}
+
+	public void setLanguages2(Collection<Language> languages2) {
+		this.languages2 = languages2;
 	}
 }
