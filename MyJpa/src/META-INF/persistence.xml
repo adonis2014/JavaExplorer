@@ -43,7 +43,7 @@
 			<property name="eclipselink.logging.level.cache" value="ALL" />
 			<property name="eclipselink.logging.parameters" value="true" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=convertToNull" />
 			<property name="javax.persistence.jdbc.user" value="developer" />
 			<property name="javax.persistence.jdbc.password" value="developer" />
 
