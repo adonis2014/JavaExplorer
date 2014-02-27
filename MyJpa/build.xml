@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="GB18030"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" default="initialize" name="DataPersistence">
 
 	<import file="../base.xml" />
 
 	<property file="build.properties"/>
 
-	<target name="initialize" depends="baseBuild.initialize">
+	<target name="initialize" depends="baseBuild.initialize" unless="target.initialized">
 		<echo message="${ivy.dep.file}"/>
 		<echo message="${ivy.module}"/>
 		<echo message="${ivy.revision}"/>
@@ -13,16 +13,32 @@
 		<echo message="${ivy.build.number}"/>
 		<echo message="${ivy.new.build.number}"/>
 		<echo message="${toString:ivy.instance}" />
+		<property name="target.initialized" value="true"/>
 	</target>
 
-	<target name="deliver" depends="resolve">
-		<echo message="${ivy.deliver.ivy.pattern}" level="verbose"/>
-		<ivy:deliver conf="*" deliverpattern="${work-dist-directory}/[artifact]-[type].ext"/>
+	<target name="package" depends="generate-test-report,package-source">
+		<!--
+		"(<property name=\"eclipselink.weaving\" value=\")(?:[a-zA-Z]+?)(\" />)", "$1static$2")
+		"(?<=\\<property name=\"eclipselink.weaving\" value=\")[a-zA-Z]+?(?=\" />)", "static"
+		-->
+		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match="(?&lt;=\&lt;property name=&quot;eclipselink.weaving&quot; value=&quot;)[a-zA-Z]+?(?=&quot; /&gt;)" replace="static" byline="true"/>
+		<java classpathref="runtime-classpath" classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave" failonerror="true">
+			<arg value="${project-class-directory}"/>
+			<arg value="${project-dist-directory}/${ant.project.name}-${ivy.revision}.jar"/>
+		</java>
+		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match=".+eclipselink\.weaving.+" replace="" flags="true"/>
 	</target>
 
-	<target name="publish" depends="package">
-		<echo message="${ivy.publish.src.artifacts.pattern}" level="verbose"/>
-		<ivy:publish resolver="local" conf="master${comma.source}" forcedeliver="true" artifactspattern="${project-dist-directory}/[artifact].[ext]" overwrite="true"/>
+	<target name="deliver" depends="resolve" unless="target.resolved">
+		<echo message="${ivy.deliver.ivy.pattern}"/>
+		<ivy:deliver conf="*" deliverpattern="${project-dist-directory}/[artifact]-[type].[ext]" />
+	</target>
+
+	<target name="publish" depends="package,javadoc">
+		<ivy:publish resolver="local" conf="master${artifact.spread.comma}" forcedeliver="true" overwrite="true">
+			<artifacts pattern="${project-dist-directory}/[artifact]-[revision].jar"/>
+			<artifacts pattern="${project-dist-directory}/[artifact]-[revision]-[type].[ext]"/>
+		</ivy:publish>
 	</target>
 
 	<target name="install" depends="publish">

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="GB18030"?>
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-	<info module="${ant.project.name}" revision="1.0.0-dev1"/>
+	<info organisation="${ivy.organisation}" module="${ant.project.name}" revision="1.0.0-dev1"/>
 	<configurations>
 		<conf name="default" extends="master,runtime" />
 		<conf name="master" />
@@ -15,16 +15,21 @@
 	
 	<publications defaultconf="master">
 		<artifact/>
-		<artifact name="${ivy.module}-source" conf="sources" type="source" ext="zip"/>
+		<artifact name="${ivy.module}" conf="sources" type="source" ext="zip"/>
+		<artifact name="${ivy.module}" conf="javadoc" type="javadoc" ext="zip"/>
 	</publications>
 	
 	<dependencies>
-		<dependency org="commons-logging" name="commons-logging" rev="${commons-logging.version}" conf="compile->master${semicolon.source};javadoc" />
+		<dependency org="commons-logging" name="commons-logging" rev="${commons-logging.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.core" rev="${eclipseLink.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="${org.javax.persistence.version}" conf="compile->master${semicolon.source}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.core" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="${org.javax.persistence.version}" conf="compile->master${artifact.spread.semicolon}" />
 		
-		<dependency org="junit" name="junit" rev="4.11" conf="test->master${semicolon.source}" />
-		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.3" conf="test->master${semicolon.source}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="${eclipseLink.version}" conf="runtime->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.asm" rev="${eclipseLink.version}" conf="runtime->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa.jpql" rev="${eclipseLink.version}" conf="runtime->master${artifact.spread.semicolon}" />
+		
+		<dependency org="junit" name="junit" rev="${junit.version}" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.hamcrest" name="hamcrest-core" rev="${hamcrest-core.version}" conf="test->master${artifact.spread.semicolon}" />
 	</dependencies>
 </ivy-module>

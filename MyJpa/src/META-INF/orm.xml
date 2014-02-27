@@ -7,9 +7,10 @@
 	<persistence-unit-metadata>
 		<persistence-unit-defaults>
 			<access>FIELD</access>
+			<cascade-persist/>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
-<!-- 	<converter class="name.chenyuelin.converter.SqlSetLanguageConverter"></converter> -->
+	<converter class="name.chenyuelin.converter.JpaSqlSetConverter"/>
 </entity-mappings>
 
 <!-- <entity-mappings 

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="GB18030"?>
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-	<info module="${ant.project.name}" revision="1.0.0-dev1" />
+	<info organisation="${ivy.organisation}" module="${ant.project.name}" revision="1.0.0-dev1" />
 	<configurations>
 		<conf name="default" extends="master,runtime" />
 		<conf name="master" />
@@ -17,69 +17,70 @@
 	</publications>
 
 	<dependencies>
-		<dependency org="commons-logging" name="commons-logging" rev="1.1.3" conf="compile->master${semicolon.source}" />
-		<dependency org="aopalliance" name="aopalliance" rev="1.0" conf="compile->master${semicolon.source}" />
-		<dependency org="org.aspectj" name="aspectjrt" rev="${org.aspectj.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.aspectj" name="aspectjweaver" rev="${org.aspectj.version}" conf="compile->master${semicolon.source}" />
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.3" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="aopalliance" name="aopalliance" rev="1.0" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.aspectj" name="aspectjrt" rev="${org.aspectj.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.aspectj" name="aspectjweaver" rev="${org.aspectj.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="${jackson.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="${jackson.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="${jackson.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="com.fasterxml.jackson.dataformat" name="jackson-dataformat-csv" rev="${jackson.version}" conf="compile->master${semicolon.source}" />
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="${jackson.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="${jackson.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="${jackson.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="com.fasterxml.jackson.dataformat" name="jackson-dataformat-csv" rev="${jackson.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa.jpql" rev="${eclipseLink.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.core" rev="${eclipseLink.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.asm" rev="${eclipseLink.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.antlr" rev="${eclipseLink.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="${eclipseLink.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="${org.javax.persistence.version}" conf="compile->master${semicolon.source}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa.jpql" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.core" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.asm" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.antlr" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<!-- <dependency org="org.eclipse.persistence" name="eclipselink" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" /> -->
+		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="${org.javax.persistence.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="org.springframework" name="spring-aop" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-aspects" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-beans" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-context" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-core" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-expression" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-jdbc" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-jms" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-orm" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-oxm" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-tx" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-web" rev="${spring.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-webmvc" rev="${spring.version}" conf="compile->master${semicolon.source}" />
+		<dependency org="org.springframework" name="spring-aop" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-aspects" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-beans" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-context" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-core" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-expression" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-jdbc" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-jms" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-orm" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-oxm" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-tx" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-web" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-webmvc" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.springframework" name="spring-instrument" rev="${spring.version}" conf="system->master" />
 
-		<dependency org="org.springframework.security" name="spring-security-core" rev="${spring.security.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework.security" name="spring-security-web" rev="${spring.security.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.springframework.security" name="spring-security-config" rev="${spring.security.version}" conf="compile->master${semicolon.source}" />
+		<dependency org="org.springframework.security" name="spring-security-core" rev="${spring.security.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework.security" name="spring-security-web" rev="${spring.security.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework.security" name="spring-security-config" rev="${spring.security.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master${semicolon.source}" />
-		<dependency org="org.hibernate" name="hibernate-validator" rev="5.0.2.Final" conf="compile->master${semicolon.source}" />
+		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.hibernate" name="hibernate-validator" rev="5.0.2.Final" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="org.apache.poi" name="poi" rev="${poi.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.apache.poi" name="poi-ooxml" rev="${poi.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.apache.poi" name="poi-ooxml-schemas" rev="${poi.version}" conf="compile->master${semicolon.source}" />
-		<dependency org="org.apache.poi" name="poi-scratchpad" rev="${poi.version}" conf="compile->master${semicolon.source}" />
+		<dependency org="org.apache.poi" name="poi" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.apache.poi" name="poi-ooxml" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.apache.poi" name="poi-ooxml-schemas" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.apache.poi" name="poi-scratchpad" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${semicolon.source}" />
+		<dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${artifact.spread.semicolon}" />
 
 		<dependency org="chenyuelin" name="DataPersistence" rev="latest.revision" conf="compile->master" changing="true" />
 
-		<dependency org="junit" name="junit" rev="4.11" conf="test->master${semicolon.source}" />
-		<dependency org="org.hamcrest" name="hamcrest-core" rev="1.3" conf="test->master${semicolon.source}" />
-		<dependency org="org.mockito" name="mockito-core" rev="1.9.5" conf="test->master${semicolon.source}" />
-		<dependency org="org.objenesis" name="objenesis" rev="2.1" conf="test->master${semicolon.source}" />
-		<dependency org="org.powermock" name="powermock-core" rev="${org.powermock.version}" conf="test->master${semicolon.source}" />
-		<dependency org="org.powermock" name="powermock-module-junit4" rev="${org.powermock.version}" conf="test->master${semicolon.source}" />
-		<dependency org="org.powermock" name="powermock-module-junit4-common" rev="${org.powermock.version}" conf="test->master${semicolon.source}" />
-		<dependency org="org.powermock" name="powermock-api-mockito" rev="${org.powermock.version}" conf="test->master${semicolon.source}" />
-		<dependency org="org.powermock" name="powermock-api-support" rev="${org.powermock.version}" conf="test->master${semicolon.source}" />
-		<dependency org="org.powermock" name="powermock-reflect" rev="${org.powermock.version}" conf="test->master${semicolon.source}" />
-		<dependency org="org.springframework" name="spring-test" rev="${spring.version}" conf="test->master${semicolon.source}" />
+		<dependency org="junit" name="junit" rev="${junit.version}" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.hamcrest" name="hamcrest-core" rev="${hamcrest-core.version}" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.mockito" name="mockito-core" rev="1.9.5" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.objenesis" name="objenesis" rev="2.1" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.powermock" name="powermock-core" rev="${org.powermock.version}" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.powermock" name="powermock-module-junit4" rev="${org.powermock.version}" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.powermock" name="powermock-module-junit4-common" rev="${org.powermock.version}" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.powermock" name="powermock-api-mockito" rev="${org.powermock.version}" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.powermock" name="powermock-api-support" rev="${org.powermock.version}" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.powermock" name="powermock-reflect" rev="${org.powermock.version}" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-test" rev="${spring.version}" conf="test->master${artifact.spread.semicolon}" />
 		<dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="test->master" />
 
-		<dependency org="mysql" name="mysql-connector-java" rev="5.1.28" conf="runtime->master${semicolon.source}" />
-		<!-- <dependency org="ojdbc" name="ojdbc" rev="14" conf="runtime->default${semicolon.source}" /> -->
-		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="provided->default${semicolon.source}" />
+		<dependency org="mysql" name="mysql-connector-java" rev="5.1.28" conf="runtime->master${artifact.spread.semicolon}" />
+		<!-- <dependency org="ojdbc" name="ojdbc" rev="14" conf="runtime->default${artifact.spread.semicolon}" /> -->
+		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="provided->default${artifact.spread.semicolon}" />
 	</dependencies>
 </ivy-module>

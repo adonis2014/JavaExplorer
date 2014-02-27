@@ -43,23 +43,23 @@
 				<path refid="expand-test-classpath" />
 				<pathelement location="${project-test-directory}" />
 			</classpath>
-			<!--batchtest todir="${integration-test-reports-directory}">
+			<!--batchtest todir="${project-integration-test-reports-directory}">
 				<fileset dir="${project-test-directory}" includes="integrationTest/**/*Test.class" />
 			</batchtest-->
-			<test todir="${integration-test-reports-directory}" name="integrationTest.AllTests" />
+			<test todir="${project-integration-test-reports-directory}" name="integrationTest.AllTests" />
 		</junit>
 	</target>
 
 	<target name="generate-test-report" depends="test,baseBuild.generate-test-report" if="test.reportable">
-		<junitreport todir="${integration-test-reports-directory}">
-			<fileset dir="${integration-test-reports-directory}" includes="TEST-*.xml" />
-			<report format="frames" todir="${integration-test-reports-directory}" />
+		<junitreport todir="${project-integration-test-reports-directory}">
+			<fileset dir="${project-integration-test-reports-directory}" includes="TEST-*.xml" />
+			<report format="frames" todir="${project-integration-test-reports-directory}" />
 		</junitreport>
 		<delete includeemptydirs="true">
-			<fileset dir="${integration-test-reports-directory}" includes="*.xml" />
+			<fileset dir="${project-integration-test-reports-directory}" includes="*.xml" />
 		</delete>
 	</target>
-
+	
 	<target name="package" depends="generate-test-report">
 		<!--pathconvert pathsep="," property="war.libs" refid="compile-classpath">
 		</pathconvert>

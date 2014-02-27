@@ -5,17 +5,19 @@
 	<tstamp />
 	<property environment="env" />
 
-	<property file="../base.properties"/>
+	<property file="../base.properties" />
 
 	<property name="work-directory" location="${ant-build-space}/${ant-build-space-name}" />
 	<property name="work-dist-directory" location="${work-directory}/dist" />
+
 	<property name="project-directory" location="${work-directory}/${ant.project.name}" />
 	<property name="project-class-directory" location="${project-directory}/class" />
+	<property name="project-javadocs-directory" location="${project-directory}/javadocs" />
 	<property name="project-test-directory" location="${project-directory}/test" />
 	<property name="project-dist-directory" location="${project-directory}/${distribution-directory-name}" />
 	<property name="project-reports-directory" location="${project-directory}/reports" />
-	<property name="unit-test-reports-directory" location="${project-reports-directory}/unitTest" />
-	<property name="integration-test-reports-directory" location="${project-reports-directory}/integrationTest" />
+	<property name="project-unit-test-reports-directory" location="${project-reports-directory}/unitTest" />
+	<property name="project-integration-test-reports-directory" location="${project-reports-directory}/integrationTest" />
 
 	<!-- <property name="test.reportable" value="true"/> -->
 	<available property="work.directory.present" file="${work-directory}" type="dir" />
@@ -29,24 +31,54 @@
 	<target name="create-project-directory" depends="create-work-directory" unless="work.project.directory.present">
 		<mkdir dir="${project-directory}" taskname="Create project directory." />
 		<mkdir dir="${project-class-directory}" taskname="Create class directory." />
+		<mkdir dir="${project-javadocs-directory}" taskname="Create javadocs directory." />
 		<mkdir dir="${project-test-directory}" taskname="Create test directory." />
 		<mkdir dir="${project-dist-directory}" taskname="Create distribution directory." />
 		<mkdir dir="${project-reports-directory}" taskname="Create reports directory." />
-		<mkdir dir="${unit-test-reports-directory}" taskname="Create unit test reports directory." />
-		<mkdir dir="${integration-test-reports-directory}" taskname="Create integration test reports directory." />
+		<mkdir dir="${project-unit-test-reports-directory}" taskname="Create unit test reports directory." />
+		<mkdir dir="${project-integration-test-reports-directory}" taskname="Create integration test reports directory." />
 	</target>
 
-	<target name="initialize" depends="create-project-directory" description="Generate work directory ann set Ivy properties.">
-		<condition property="comma.source" value=",sources" else="">
-			<isset property="packaging.source"/>
-		</condition>
+	<target name="initialize" depends="create-project-directory" unless="base.target.initialized" description="Generate work directory ann set Ivy properties.">
+		<!-- -DspreadConf=";sources;javadoc" -->
+		<scriptdef name="ivyConfGenerate" language="javascript" description="This target is artifact spread punctuation generating.">
+			<attribute name="originalspreadproperty" />
+			<attribute name="targetspreadproperty" />
+			<attribute name="punctuation" />
+			<![CDATA[
+				importClass(java.util.Arrays);
+				
+				originalSpreadValue=project.getProperty(attributes.get("originalspreadproperty"));
+				targetSpreadProperty=attributes.get("targetspreadproperty");
+				punctuation=attributes.get("punctuation");
+				resultPropertyValue="";
+				
+				if(originalSpreadValue!=null){
+					var spf="sources";
+					var sp="source.packaging";
+					var dpf="javadoc";
+					var dp="javadoc.packaging"
+					
+					var artifacts=Arrays.asList(originalSpreadValue.split("\\W+",0));
+					for(var i=0;i<artifacts.size();i+=1){
+						if(artifacts.get(i).length()==0){
+							continue;
+						}
+						if(artifacts.get(i).equals(spf)){
+							project.setNewProperty(sp,true);
+						}else if(artifacts.get(i).equals(dpf)){
+							project.setNewProperty(dp,true);
+						}
+						resultPropertyValue+=punctuation+artifacts.get(i);
+					}
+				}
+				project.setNewProperty(targetSpreadProperty,resultPropertyValue);
+			]]>
+		</scriptdef>
 
-		<condition property="semicolon.source" value=";sources" else="">
-			<not>
-				<equals arg1="${comma.source}" arg2=""/>
-			</not>
-		</condition>
-
+		<ivyConfGenerate originalspreadproperty="spreadConf" targetspreadproperty="artifact.spread.semicolon" punctuation="${punctuation.semicolon}" />
+		<ivyConfGenerate originalspreadproperty="spreadConf" targetspreadproperty="artifact.spread.comma" punctuation="${punctuation.comma}" />
+		
 		<!-- Set ivy default user dir property -->
 		<available file="${ivy.win.parent.path}" type="dir" property="ivy.win.parent.path.exist" />
 
@@ -61,13 +93,16 @@
 		<echo message="${ant.project.name} ${TODAY} ${DSTAMP}" />
 		<echo message="Generate directory complete." />
 		<echo message="${basedir}" />
-		
+
 		<ivy:settings />
+		
+		<property name="base.target.initialized" value="true"/>
 	</target>
 
-	<target name="resolve" depends="initialize">
-		<ivy:resolve useCacheOnly="${offline}"/>
-		<ivy:artifactproperty name="artifact.path.[artifact]" value="${ivy.cache.dir}/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
+	<target name="resolve" depends="initialize" unless="base.target.resolved">
+		<ivy:resolve useCacheOnly="${offline}" />
+		
+		<ivy:artifactproperty name="artifact.path.[artifact]" value="${ivy.cache.dir}/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]" />
 
 		<ivy:cachepath conf="compile" pathid="compile-classpath" />
 		<ivy:cachepath conf="provided" pathid="provided-classpath" />
@@ -80,10 +115,12 @@
 		</path>
 
 		<path id="expand-test-classpath">
-			<path location="${project-class-directory}"/>
+			<path location="${project-class-directory}" />
 			<path refid="test-classpath" />
 			<path refid="provided-classpath" />
 		</path>
+		
+		<property name="base.target.resolved" value="true"/>
 	</target>
 
 	<!--
@@ -92,18 +129,18 @@
 		<ivy:report />
 	</target>
 	-->
-	
+
 	<target name="compile" depends="resolve">
 		<javac srcdir="src" destdir="${project-class-directory}" classpathref="expand-compile-classpath" includeantruntime="false" excludes="test/**/*,integrationTest/**/*" />
 		<copy todir="${project-class-directory}" includeEmptyDirs="false">
-			<fileset dir="src" excludes="**/*.java,META-INF/**,test/**,integrationTest/**" />
+			<fileset dir="src" excludes="**/*.java,test/**,integrationTest/**" />
 		</copy>
 	</target>
 
 	<target name="compile-test" depends="compile">
-		<javac srcdir="src" destdir="${project-test-directory}" classpathref="expand-test-classpath" includeantruntime="false" includes="test/**"/>
+		<javac srcdir="src" destdir="${project-test-directory}" classpathref="expand-test-classpath" includeantruntime="false" includes="test/**" />
 		<copy todir="${project-test-directory}" includeEmptyDirs="false">
-			<fileset dir="src" excludes="**/*.java,META-INF/**" includes="test/**,*.*"/>
+			<fileset dir="src" excludes="**/*.java,META-INF/**" includes="test/**,*.*" />
 		</copy>
 	</target>
 
@@ -115,47 +152,52 @@
 				<path refid="expand-test-classpath" />
 				<pathelement location="${project-test-directory}" />
 			</classpath>
-			<batchtest todir="${unit-test-reports-directory}">
+			<batchtest todir="${project-unit-test-reports-directory}">
 				<fileset dir="${project-test-directory}" includes="test/**/*TestCase.class" />
 			</batchtest>
-			<!--<test todir="${unit-test-reports-directory}" name="test.name.chenyuelin.AllTests" /> -->
+			<!--<test todir="${project-unit-test-reports-directory}" name="test.name.chenyuelin.AllTests" /> -->
 		</junit>
 	</target>
 
 	<target name="generate-test-report" depends="test" if="test.reportable">
-		<junitreport todir="${unit-test-reports-directory}">
-			<fileset dir="${unit-test-reports-directory}" includes="TEST-*.xml" />
-			<report format="frames" todir="${unit-test-reports-directory}" />
+		<junitreport todir="${project-unit-test-reports-directory}">
+			<fileset dir="${project-unit-test-reports-directory}" includes="TEST-*.xml" />
+			<report format="frames" todir="${project-unit-test-reports-directory}" />
 		</junitreport>
 		<delete includeemptydirs="true">
-			<fileset dir="${unit-test-reports-directory}" includes="*.xml" />
+			<fileset dir="${project-unit-test-reports-directory}" includes="*.xml" />
 		</delete>
 	</target>
 
-	<target name="package-source" depends="initialize" if="packaging.source">
-		<echo message="Packaging this project source..."/>
-		<zip destfile="${project-dist-directory}/${ant.project.name}-source.zip" basedir="src" update="true"/>
+	<target name="javadoc" depends="resolve" if="javadoc.packaging">
+		<javadoc classpathref="expand-compile-classpath" sourcepath="src" packagenames="name.*" destdir="${project-javadocs-directory}" windowtitle="${ant.project.name} API" />
+		<zip destfile="${project-dist-directory}/${ant.project.name}-${ivy.revision}-javadoc.zip" basedir="${project-javadocs-directory}" update="true" />
 	</target>
 
-	<target name="package" depends="package-source,generate-test-report">
-		<jar destfile="${project-dist-directory}/${ant.project.name}.jar" basedir="${project-class-directory}">
+	<target name="package-source" depends="initialize" if="source.packaging">
+		<zip destfile="${project-dist-directory}/${ant.project.name}-${ivy.revision}-source.zip" basedir="src" update="true" />
+	</target>
+
+	<target name="package" depends="generate-test-report,package-source">
+		<!-- <jar destfile="${project-dist-directory}/${ant.project.name}.jar" basedir="${project-class-directory}">
 			<metainf dir="src/META-INF" />
-		</jar>
+		</jar> -->
+		<jar destfile="${project-dist-directory}/${ant.project.name}-${ivy.revision}.jar" basedir="${project-class-directory}" />
 	</target>
 
 	<target name="clean" if="work.project.directory.present">
 		<delete includeemptydirs="true">
 			<fileset dir="${project-class-directory}" includes="**/*" />
 			<fileset dir="${project-test-directory}" includes="**/*" />
-			<fileset dir="${unit-test-reports-directory}" includes="**/*" />
-			<fileset dir="${integration-test-reports-directory}" includes="**/*" />
+			<fileset dir="${project-javadocs-directory}" includes="**/*" />
 			<fileset dir="${project-dist-directory}" includes="**/*" />
+			<fileset dir="${project-unit-test-reports-directory}" includes="**/*" />
+			<fileset dir="${project-integration-test-reports-directory}" includes="**/*" />
 			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}*.*" />
 		</delete>
-
 	</target>
 
-	<target name="destroy">
+	<target name="destroy" if="work.project.directory.present">
 		<delete dir="${project-directory}" />
 		<delete includeemptydirs="true">
 			<fileset dir="${work-dist-directory}" includes="*${ant.project.name}*.*" />

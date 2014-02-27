@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1"
-	xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
 						http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="testDB" transaction-type="RESOURCE_LOCAL">
@@ -28,22 +26,25 @@
 		<class>name.chenyuelin.entity.test.TreeTable</class>
 		<class>name.chenyuelin.entity.test.UserCategory</class>
 
-		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
 		<validation-mode>NONE</validation-mode>
 
 		<properties>
 			<!-- <property name="eclipselink.logging.logger" value="JavaLogger" /> -->
 			<!-- <property name="eclipselink.logging.file" value="output.log" /> -->
-			<property name="eclipselink.logging.level" value="ALL" />
+			<property name="eclipselink.logging.level" value="INFO" />
 			<property name="eclipselink.logging.level.sql" value="ALL" />
-			<property name="eclipselink.logging.level.jpa" value="ALL" />
-			<property name="eclipselink.logging.level.transaction" value="ALL" />
-			<property name="eclipselink.logging.level.query" value="ALL" />
+			<property name="eclipselink.logging.format.sql" value="TRUE" />
+			<property name="eclipselink.weaving" value="true" />
+<!-- 			<property name="eclipselink.logging.level.jpa" value="INFO" /> -->
+<!-- 			<property name="eclipselink.logging.level.connection" value="INFO" /> -->
+<!-- 			<property name="eclipselink.logging.level.transaction" value="INFO" /> -->
+<!-- 			<property name="eclipselink.logging.level.query" value="INFO" /> -->
 			<property name="eclipselink.logging.level.cache" value="ALL" />
 			<property name="eclipselink.logging.parameters" value="true" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=convertToNull" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=gbk" />
 			<property name="javax.persistence.jdbc.user" value="developer" />
 			<property name="javax.persistence.jdbc.password" value="developer" />
 

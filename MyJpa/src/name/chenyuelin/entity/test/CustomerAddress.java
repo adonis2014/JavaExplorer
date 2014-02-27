@@ -28,14 +28,14 @@ public class CustomerAddress implements Serializable {
 	
 	private boolean active;
 
-	@Column(name = "create_time")
+	@Column(name = "create_time",insertable=false,updatable=false)
 	private Timestamp createTime;
 
 	private String phone;
 
 	private String street;
 
-	@Column(name = "update_time")
+	@Column(name = "update_time",insertable=false)
 	private Timestamp updateTime;
 
 	// bi-directional many-to-one association to Area

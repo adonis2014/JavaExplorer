@@ -2,8 +2,7 @@ package name.chenyuelin.dto;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.Set;
-
+import java.util.Collection;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,124 +19,124 @@ import name.chenyuelin.transformer.Jaxb2SqlTimeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PersonDto {
 	private byte id;
-	
+
 	private String name;
-	
-	public byte getId() {
-		return id;
-	}
 
-	public void setId(byte id) {
-		this.id = id;
-	}
+	private Sex sex;
 
-	public String getName() {
-		return name;
-	}
+	@XmlJavaTypeAdapter(Jaxb2SqlDataAdapter.class)
+	private Date birthday;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	private double height;
 
-	public Sex getSex() {
-		return sex;
-	}
+	@XmlJavaTypeAdapter(Jaxb2SqlTimeAdapter.class)
+	private Time breakfastTime;
 
-	public void setSex(Sex sex) {
-		this.sex = sex;
+	@XmlSchemaType(name = "dateTime")
+	private XMLGregorianCalendar createTime;
+
+	private int salary;
+
+	private String note;
+
+	private Collection<Language> languages;
+
+	private byte version;
+
+	private Boolean active;
+
+	public Boolean getActive() {
+		return active;
 	}
 
 	public Date getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
-	}
-
 	public Time getBreakfastTime() {
 		return breakfastTime;
-	}
-
-	public void setBreakfastTime(Time breakfastTime) {
-		this.breakfastTime = breakfastTime;
 	}
 
 	public XMLGregorianCalendar getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(XMLGregorianCalendar createTime) {
-		this.createTime = createTime;
+	public double getHeight() {
+		return height;
 	}
 
-	public int getSalary() {
-		return salary;
+	public byte getId() {
+		return id;
 	}
 
-	public void setSalary(int salary) {
-		this.salary = salary;
+	public Collection<Language> getLanguages() {
+		return languages;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String getNote() {
 		return note;
 	}
 
-	public void setNote(String note) {
-		this.note = note;
+	public int getSalary() {
+		return salary;
 	}
 
-	public Set<Language> getLanguages() {
-		return languages;
-	}
-
-	public void setLanguages(Set<Language> languages) {
-		this.languages = languages;
+	public Sex getSex() {
+		return sex;
 	}
 
 	public byte getVersion() {
 		return version;
 	}
 
-	public void setVersion(byte version) {
-		this.version = version;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
-	private Sex sex;
-	
-	@XmlJavaTypeAdapter(Jaxb2SqlDataAdapter.class)
-	private Date birthday;
-	private double height;
-	
-	@XmlJavaTypeAdapter(Jaxb2SqlTimeAdapter.class)
-	private Time breakfastTime;
-	
-	@XmlSchemaType(name="dateTime")
-    private XMLGregorianCalendar createTime;
-	
-	private int salary;
-	
-	private String note;
-	
-	private Set<Language> languages;
-	
-	private byte version;
-	
-	private Boolean active;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public void setBreakfastTime(Time breakfastTime) {
+		this.breakfastTime = breakfastTime;
+	}
+
+	public void setCreateTime(XMLGregorianCalendar createTime) {
+		this.createTime = createTime;
+	}
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	public void setId(byte id) {
+		this.id = id;
+	}
+
+	public void setLanguages(Collection<Language> languages) {
+		this.languages = languages;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+
+	public void setSex(Sex sex) {
+		this.sex = sex;
+	}
+
+	public void setVersion(byte version) {
+		this.version = version;
+	}
 }

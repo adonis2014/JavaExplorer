@@ -1,10 +1,24 @@
 package name.chenyuelin.entity.test;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import name.chenyuelin.enums.Sex;
 
 /**
  * The persistent class for the customer database table.
@@ -13,10 +27,7 @@ import java.util.List;
 @Table(name = "customer")
 public class Customer implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7863213895640300306L;
+	private static final long serialVersionUID = -4848794052636860089L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +60,8 @@ public class Customer implements Serializable {
 
 	private String password;
 
-	private String sex;
+	@Enumerated(EnumType.STRING)
+	private Sex sex;
 
 	// bi-directional many-to-one association to CustomerAddress
 	@OneToMany(mappedBy = "customer")
@@ -62,112 +74,112 @@ public class Customer implements Serializable {
 	public Customer() {
 	}
 
-	public byte getId() {
-		return this.id;
-	}
-
-	public void setId(byte id) {
-		this.id = id;
-	}
-
 	public boolean getActive() {
 		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 
 	public Date getBirthday() {
 		return this.birthday;
 	}
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
 	public String getComment() {
 		return this.comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
 	}
 
 	public Timestamp getCreateTime() {
 		return this.createTime;
 	}
 
-	public void setCreateTime(Timestamp createTime) {
-		this.createTime = createTime;
-	}
-
 	public byte[] getCustomData() {
 		return this.customData;
-	}
-
-	public void setCustomData(byte[] customData) {
-		this.customData = customData;
-	}
-
-	public byte getDefaultAddress() {
-		return this.defaultAddress;
-	}
-
-	public void setDefaultAddress(byte defaultAddress) {
-		this.defaultAddress = defaultAddress;
-	}
-
-	public String getEmail() {
-		return this.email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getMobilePhoneNum() {
-		return this.mobilePhoneNum;
-	}
-
-	public void setMobilePhoneNum(String mobilePhoneNum) {
-		this.mobilePhoneNum = mobilePhoneNum;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getSex() {
-		return this.sex;
-	}
-
-	public void setSex(String sex) {
-		this.sex = sex;
 	}
 
 	public List<CustomerAddress> getCustomerAddresses() {
 		return this.customerAddresses;
 	}
 
-	public void setCustomerAddresses(List<CustomerAddress> customerAddresses) {
-		this.customerAddresses = customerAddresses;
+	public byte getDefaultAddress() {
+		return this.defaultAddress;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public byte getId() {
+		return this.id;
+	}
+
+	public String getMobilePhoneNum() {
+		return this.mobilePhoneNum;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public Sex getSex() {
+		return sex;
 	}
 
 	public List<SimpleOrder> getSimpleOrders() {
 		return this.simpleOrders;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
+	}
+
+	public void setCustomData(byte[] customData) {
+		this.customData = customData;
+	}
+
+	public void setCustomerAddresses(List<CustomerAddress> customerAddresses) {
+		this.customerAddresses = customerAddresses;
+	}
+
+	public void setDefaultAddress(byte defaultAddress) {
+		this.defaultAddress = defaultAddress;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setId(byte id) {
+		this.id = id;
+	}
+
+	public void setMobilePhoneNum(String mobilePhoneNum) {
+		this.mobilePhoneNum = mobilePhoneNum;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setSex(Sex sex) {
+		this.sex = sex;
 	}
 
 	public void setSimpleOrders(List<SimpleOrder> simpleOrders) {

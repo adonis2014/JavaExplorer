@@ -12,7 +12,7 @@ import name.chenyuelin.enums.Language;
 import org.eclipse.persistence.logging.AbstractSessionLog;
 import org.eclipse.persistence.logging.SessionLog;
 
-@Converter(autoApply=false)
+@Converter(autoApply = false)
 public class JpaSqlSetConverter implements AttributeConverter<Collection<Language>, String> {
 
 	private static final String COMMA_SPLIT = ",";
@@ -42,7 +42,7 @@ public class JpaSqlSetConverter implements AttributeConverter<Collection<Languag
 		if (log.shouldLog(SessionLog.FINEST)) {
 			log.log(SessionLog.FINEST, "jpa", "convertToEntityAttribute start.", null);
 		}
-		if (dbData.equals("")) {
+		if (dbData == null || dbData.equals("")) {
 			return null;
 		}
 		Collection<Language> launcherSet = new ArrayList<Language>();
