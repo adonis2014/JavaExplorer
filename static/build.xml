@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="GB18030"?>
+<project name="static" basedir="." default="initialize" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property file="build.properties"/>
+
+	<property name="work-directory" location="${ant-build-space}/${ant-build-space-name}" />
+	<property name="work-dist-directory" location="${work-directory}/dist" />
+
+	<property name="project-directory" location="${work-directory}/${ant.project.name}" />
+	<property name="project-js-directory" location="${project-directory}/js" />
+	<property name="project-css-directory" location="${project-directory}/css" />
+	<property name="project-image-directory" location="${project-directory}/image" />
+
+	<available property="work.directory.present" file="${work-directory}" type="dir" />
+	<available property="work.project.directory.present" file="${project-directory}" type="dir" />
+
+	<target name="_create-work-directory" unless="work.directory.present">
+		<mkdir dir="${work-directory}" taskname="Create work directory." />
+		<mkdir dir="${work-dist-directory}" taskname="Create dist directory." />
+	</target>
+
+	<target name="_create-project-directory" depends="_create-work-directory" unless="work.project.directory.present">
+		<mkdir dir="${project-directory}" taskname="Create project directory." />
+		<mkdir dir="${project-js-directory}" taskname="Create js directory." />
+		<mkdir dir="${project-css-directory}" taskname="Create css directory." />
+		<mkdir dir="${project-image-directory}" taskname="Create image directory." />
+	</target>
+
+	<presetdef name="mergeJs" uri="chenyuelin.name">
+		<concat fixlastline="true" destfile="${presetdef.script.destfile}">
+			<filelist refid="presetdef.script.filelist.refid"/>
+			<filterchain>
+				<tokenfilter>
+					<filetokenizer />
+				</tokenfilter>
+				<stripjavacomments />
+				<striplinebreaks />
+			</filterchain>
+		</concat>
+	</presetdef>
+
+	<target name="initialize" depends="_create-project-directory">
+		<!-- Set ivy default user dir property -->
+		<available file="${ivy.win.parent.path}" type="dir" property="ivy.win.parent.path.exist" />
+		<condition property="ivy.default.ivy.user.dir" value="${ivy.win.parent.path}/${ivy.win.dir.name}">
+			<and>
+				<os family="windows" />
+				<isset property="ivy.win.parent.path.exist" />
+			</and>
+		</condition>
+		<!-- end -->
+
+		<ivy:settings />
+		<ivy:resolve/>
+		<ivy:artifactproperty name="artifact.path.[artifact]" value="${ivy.cache.dir}/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]" conf="compile"/>
+
+		<concat destfile="${project-js-directory}/lib.min.js">
+			<header trimleading="true">
+				<![CDATA[/*
+				Lines that contain project
+				==========================
+				*/]]>
+			</header>
+			<footer trimleading="true">
+				<![CDATA[/*
+				====================
+				*/]]>
+			</footer>
+			<concat fixlastline="true">
+				<filelist dir="${path.src.webContent}/js/lib">
+					<file name="jquery-2.1.0.min.js" />
+					<file name="jquery-ui-1.10.4.custom.min.js" />
+					<file name="underscore-min.js" />
+					<file name="backbone-min.js" />
+				</filelist>
+				<filterchain>
+					<tokenfilter>
+						<filetokenizer />
+						<scriptfilter language="javascript" byline="false">
+							<![CDATA[
+								content = self.getToken();
+								content=content.replaceAll("(?s)/\\*.*?\\*/","");
+								self.setToken(content);
+							]]>
+						</scriptfilter>
+					</tokenfilter>
+					<striplinecomments>
+						<comment value="//"/>
+					</striplinecomments>
+					<striplinebreaks/>
+				</filterchain>
+			</concat>
+		</concat>
+
+		<copy todir="${project-directory}" overwrite="true">
+			<fileset dir="WebContent" includes="**/*.html"/>
+			<filterchain>
+				<tokenfilter>
+					<filetokenizer />
+					<scriptfilter language="javascript" src="build.compressEngine.js"/>
+				</tokenfilter>
+				<tokenfilter>
+					<ignoreblank />
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+	<target name="clean" depends="_create-project-directory">
+		<delete includeemptydirs="true">
+			<fileset dir="${project-js-directory}" includes="**/*" />
+			<fileset dir="${project-css-directory}" includes="**/*" />
+			<fileset dir="${project-image-directory}" includes="**/*" />
+			<fileset dir="${project-directory}" includes="**/*" excludes="js,css,image" />
+		</delete>
+	</target>
+</project>

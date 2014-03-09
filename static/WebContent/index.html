@@ -4,9 +4,33 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
 <title>Hello World</title>
-<script type="text/javascript" src="lib/jquery-2.0.0.min.js"></script>
-<script type="text/javascript" src="lib/underscore-min.js"></script>
-<script type="text/javascript" src="lib/backbone-min.js"></script>
+<script src="js/lib/ccc.js"></script>
+<!-- <script src="js/lib/jquery-ui-1.10.4.custom.min.js"></script> -->
+<!-- <script src="js/lib/underscore-min.js"></script> -->
+<!-- <script src="js/lib/backbone-min.js"></script> -->
+
+<script src="js/base1.js"></script>
+<script src="js/base2.js"></script>
+
+<script src="js/index/a.js"></script>
+<script src="js/index/b.js"></script>
+
+<script type="textjavascript">
+Note = Backbone.Model.extend({
+
+  initialize: function() {},
+
+  author: function() {},
+
+  coordinates: function() {},
+
+  allowedToEdit: function(account) {
+    return true;
+  }
+
+});
+
+</script>
 
 <script id="entry-template1" type="text/x-handlebars-template">
   <input type="text" value="<%= value %>"/>
@@ -27,27 +51,41 @@
   <h1>hellow</h1>
 </script>
 <script type="text/javascript">
-$().ready(function(){
-    var aaa=[{a:1},{b:3}];
-    var ccc=$.extend(true,[],aaa);
-    var bbb=aaa.concat(ccc);
-    alert(aaa===ccc);
-    alert(aaa===bbb)
-    
-    var template1=_.template($("#entry-template1").text());
-    $("body").append(template1({value:1}));
-    $("body").append(template1({value:2}));
-    var template2=_.template($("#entry-template2").text());
-    $("body").append(template2({value : '<script>'}));
-    var template3=_.template($("#entry-template3").text());
-    $("body").append(template3({people : ["张三","李四","王五"]}));
-    var template4=_.template($("#entry-template4").text());
-    $("body").append(template4());
-});
+	var reg = /b(?=a)/;
+	alert("acab".replace(reg, "*"));
+	$().ready(function() {
+		var aaa = [ {
+			a : 1
+		}, {
+			b : 3
+		} ];
+		var ccc = $.extend(true, [], aaa);
+		var bbb = aaa.concat(ccc);
+		alert(aaa === ccc);
+		alert(aaa === bbb)
+
+		var template1 = _.template($("#entry-template1").text());
+		$("body").append(template1({
+			value : 1
+		}));
+		$("body").append(template1({
+			value : 2
+		}));
+		var template2 = _.template($("#entry-template2").text());
+		$("body").append(template2({
+			value : '<script>'
+		}));
+		var template3 = _.template($("#entry-template3").text());
+		$("body").append(template3({
+			people : [ "张三", "李四", "王五" ]
+		}));
+		var template4 = _.template($("#entry-template4").text());
+		$("body").append(template4());
+	});
 </script>
 </head>
 <body>
-work now!
-<div style="display: none;"></div>
+	work now!
+	<div style="display: none;"></div>
 </body>
 </html>

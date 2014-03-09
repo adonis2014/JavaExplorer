@@ -23,12 +23,12 @@
 	<available property="work.directory.present" file="${work-directory}" type="dir" />
 	<available property="work.project.directory.present" file="${project-directory}" type="dir" />
 
-	<target name="create-work-directory" unless="work.directory.present">
+	<target name="_create-work-directory" unless="work.directory.present">
 		<mkdir dir="${work-directory}" taskname="Create work directory." />
 		<mkdir dir="${work-dist-directory}" taskname="Create dist directory." />
 	</target>
 
-	<target name="create-project-directory" depends="create-work-directory" unless="work.project.directory.present">
+	<target name="_create-project-directory" depends="_create-work-directory" unless="work.project.directory.present">
 		<mkdir dir="${project-directory}" taskname="Create project directory." />
 		<mkdir dir="${project-class-directory}" taskname="Create class directory." />
 		<mkdir dir="${project-javadocs-directory}" taskname="Create javadocs directory." />
@@ -39,7 +39,7 @@
 		<mkdir dir="${project-integration-test-reports-directory}" taskname="Create integration test reports directory." />
 	</target>
 
-	<target name="initialize" depends="create-project-directory" unless="base.target.initialized" description="Generate work directory ann set Ivy properties.">
+	<target name="initialize" depends="_create-project-directory" unless="base.target.initialized" description="Generate work directory ann set Ivy properties.">
 		<!-- -DspreadConf=";sources;javadoc" -->
 		<scriptdef name="ivyConfGenerate" language="javascript" description="This target is artifact spread punctuation generating.">
 			<attribute name="originalspreadproperty" />
