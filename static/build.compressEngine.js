@@ -15,6 +15,7 @@ prop.urlSeparator=project.getProperty("compressEngine.urlSeparator");
 prop.webContent=project.getProperty("path.src.webContent");
 prop.proDir=project.getProperty("project-js-directory");
 prop.excludeDirs=project.getProperty("compressEngine.directory.excludes").split(",");
+prop.mergeDirs=project.getProperty("compressEngine.directory.merge").split(",");
 
 content = self.getToken();
 content = content.replaceAll("(?s)<!--.*?-->", "");
@@ -171,11 +172,18 @@ function mergeFile(resultMap) {
 	var scripts = new StringBuilder(50);
 	var entrySet = resultMap.entrySet();
 	var iterator = entrySet.iterator();
+	var mergeKeys = new ArrayList();
 	while (iterator.hasNext()) {
 		var entry = iterator.next();
 		var key = entry.getKey();
 		var value = entry.getValue();
 
+		// mergeFile
+		if (arrayContains(prop.mergeDirs,key)>-1) {
+			mergeKeys.add(key);
+			continue;
+		}
+		
 		var mineFile = value.get("mineFile");
 		var fileListDir = value.get("fileListDir");
 		var fileList = value.get("fileList");
@@ -183,8 +191,8 @@ function mergeFile(resultMap) {
 
 		scripts.append("<script src=\"").append(mineFile).append("\"></script>");
 
-		// mergeFile
-		if (arrayContains(prop.excludeDirs,key)) {
+		// libFile
+		if (arrayContains(prop.excludeDirs,key)>-1) {
 			continue;
 		}
 		
@@ -203,6 +211,37 @@ function mergeFile(resultMap) {
 		var filelistDataType = project.createDataType("filelist");
 		filelistDataType.setDir(new File(project.getBaseDir(), fileListDir));
 
+		//merge the Files
+		if(mergeKeys.size()>0){
+			var mergeKeysListIterator = mergeKeys.iterator();
+			while (mergeKeysListIterator.hasNext()) {
+				var mergeKey=mergeKeysListIterator.next();
+				var mergeValue=resultMap.get(mergeKey);
+				var mergeFileListDir=mergeValue.get("fileListDir");
+				var mergeFileList=mergeValue.get("fileList");
+				
+				var parentPath="";
+				
+				var parentFileListDirArray=fileListDir.split(prop.urlSeparator);
+				for(var i=2;i<parentFileListDirArray.length;i+=1){
+					parentPath+=".."+prop.urlSeparator;
+				}
+
+				var mergeFileListDirArray=mergeFileListDir.split(prop.urlSeparator);
+				for(var i=2;i<mergeFileListDirArray.length;i+=1){
+					parentPath+=mergeFileListDirArray[i]+prop.urlSeparator;
+				}
+
+				var fileListIterator = mergeFileList.iterator();
+				while (fileListIterator.hasNext()) {
+					var fileName = new FileList.FileName();
+					fileName.setName(parentPath+fileListIterator.next());
+					filelistDataType.addConfiguredFile(fileName);
+				}
+			}
+			mergeKeys.clear();
+		}
+		
 		var fileListIterator = fileList.iterator();
 		while (fileListIterator.hasNext()) {
 			var fileName = new FileList.FileName();
@@ -242,10 +281,10 @@ function mergeFile(resultMap) {
 }
 
 function arrayContains(array,searchObject){
-	var result=false;
+	var result=-1;
 	for(var i=0;i<array.length;i+=1){
 		if(array[i].equals(searchObject)){
-			result=true;
+			result=i;
 			break;
 		}
 	}

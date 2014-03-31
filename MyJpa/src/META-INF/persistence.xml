@@ -36,7 +36,7 @@
 			<property name="eclipselink.logging.level" value="INFO" />
 			<property name="eclipselink.logging.level.sql" value="ALL" />
 			<property name="eclipselink.logging.format.sql" value="TRUE" />
-			<property name="eclipselink.weaving" value="true" />
+<!-- 			<property name="eclipselink.weaving" value="dynamic" /> -->
 <!-- 			<property name="eclipselink.logging.level.jpa" value="INFO" /> -->
 <!-- 			<property name="eclipselink.logging.level.connection" value="INFO" /> -->
 <!-- 			<property name="eclipselink.logging.level.transaction" value="INFO" /> -->

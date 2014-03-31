@@ -59,7 +59,7 @@
 			<fileset dir="${project-integration-test-reports-directory}" includes="*.xml" />
 		</delete>
 	</target>
-	
+
 	<target name="package" depends="generate-test-report">
 		<!--pathconvert pathsep="," property="war.libs" refid="compile-classpath">
 		</pathconvert>
@@ -110,6 +110,19 @@
 			<lib file="${artifact.path.poi-scratchpad}" />
 
 			<lib file="${artifact.path.DataPersistence}" />
+			
+			<!-- ant 1.8+
+			<mappedresources>
+				<restrict>
+					<path refid="expand-compile-classpath"/>
+					<type type="file"/>
+				</restrict>
+				<chainedmapper>
+					<flattenmapper/>
+					<globmapper from="*" to="WEB-INF/lib/*"/>
+				</chainedmapper>
+			</mappedresources>
+			-->
 		</war>
 	</target>
 
