@@ -15,6 +15,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
   				/WEB-INF/configuration/appConfig/applicationContext.xml
+  				/WEB-INF/configuration/appConfig/security.xml
 			</param-value>
 	</context-param>
 
@@ -32,19 +33,29 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<!-- Spring security filter. -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<servlet-name>SpringMVC</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<servlet>
 		<servlet-name>SpringMVC</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-					/WEB-INF/configuration/servletConfig/security.xml
 					/WEB-INF/configuration/servletConfig/servletCoreContext.xml
 					/WEB-INF/configuration/servletConfig/dispatcherStaticServletContext.xml
 					/WEB-INF/configuration/servletConfig/validatorContext.xml
   				</param-value>
 		</init-param>
-		<load-on-startup>2</load-on-startup>
+		<load-on-startup>1</load-on-startup>
 		<multipart-config/>
 	</servlet>
 
@@ -74,17 +85,6 @@
 		<filter-name>encodingFilter</filter-name>
 		<servlet-name>SpringMVC</servlet-name>
 	</filter-mapping>
-
-	<!-- Spring security filter. -->
-	<!-- <filter>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<servlet-name>SpringMVC</servlet-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
 
 	<!-- <filter>
 		<filter-name>HiddenHttpMethodFilter</filter-name>

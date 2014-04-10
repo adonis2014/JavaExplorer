@@ -56,7 +56,11 @@
 			</list>
 		</property>
 	</bean>
-
+	
+	<bean id="defaultJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	
 	<beans profile="production">
 		<import resource="production.xml" />
 	</beans>

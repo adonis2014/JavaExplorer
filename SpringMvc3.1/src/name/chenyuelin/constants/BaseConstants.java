@@ -27,6 +27,10 @@ public final class BaseConstants {
 
 	public static final String STRING_ENCODING_GB18030 = "GB18030";
 
+	public static final String SECURITY_FILTER_CHAIN_NAME = "httpSecurityFilterChain";
+
+	public static final String STRING_URI_SEPARATOR = "/";
+	
 	private static DatatypeFactory createDatatypeFactory() {
 		try {
 			return DatatypeFactory.newInstance();
