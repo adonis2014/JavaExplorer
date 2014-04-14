@@ -3,9 +3,30 @@
 <head>
 <meta charset="GB18030">
 <title>FileRead</title>
+<link rel="stylesheet" href="../css/lib/redmond/jquery-ui-1.10.4.custom.min.css">
+<link rel="stylesheet" href="../css/lib/layout-default-latest.css">
+<link rel="stylesheet" href="../css/lib/ui.jqgrid.css">
 <script src="../js/lib/jquery-2.1.0.js"></script>
-<script src="../js/lib/jquery.csv-0.71.min.js"></script>
+<script src="../js/lib/jquery-ui-1.10.4.custom.js"></script>
+<script src="../js/lib/jquery.layout-latest.min.js"></script>
+<script src="../js/lib/i18n/grid.locale-en.js"></script>
+<script src="../js/lib/jquery.jqGrid.src.js"></script>
 <script>
+	/* $.ajaxTransport("blob", function(options, originalOptions, jqXHR) {
+		return {
+			send : function(headers, completeCallback) {
+				alert(123)
+			},
+			abort : function() {
+				alert(321)
+			}
+		};
+	}); */
+
+	$(document).ajaxError(function(event, jqxhr, settings, exception) {
+		alert(jqxhr.status + ":" + jqxhr.statusText);
+	});
+	
 	$().ready(function() {
 		$("#a-sample").click(function() {
 			alert(11);
@@ -32,15 +53,17 @@
 			xhr.responseType = 'blob';
 			xhr.overrideMimeType("application/octet-stream;");
 			xhr.onload = function(load) {
-				var blob = this.response;
-				var $a = $("<a>fff</a>");
-				$a.attr("download", "test.jpg");
-				$a.attr("href", URL.createObjectURL(blob));
-				$(document.body).append($a);
-				//$a.trigger("click");
-				$a[0].click();
-				$a.remove();
-				URL.revokeObjectURL(blob);
+				if (this.status === 200) {
+					var blob = this.response;
+					var $a = $("<a>temp anchor</a>");
+					$a.attr("download", "test.jpg");
+					$a.attr("href", URL.createObjectURL(blob));
+					$(document.body).append($a);
+					//$a.trigger("click");
+					$a[0].click();
+					$a.remove();
+					URL.revokeObjectURL(blob);
+				}
 			}
 			xhr.send();
 			return false;
@@ -51,14 +74,8 @@
 				xhrFields : {
 					responseType : "blob"
 				},
-				contents : {
-					application : /application/
-				},
-				converters : {
-					"text application" : function() {
-						alert(11)
-					}
-				},
+				contentType : false,
+				processData : false,
 				success : function(data, textStatus, jqXHR) {
 					alert(data);
 				},
@@ -68,8 +85,8 @@
 			});
 			return false;
 		});
-		
-		$("#uploadform>input:last").click(function(){
+
+		$("#uploadform>input:last").click(function() {
 			var formData = new FormData(document.getElementById("uploadform"));
 			/* $.ajax("/SpringMvc3.1/upload/one", {
 				processData :false,
@@ -85,32 +102,34 @@
 			}); */
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', '/SpringMvc3.1/upload/one', true);
-			xhr.upload.onprogress = function(progress){
-				if(progress.lengthComputable){
+			xhr.upload.onprogress = function(progress) {
+				if (progress.lengthComputable) {
 					//loaded
 					//total
-					console.debug(progress.loaded+"/"+progress.total)
+					console.debug(progress.loaded + "/" + progress.total)
 				}
 			};
-			xhr.onreadystatechange = function(){
-				console.debug(this.readyState+"*"+this.status)
-				if(this.status===200){
-					if(this.readyState === 4){
-						alert(this.status+"\n"+this.statusText);
+			xhr.onreadystatechange = function() {
+				console.debug(this.readyState + "*" + this.status)
+				if (this.status === 200) {
+					if (this.readyState === 4) {
+						alert(this.status + "\n" + this.statusText);
 					}
-				}else{
-					if(this.readyState === 4){
-						alert(this.status+"\n"+this.statusText);
+				} else {
+					if (this.readyState === 4) {
+						alert(this.status + "\n" + this.statusText);
 					}
-					
+
 				}
 			};
 			xhr.send(formData);
 			return false;
 		});
-		
-		$("#form2>input:last").click(function(){
-			var oMyBlob = new Blob(["你好啊。"], { "type" : "text/plain;charset=GB18030" });
+
+		$("#form2>input:last").click(function() {
+			var oMyBlob = new Blob([ "你好啊。" ], {
+				"type" : "text/plain;charset=GB18030"
+			});
 			var fileReader = new FileReader();
 			fileReader.readAsText(oMyBlob, "utf-8");
 			fileReader.onloadend = function() {
@@ -121,6 +140,54 @@
 				//$.csv.fromArrays(arrays);
 			}
 			return false;
+			return false;
+		});
+		
+		$("#a-login").click(function() {
+			$("#loginDialog").dialog("open");
+			return false;
+		});
+		
+		$("#a-logout").click(function() {
+			/* $.get("/SpringMvc3.1/j_spring_security_logout",function(data){
+				alert(123);
+			}); */
+			$.get("/SpringMvc3.1/j_spring_security_logout", function(data) {
+				alert(data);
+			});
+			return false;
+		});
+		
+		$("#a-reloadAuthority").click(function() {
+			$.get("/SpringMvc3.1/upload/reloadAuthority", function(data) {
+				alert(data);
+			});
+			return false;
+		});
+		
+		$("#loginDialog").dialog({
+		      autoOpen: false,
+		      modal: true,
+		      height:240,
+		      width:280,
+		      buttons: {
+		    	  "OK": function() {
+		    		  var dialog=this;
+		    		  $.post("/SpringMvc3.1/j_spring_security_check",$("#loginForm").serialize(),function(data){
+		    			  $(dialog).dialog("close");
+		    		  }, "json");
+		            },
+		            Cancel: function() {
+		              $(this).dialog("close");
+		            }
+		        }
+		    });
+		
+		$("#one-way-encryption>input:last").click(function(){
+			var pd=$("#one-way-encryption>input:first").val();
+			$.get("/SpringMvc3.1/sqlUtil/digestPassword/"+pd, function(data) {
+				alert(data);
+			});
 			return false;
 		});
 	});
@@ -144,8 +211,27 @@
 	<a id="a-download-image5" href="#">下载图片5</a>
 	<div id="div-hide" style="display: none;"></div>
 	<form id="form2">
-		<input type="file" name="file1" multiple="multiple"> 
+		<input type="file" name="file1" multiple="multiple"> <input type="submit">
+	</form>
+	</br>
+	<a id="a-login" href="#">登录</a>
+	<a id="a-logout" href="/SpringMvc3.1/j_spring_security_logout">退出</a>
+	<a id="a-reloadAuthority" href="#">重载入权限</a>
+	
+	<form id="one-way-encryption">
+		<label for="password">单向加密：</label>
+		<input type="text" name="password">
 		<input type="submit">
 	</form>
+	
+	<div id="loginDialog" title="Basic dialog">
+		<form id="loginForm" action="/j_spring_security_check">
+			<label for="j_username">用户名</label>
+			<input type="text" name="j_username" class="text ui-widget-content ui-corner-all">
+			<br/>
+			<label for="j_password">密码</label>
+			<input type="password" name="j_password" class="text ui-widget-content ui-corner-all">
+		</form>
+	</div>
 </body>
 </html>

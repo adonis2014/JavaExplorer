@@ -61,6 +61,14 @@
 		<constructor-arg ref="dataSource"/>
 	</bean>
 	
+	<bean id="defaultJsonMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+		<property name="featuresToDisable">
+			<array>
+				<util:constant static-field="com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES" />
+			</array>
+		</property>
+	</bean>
+	
 	<beans profile="production">
 		<import resource="production.xml" />
 	</beans>

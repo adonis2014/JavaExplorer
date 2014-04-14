@@ -13,15 +13,21 @@
 	<!-- Remove the default filter -->
 	<b:bean class="name.chenyuelin.security.SpringSecurityFilterChainPostProcessor">
 		<b:property name="securityFilterChainName" value="#{T(name.chenyuelin.constants.BaseConstants).SECURITY_FILTER_CHAIN_NAME}"/>
+		<b:property name="rejectPublicInvocations" value="true"/>
 		<b:property name="excludeFilterClasses">
 			<util:list value-type="java.lang.Class">
-				<b:value>org.springframework.security.web.authentication.logout.LogoutFilter</b:value>
+<!-- 				<b:value>org.springframework.security.web.authentication.logout.LogoutFilter</b:value> -->
 			</util:list>
 		</b:property>
 	</b:bean>
 	
 	<!-- BeanFactoryPostProcessor set this bean to FilterInvocationSecurityMetadataSource-->
 	<b:bean class="name.chenyuelin.security.TreeDataFilterInvocationSecurityMetadataSource" init-method="loadAuthorities">
+		<b:constructor-arg>
+			<util:map key-type="java.lang.String" value-type="java.lang.String">
+				<b:entry key="ANONYMOUS" value="IS_AUTHENTICATED_ANONYMOUSLY"/>
+			</util:map>
+		</b:constructor-arg>
 		<b:property name="jdbcTemplate" ref="defaultJdbcTemplate"/>
 		<b:property name="rolePrefix" value="ROLE_"/>
 	</b:bean>
@@ -30,20 +36,42 @@
 		<b:property name="jdbcTemplate" ref="defaultJdbcTemplate"/>
 	</b:bean>
 	
-	<http name="httpSecurityFilterChain" authentication-manager-ref="authenticationManager" access-decision-manager-ref="accessDecisionManager">
-		<intercept-url pattern="/**/*" access="ROLE_USER"/>
-		<form-login />
-		<http-basic />
-		<logout />
+	<b:bean id="basicAuthenticationEntryPoint" class="name.chenyuelin.security.BasicAuthenticationEntryPoint"/>
+	
+	<b:bean id="authenticationSuccessHandler" class="name.chenyuelin.security.AjaxAuthenticationSuccessHandler">
+		<b:property name="objectMapper" ref="defaultJsonMapper"/>
+	</b:bean>
+	<b:bean id="authenticationFailureHandler" class="name.chenyuelin.security.AjaxAuthenticationFailureHandler"/>
+	<b:bean id="accessDeniedHandler" class="name.chenyuelin.security.AjaxAccessDeniedHandler"/>
+	<b:bean id="logoutSuccessHandler" class="name.chenyuelin.security.AjaxLogoutSuccessHandler"/>
+	
+	<!-- <b:bean id="httpSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
+		<filter-chain-map>
+			<filter-chain filters="aa" pattern="**/*"/>
+		</filter-chain-map>
+	</b:bean>
+	<b:bean id="aa" class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+		<b:constructor-arg ref="authenticationManager"/>
+		<b:constructor-arg ref="basicAuthenticationEntryPoint"/>
+	</b:bean> -->
+	
+	<http name="httpSecurityFilterChain" authentication-manager-ref="authenticationManager" access-decision-manager-ref="accessDecisionManager" entry-point-ref="basicAuthenticationEntryPoint" >
+	<!-- default login-processing-url is "/j_spring_security_check" -->
+		<form-login authentication-success-handler-ref="authenticationSuccessHandler" authentication-failure-handler-ref="authenticationFailureHandler"/>
+		
+	<!-- default is enabled	<anonymous/> -->
+		<access-denied-handler ref="accessDeniedHandler"/>
+		
+	<!-- default logout url is "/j_spring_security_logout" -->
+		<logout success-handler-ref="logoutSuccessHandler"/>
 	</http>
 
-	<authentication-manager alias="authenticationManager">
+	<authentication-manager id="authenticationManager">
 		<authentication-provider>
 			<jdbc-user-service data-source-ref="dataSource" role-prefix="ROLE_"
 			authorities-by-username-query="select 1,a.authority from ss_user u inner join ss_user_authority ua on u.id=ua.user_id inner join ss_authority a on ua.authority_id = a.id where u.id = ?" 
 			users-by-username-query="select id,pd,enabled from ss_user where name = ?"/>
 			<password-encoder ref="mySqlPasswordEncoder"/>
-<!-- 				<salt-source system-wide="salt"/> -->
 		</authentication-provider>
 	</authentication-manager>
 	

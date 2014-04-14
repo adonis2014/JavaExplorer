@@ -8,8 +8,8 @@ import java.net.URLEncoder;
 import java.util.zip.Adler32;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 
+import name.chenyuelin.security.TreeDataFilterInvocationSecurityMetadataSource;
 import name.chenyuelin.validator.FileUploadControllerValidator;
 
 import org.aspectj.util.FileUtil;
@@ -38,7 +38,10 @@ import org.springframework.web.multipart.MultipartFile;
 @SessionAttributes("person")
 public class FileUploadController {
 	private WebApplicationContext webApplicationContext;
-
+	
+	@Autowired
+	private TreeDataFilterInvocationSecurityMetadataSource metadataSource;
+	
 	private String imgRealPath;
 
 	@InitBinder
@@ -56,6 +59,13 @@ public class FileUploadController {
 		}
 	}
 
+	@RequestMapping(value = "reloadAuthority", method = RequestMethod.GET)
+	@ResponseBody
+	public String reloadAuthority() throws Exception {
+		metadataSource.reloadAuthorities();
+		return "Reload authority success!";
+	}
+	
 	@RequestMapping(value = "one", method = RequestMethod.POST)
 	@ResponseBody
 	public void uploadOne(@RequestParam("name") String name, @RequestParam("files") MultipartFile[] files) throws Exception {

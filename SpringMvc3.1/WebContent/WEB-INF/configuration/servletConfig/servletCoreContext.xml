@@ -39,14 +39,6 @@
 	</bean> 
  -->
 
-	<bean id="defaultJsonMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
-		<property name="featuresToDisable">
-			<array>
-				<util:constant static-field="com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES" />
-			</array>
-		</property>
-	</bean>
-
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
@@ -155,12 +147,15 @@
 		<property name="messageConverters">
 			<list>
 				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
-				<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<constructor-arg value="utf-8"/>
+					<property name="writeAcceptCharset" value="false"/>
+				</bean>
 				<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
 				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 					<property name="objectMapper" ref="defaultJsonMapper" />
 				</bean>
-				<bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+				<!-- <bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter" /> -->
 			</list>
 		</property>
 	</bean>

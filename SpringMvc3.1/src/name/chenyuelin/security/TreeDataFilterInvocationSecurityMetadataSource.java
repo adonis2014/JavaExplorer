@@ -14,12 +14,13 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 
 public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource, InitializingBean {
 	private static final Log LOG = LogFactory.getLog(TreeDataFilterInvocationSecurityMetadataSource.class);
-
+	
 	//@formatter:off
 	private static final String QUERY_AUTHORITY = 
 		"SELECT r.id,r.parent_id,r.pathname,sa.method,a.authority FROM ss_resource r "+
@@ -28,10 +29,16 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 		"ORDER BY r.id;";
 	//@formatter:on
 
+	private final Map<String, String> authoritiesNameMap;
+	
 	private final Map<String, PathElement> authoritiesTree = new HashMap<String, PathElement>();
 
 	private String rolePrefix;
 	private JdbcTemplate jdbcTemplate;
+
+	public TreeDataFilterInvocationSecurityMetadataSource(Map<String, String> authoritiesNameMap){
+		this.authoritiesNameMap=authoritiesNameMap;
+	}
 	
 	@Override
 	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
@@ -50,7 +57,7 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 				if (currentPathElement == null) {
 					currentPathElement = authoritiesTree.get(path);
 					if (currentPathElement == null) {
-						throw new IllegalArgumentException("URL path can not found in DB!");
+						return null;
 					}
 				} else {
 					Map<String, PathElement> leaf = currentPathElement.getChildren();
@@ -118,7 +125,18 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 				configAttributes = new HashSet<ConfigAttribute>();
 				authorities.put(methodType, configAttributes);
 			}
-			configAttributes.add(ConfigAttributeFactory.getDefaultConfigAttribute(rolePrefix + sqlRowSet.getString("authority")));
+
+			String authority = sqlRowSet.getString("authority");
+			
+			if(authoritiesNameMap.containsKey(authority)){
+				authority=authoritiesNameMap.get(authority);
+			}
+			
+			if (!(AuthenticatedVoter.IS_AUTHENTICATED_ANONYMOUSLY.equals(authority) || AuthenticatedVoter.IS_AUTHENTICATED_FULLY.equals(authority)
+					|| AuthenticatedVoter.IS_AUTHENTICATED_REMEMBERED.equals(authority))) {
+				authority = rolePrefix + authority;
+			}
+			configAttributes.add(ConfigAttributeFactory.getDefaultConfigAttribute(authority));
 		}
 	}
 
@@ -132,11 +150,12 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 		return FilterInvocation.class.isAssignableFrom(clazz);
 	}
 
-	public void cleanAuthorities() {
+	public void reloadAuthorities() {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Cleaning authorities...");
 		}
 		authoritiesTree.clear();
+		loadAuthorities();
 	}
 
 	public void loadAuthorities() {
@@ -161,7 +180,7 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if(LOG.isTraceEnabled()){
+		if (LOG.isTraceEnabled()) {
 			LOG.trace("afterPropertiesSet");
 		}
 	}

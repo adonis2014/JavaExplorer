@@ -23,10 +23,13 @@ public class SpringSecurityFilterChainPostProcessor implements BeanFactoryPostPr
 	private String securityFilterChainName;
 	private Collection<Class<?>> excludeFilterClasses;
 
+	private boolean rejectPublicInvocations;
+	
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		removeExcludeFilters(beanFactory);
 		setFilterInvocationSecurityMetadataSource(beanFactory);
+		setFilterSecurityInterceptorProperties(beanFactory);
 	}
 
 	private void removeExcludeFilters(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -79,7 +82,7 @@ public class SpringSecurityFilterChainPostProcessor implements BeanFactoryPostPr
 				break;
 			}
 		}
-
+		
 		if (beanReference != null) {
 			String[] filterSecurityInterceptors = beanFactory.getBeanNamesForType(FilterSecurityInterceptor.class);
 			if (filterSecurityInterceptors.length > 0) {
@@ -87,7 +90,6 @@ public class SpringSecurityFilterChainPostProcessor implements BeanFactoryPostPr
 				MutablePropertyValues mutablePropertyValues = interceptor.getPropertyValues();
 				mutablePropertyValues.add("securityMetadataSource", new RuntimeBeanReference(beanReference));
 			}
-
 		}
 
 		if (logIsTrace) {
@@ -100,11 +102,24 @@ public class SpringSecurityFilterChainPostProcessor implements BeanFactoryPostPr
 		}
 	}
 
+	private void setFilterSecurityInterceptorProperties(ConfigurableListableBeanFactory beanFactory){
+		String[] filterSecurityInterceptors = beanFactory.getBeanNamesForType(FilterSecurityInterceptor.class);
+		for(String filterSecurityInterceptor:filterSecurityInterceptors){
+			BeanDefinition interceptor = beanFactory.getBeanDefinition(filterSecurityInterceptor);
+			MutablePropertyValues mutablePropertyValues = interceptor.getPropertyValues();
+			mutablePropertyValues.add("rejectPublicInvocations", rejectPublicInvocations);
+		}
+	}
+	
 	public void setExcludeFilterClasses(Collection<Class<?>> excludeFilterClasses) {
 		this.excludeFilterClasses = excludeFilterClasses;
 	}
 
 	public void setSecurityFilterChainName(String securityFilterChainName) {
 		this.securityFilterChainName = securityFilterChainName;
+	}
+
+	public void setRejectPublicInvocations(boolean rejectPublicInvocations) {
+		this.rejectPublicInvocations = rejectPublicInvocations;
 	}
 }
