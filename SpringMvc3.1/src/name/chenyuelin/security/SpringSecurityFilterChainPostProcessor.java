@@ -14,6 +14,7 @@ import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueH
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
@@ -24,12 +25,14 @@ public class SpringSecurityFilterChainPostProcessor implements BeanFactoryPostPr
 	private Collection<Class<?>> excludeFilterClasses;
 
 	private boolean rejectPublicInvocations;
+	private boolean usernameBasedPrimaryKey;
 	
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		removeExcludeFilters(beanFactory);
 		setFilterInvocationSecurityMetadataSource(beanFactory);
 		setFilterSecurityInterceptorProperties(beanFactory);
+		setJdbcUserDetailsManagerProperties(beanFactory);
 	}
 
 	private void removeExcludeFilters(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -111,6 +114,15 @@ public class SpringSecurityFilterChainPostProcessor implements BeanFactoryPostPr
 		}
 	}
 	
+	private void setJdbcUserDetailsManagerProperties(ConfigurableListableBeanFactory beanFactory){
+		String[] jdbcUserDetailsManagers = beanFactory.getBeanNamesForType(JdbcUserDetailsManager.class);
+		for(String jdbcUserDetailsManager:jdbcUserDetailsManagers){
+			BeanDefinition interceptor = beanFactory.getBeanDefinition(jdbcUserDetailsManager);
+			MutablePropertyValues mutablePropertyValues = interceptor.getPropertyValues();
+			mutablePropertyValues.add("usernameBasedPrimaryKey", usernameBasedPrimaryKey);
+		}
+	}
+	
 	public void setExcludeFilterClasses(Collection<Class<?>> excludeFilterClasses) {
 		this.excludeFilterClasses = excludeFilterClasses;
 	}
@@ -121,5 +133,9 @@ public class SpringSecurityFilterChainPostProcessor implements BeanFactoryPostPr
 
 	public void setRejectPublicInvocations(boolean rejectPublicInvocations) {
 		this.rejectPublicInvocations = rejectPublicInvocations;
+	}
+
+	public void setUsernameBasedPrimaryKey(boolean usernameBasedPrimaryKey) {
+		this.usernameBasedPrimaryKey = usernameBasedPrimaryKey;
 	}
 }

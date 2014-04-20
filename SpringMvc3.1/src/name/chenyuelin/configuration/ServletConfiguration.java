@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,12 +27,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @date 2013-1-22 ÏÂÎç4:08:50
  * 
  */
+@Component
 @Configuration
 public class ServletConfiguration {
     
     private Environment environment;  
   
-    @Bean(name="globalObjectMapper")
+    @Bean(name="globalObjectMapper2")
     public ObjectMapper createGlobalObjectMapper(){
         ObjectMapper objectMapper=new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

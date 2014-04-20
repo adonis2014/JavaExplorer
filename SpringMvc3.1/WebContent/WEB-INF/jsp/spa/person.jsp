@@ -6,8 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
 <title>Person Management</title>
-<link href="/static/lib/jquery-ui-1.10.0/css/redmond/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" type="text/css" charset="utf-8"/>
-<link href="/static/lib/jquery_fixheadertable_2.0/base.css" rel="stylesheet" type="text/css" charset="utf-8"/>
+<link href="/static/css/lib/redmond/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css" charset="utf-8"/>
+<link href="/static/css/lib/fixheadertable/base.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 <!--[if lt IE 8]>
 <script type="text/javascript" src="/static/lib/IE8.js"></script>
 <![endif]-->
@@ -16,14 +16,14 @@
  <script type="text/javascript" src="/static/lib/jquery-1.9.1.min.js"></script>
  <![endif]-->
 <!--[if gte IE 9]><!-->
-<script type="text/javascript" src="/static/lib/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="/static/js/lib/jquery-2.1.0.js"></script>
 <!--<![endif]-->
 
-<script type="text/javascript" src="/static/lib/jquery-ui-1.10.0/js/jquery-ui-1.10.0.custom.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="/static/lib/underscore-min.js"></script>
-<script type="text/javascript" src="/static/lib/backbone-min.js"></script>
-<script type="text/javascript" src="/static/lib/utils.js"></script>
-<script type="text/javascript" src="/static/lib/jquery_fixheadertable_2.0/jquery.fixheadertable.min.js"></script>
+<script type="text/javascript" src="/static/js/lib/jquery-ui-1.10.4.custom.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/lib/underscore-min.js"></script>
+<script type="text/javascript" src="/static/js/lib/backbone-min.js"></script>
+<script type="text/javascript" src="/static/js/utils.js"></script>
+<script type="text/javascript" src="/static/js/lib/jquery.fixheadertable.min.js"></script>
 <script type="text/javascript" src="/static/sp3.1/management/person.js"></script>
 <script type="text/javascript">
 

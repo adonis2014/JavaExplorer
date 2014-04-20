@@ -10,8 +10,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import name.chenyuelin.dto.AjaxBindingErrorMessage;
-import name.chenyuelin.dto.AjaxBindingErrorMessages;
+import name.chenyuelin.webapp.dto.AjaxBindingErrorMessage;
+import name.chenyuelin.webapp.dto.AjaxBindingErrorMessages;
 
 import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;

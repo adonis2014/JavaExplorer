@@ -15,6 +15,7 @@ comment='Spring security user table.';
 create table if not exists ss_authority (
 id tinyint unsigned primary key auto_increment,
 authority varchar(50) unique not null,
+is_expression boolean not null default false,
 enabled boolean not null default true,
 description tinytext
 )
@@ -37,7 +38,7 @@ comment='Spring security user authority relationship table.';
 create table if not exists ss_resource (
 id smallint unsigned primary key auto_increment,
 parent_id smallint unsigned,
-pathname varchar(20) not null,
+name varchar(20) not null,
 enabled boolean not null default true,
 description tinytext,
 foreign key(parent_id) references ss_resource(id)
@@ -56,4 +57,10 @@ foreign key(authority_id) references ss_authority(id),
 index ri(resource_id)
 )
 comment='Spring security resource authority table.';
+
+
+SELECT r.id,r.parent_id,r.name,sa.method,a.authority,a.is_expression FROM ss_resource r 
+INNER JOIN ss_resource_authority sa ON r.id = sa.resource_id AND r.enabled = true AND sa.enabled = true 
+INNER JOIN ss_authority a ON sa.authority_id = a.id AND a.enabled = true 
+ORDER BY r.id;
 

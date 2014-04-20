@@ -12,9 +12,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="targetMethod" value="setValidatorMap" />
 		<property name="arguments">
 			<map key-type="java.lang.Class">
-				<entry key="name.chenyuelin.command.PersonCommandListWrap" value-ref="personCommandListWrapValidator"/>
-				<entry key="name.chenyuelin.command.PersonCommand" value-ref="personCommandValidator"/>
-				<entry key="name.chenyuelin.command.PersonUploadInformation" value-ref="personUploadInformationValidator"/>
+				<entry key="name.chenyuelin.webapp.command.PersonCommandListWrap" value-ref="personCommandListWrapValidator"/>
+				<entry key="name.chenyuelin.webapp.command.PersonCommand" value-ref="personCommandValidator"/>
+				<entry key="name.chenyuelin.webapp.command.PersonUploadInformation" value-ref="personUploadInformationValidator"/>
 			</map>
 		</property>
 	</bean>

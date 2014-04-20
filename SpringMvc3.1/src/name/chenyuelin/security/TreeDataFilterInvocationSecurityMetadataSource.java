@@ -14,6 +14,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.expression.AbstractSecurityExpressionHandler;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -23,9 +24,9 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 	
 	//@formatter:off
 	private static final String QUERY_AUTHORITY = 
-		"SELECT r.id,r.parent_id,r.pathname,sa.method,a.authority FROM ss_resource r "+
-		"INNER JOIN ss_resource_authority sa ON r.id=sa.resource_id AND r.enabled=true "+
-		"INNER JOIN ss_authority a ON sa.authority_id=a.id AND sa.enabled=true "+
+		"SELECT r.id,r.parent_id,r.name resource_name,sa.method,a.authority,a.is_expression FROM ss_resource r "+
+		"INNER JOIN ss_resource_authority sa ON r.id = sa.resource_id AND r.enabled = true AND sa.enabled = true "+
+		"INNER JOIN ss_authority a ON sa.authority_id = a.id AND a.enabled = true "+
 		"ORDER BY r.id;";
 	//@formatter:on
 
@@ -35,6 +36,7 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 
 	private String rolePrefix;
 	private JdbcTemplate jdbcTemplate;
+	private AbstractSecurityExpressionHandler<?> securityExpressionHandler;
 
 	public TreeDataFilterInvocationSecurityMetadataSource(Map<String, String> authoritiesNameMap){
 		this.authoritiesNameMap=authoritiesNameMap;
@@ -97,23 +99,23 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 			if (id != sqlRowSet.getInt(1)) {
 				id = sqlRowSet.getInt(1);
 				int parentId = sqlRowSet.getInt(2);
-				String pathname = sqlRowSet.getString("pathname");
-
+				String resourceName = sqlRowSet.getString("resource_name");
+				
 				pathElement = new PathElement();
 				pathElement.setId(id);
-				pathElement.setPathName(pathname);
+				pathElement.setPathName(resourceName);
 				pathElement.setChildren(new HashMap<String, PathElement>());
 				pathElement.setAuthorities(new EnumMap<MethodType, Collection<ConfigAttribute>>(MethodType.class));
 
 				pathElementMap.put(id, pathElement);
 
 				// true is root path.
-				if (id == parentId) {
-					authoritiesTree.put(pathname, pathElement);
+				if (parentId == 0 || id == parentId) {
+					authoritiesTree.put(resourceName, pathElement);
 				} else {
 					PathElement parent = pathElementMap.get(parentId);
 					if (parent != null) {
-						parent.getChildren().put(pathname, pathElement);
+						parent.getChildren().put(resourceName, pathElement);
 						pathElement.setParent(parent);
 					}
 				}
@@ -136,7 +138,12 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 					|| AuthenticatedVoter.IS_AUTHENTICATED_REMEMBERED.equals(authority))) {
 				authority = rolePrefix + authority;
 			}
-			configAttributes.add(ConfigAttributeFactory.getDefaultConfigAttribute(authority));
+			if(sqlRowSet.getBoolean("is_expression")){
+				//TODO
+			}else{
+				configAttributes.add(ConfigAttributeFactory.getDefaultConfigAttribute(authority));
+			}
+			
 		}
 	}
 
@@ -183,6 +190,10 @@ public class TreeDataFilterInvocationSecurityMetadataSource implements FilterInv
 		if (LOG.isTraceEnabled()) {
 			LOG.trace("afterPropertiesSet");
 		}
+	}
+
+	public void setSecurityExpressionHandler(AbstractSecurityExpressionHandler<?> securityExpressionHandler) {
+		this.securityExpressionHandler = securityExpressionHandler;
 	}
 
 }

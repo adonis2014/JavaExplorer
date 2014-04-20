@@ -11,11 +11,11 @@ import java.util.Set;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import name.chenyuelin.dto.PersonDto;
 import name.chenyuelin.entity.test.Person;
 import name.chenyuelin.enums.Language;
 import name.chenyuelin.enums.Sex;
-import name.chenyuelin.transformer.PersonTransformer;
+import name.chenyuelin.webapp.dto.PersonDto;
+import name.chenyuelin.webapp.transformer.PersonTransformer;
 
 import org.junit.After;
 import org.junit.AfterClass;

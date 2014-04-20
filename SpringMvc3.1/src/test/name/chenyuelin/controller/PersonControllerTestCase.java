@@ -1,11 +1,11 @@
 package test.name.chenyuelin.controller;
 
 import junit.framework.Assert;
-import name.chenyuelin.controller.PersonController;
-import name.chenyuelin.dto.PersonDto;
 import name.chenyuelin.entity.test.Person;
 import name.chenyuelin.service.UserService;
-import name.chenyuelin.transformer.PersonTransformer;
+import name.chenyuelin.webapp.controller.PersonController;
+import name.chenyuelin.webapp.dto.PersonDto;
+import name.chenyuelin.webapp.transformer.PersonTransformer;
 
 import org.junit.After;
 import org.junit.AfterClass;

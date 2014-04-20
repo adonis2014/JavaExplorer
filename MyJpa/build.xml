@@ -16,7 +16,7 @@
 		<property name="target.initialized" value="true"/>
 	</target>
 
-	<target name="package" depends="generate-test-report,package-source">
+	<target name="weave-package" depends="generate-test-report,package-source">
 		<!--
 		"(<property name=\"eclipselink.weaving\" value=\")(?:[a-zA-Z]+?)(\" />)", "$1static$2")
 		"(?<=\\<property name=\"eclipselink.weaving\" value=\")[a-zA-Z]+?(?=\" />)", "static"
@@ -28,7 +28,7 @@
 		</java>
 		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match=".+eclipselink\.weaving.+" replace="" flags="true"/>
 	</target>
-
+	
 	<target name="deliver" depends="resolve" unless="target.resolved">
 		<echo message="${ivy.deliver.ivy.pattern}"/>
 		<ivy:deliver conf="*" deliverpattern="${project-dist-directory}/[artifact]-[type].[ext]" />
