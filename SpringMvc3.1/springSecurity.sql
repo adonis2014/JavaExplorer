@@ -21,7 +21,7 @@ description tinytext
 )
 comment='Spring security authority table.';
 
-insert into ss_authority (authority) values('IS_AUTHENTICATED_FULLY'),('IS_AUTHENTICATED_ANONYMOUSLY'),('IS_AUTHENTICATED_REMEMBERED');
+INSERT INTO ss_authority (authority) VALUES ('IS_AUTHENTICATED_FULLY'),('IS_AUTHENTICATED_ANONYMOUSLY'),('IS_AUTHENTICATED_REMEMBERED');
 
 --Create user authority relationship table.
 create table if not exists ss_user_authority (
@@ -91,7 +91,7 @@ foreign key(authority_id) references ss_authority(id)
 )
 comment='Spring security role authority relationship table.';
 
-SELECT r.id role_id,r.name role,a.authority FROM ss_user u INNER JOIN ss_user_role ur ON u.id=ur.user_id AND ur.enabled=true INNER JOIN ss_role r ON ur.role_id=r.id AND r.enabled=true INNER JOIN ss_role_authority ra ON r.id=ra.role_id AND ra.enabled=true INNER JOIN ss_authority a ON ra.authority_id=a.id AND a.enabled=true WHERE u.id = ?
+--SELECT r.id role_id,r.name role,a.authority FROM ss_user u INNER JOIN ss_user_role ur ON u.id=ur.user_id AND ur.enabled=true INNER JOIN ss_role r ON ur.role_id=r.id AND r.enabled=true INNER JOIN ss_role_authority ra ON r.id=ra.role_id AND ra.enabled=true INNER JOIN ss_authority a ON ra.authority_id=a.id AND a.enabled=true WHERE u.id = ?
 
 -- ACL table
 CREATE TABLE acl_sid (
