@@ -168,7 +168,7 @@
 		$("#loginDialog").dialog({
 		      autoOpen: false,
 		      modal: true,
-		      height:240,
+		      height:340,
 		      width:280,
 		      buttons: {
 		    	  "OK": function() {
@@ -226,11 +226,12 @@
 	
 	<div id="loginDialog" title="Basic dialog">
 		<form id="loginForm" action="/j_spring_security_check">
-			<label for="j_username">用户名</label>
-			<input type="text" name="j_username" class="text ui-widget-content ui-corner-all">
-			<br/>
-			<label for="j_password">密码</label>
-			<input type="password" name="j_password" class="text ui-widget-content ui-corner-all">
+			<label for="j_username">用户名</label><br/>
+			<input type="text" name="j_username" class="text ui-widget-content ui-corner-all"><br/>
+			<label for="j_password">密码</label><br/>
+			<input type="password" name="j_password" class="text ui-widget-content ui-corner-all"><br/>
+			<label for="_spring_security_remember_me">记住用户</label>
+			<input type="checkbox" name="_spring_security_remember_me">
 		</form>
 	</div>
 </body>

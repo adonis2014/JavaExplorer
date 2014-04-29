@@ -34,7 +34,7 @@ public class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHa
 		objectMapper.writeValue(response.getWriter(), body);
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("User " + user.getUsername() + " lonin is complete. Authorities are [" + authentication.getAuthorities() + "]");
+			LOG.debug("User " + user.getUsername() + " lonin is complete. Authorities are " + authentication.getAuthorities());
 		}
 	}
 

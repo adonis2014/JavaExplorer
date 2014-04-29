@@ -28,6 +28,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -91,7 +95,10 @@ public class PersonController {
 	@Transactional
 	@RequestMapping(method=RequestMethod.GET)
 	@ResponseBody
-	public PersonDtoListWrap getAllPersons(){
+	@PostFilter("person.filterObject.id==principal.id or filterObject.id>10")
+	public PersonDtoListWrap getAllPersons()throws Exception{
+		Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
+		System.out.println(authentication.getPrincipal());
 		List<Person> persons=userService.getAllPersons();
 		PersonDtoListWrap warp=new PersonDtoListWrap();
 		warp.setPerson(PersonTransformer.toPersonDtoList(persons));
@@ -139,6 +146,7 @@ public class PersonController {
 	@Transactional
 	@RequestMapping(value="{id}",method=RequestMethod.DELETE)
 	@ResponseBody
+	@PreAuthorize("#id==principal.id")
 	public ActionStatus deletePereson(@PathVariable("id")byte id){
 		ActionStatus actionStatus=new ActionStatus();
 		actionStatus.setProcessSuccessfully(userService.deletePerson(id));
