@@ -18,6 +18,8 @@
 
 	<dependencies>
 		<dependency org="commons-logging" name="commons-logging" rev="1.1.3" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.apache.commons" name="commons-lang3" rev="latest.revision" conf="compile->master${artifact.spread.semicolon}" />
+		
 		<dependency org="aopalliance" name="aopalliance" rev="1.0" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.aspectj" name="aspectjrt" rev="${org.aspectj.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.aspectj" name="aspectjweaver" rev="${org.aspectj.version}" conf="compile->master${artifact.spread.semicolon}" />
@@ -48,6 +50,8 @@
 		<dependency org="org.springframework" name="spring-tx" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.springframework" name="spring-web" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.springframework" name="spring-webmvc" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		
+		<dependency org="org.springframework" name="spring-instrument-tomcat" rev="${spring.version}" conf="system->master"/>
 		<dependency org="org.springframework" name="spring-instrument" rev="${spring.version}" conf="system->master" />
 
 		<dependency org="org.springframework.security" name="spring-security-core" rev="${spring.security.version}" conf="compile->master${artifact.spread.semicolon}" />
@@ -64,7 +68,7 @@
 		<dependency org="org.apache.poi" name="poi-ooxml-schemas" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.apache.poi" name="poi-scratchpad" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${artifact.spread.semicolon}" />
+		<!-- <dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${artifact.spread.semicolon}" /> -->
 
 		<dependency org="chenyuelin" name="DataPersistence" rev="latest.revision" conf="compile->master" changing="true" />
 

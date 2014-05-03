@@ -146,7 +146,7 @@ public class PersonController {
 	@Transactional
 	@RequestMapping(value="{id}",method=RequestMethod.DELETE)
 	@ResponseBody
-	@PreAuthorize("#id==principal.id")
+//	@PreAuthorize("#id==principal.id")
 	public ActionStatus deletePereson(@PathVariable("id")byte id){
 		ActionStatus actionStatus=new ActionStatus();
 		actionStatus.setProcessSuccessfully(userService.deletePerson(id));

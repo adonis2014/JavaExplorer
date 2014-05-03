@@ -4,6 +4,11 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.security.core.userdetails.User;
 
+/**
+ * Strengthen the UserDetails instance.
+ * @author U1
+ * @version 1.0 2014-5-3
+ */
 public class SecurityAdvisor implements MethodInterceptor{
 
 	@Override

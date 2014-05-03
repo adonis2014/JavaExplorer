@@ -56,11 +56,10 @@
 	<b:bean id="logoutSuccessHandler" class="name.chenyuelin.security.AjaxLogoutSuccessHandler"/>
 	
 	<b:bean id="securityCache" class="org.springframework.security.core.userdetails.cache.SpringCacheBasedUserCache">
-		<b:constructor-arg>
-			<b:bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+		<b:constructor-arg value="#{@cacheManager.getCache('securityCache')}"/>
+			<!-- <b:bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
 				<b:property name="name" value="securityCache"/>
-			</b:bean>
-		</b:constructor-arg>
+			</b:bean> -->
 	</b:bean>
 	
 	<http name="httpSecurityFilterChain" authentication-manager-ref="authenticationManager" access-decision-manager-ref="accessDecisionManager" entry-point-ref="basicAuthenticationEntryPoint">
@@ -102,11 +101,7 @@
 		</b:constructor-arg>
 	</b:bean>
 	
-	<b:bean id="securityAdvisor" class="name.chenyuelin.security.SecurityAdvisor"></b:bean>
-	
-	<aop:config>
-		<aop:advisor advice-ref="securityAdvisor" pointcut="execution(* org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl.loadUserByUsername(..))"/>
-	</aop:config>
+	<b:bean id="strengthenUserDetailsAdvisor" class="name.chenyuelin.security.SecurityAdvisor"/>
 	
 	<!-- Support security expression interface -->
 	<!-- org.springframework.security.access.expression.SecurityExpressionOperations -->
@@ -114,7 +109,87 @@
 	<b:bean id="expressionHandler" class="name.chenyuelin.security.ExpansionSecurityExpressionHandler"></b:bean>
 	
 	<!-- ACL Control -->
-	<global-method-security pre-post-annotations="enabled">
+	<global-method-security pre-post-annotations="enabled" access-decision-manager-ref="aclAccessDecisionManager">
 		<expression-handler ref="expressionHandler"/>
 	</global-method-security>
+	
+	
+	<b:bean id="aclAccessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+		<b:constructor-arg>
+			<b:list>
+				<b:bean class="org.springframework.security.access.prepost.PreInvocationAuthorizationAdviceVoter">
+					<b:constructor-arg>
+						<b:bean class="org.springframework.security.access.expression.method.ExpressionBasedPreInvocationAdvice"/>
+					</b:constructor-arg>
+				</b:bean>
+				<b:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+				<b:bean class="org.springframework.security.acls.AclEntryVoter">
+					<b:constructor-arg ref="aclService"/>
+					<b:constructor-arg value="ACL_TEST"/>
+					<b:constructor-arg>
+						<b:array>
+							<util:constant static-field="org.springframework.security.acls.domain.BasePermission.ADMINISTRATION"/>
+							<util:constant static-field="org.springframework.security.acls.domain.BasePermission.READ"/>
+							<util:constant static-field="org.springframework.security.acls.domain.BasePermission.WRITE"/>
+						</b:array>
+					</b:constructor-arg>
+				</b:bean>
+			</b:list>
+		</b:constructor-arg>
+	</b:bean>
+	
+	<b:bean id="aclService" class="org.springframework.security.acls.jdbc.JdbcMutableAclService">
+		<b:constructor-arg ref="dataSource"/>
+		<b:constructor-arg ref="lookupStrategy"/>
+		<b:constructor-arg ref="aclCache"/>
+		<b:property name="classIdentityQuery" value="SELECT @@IDENTITY"/>
+		<b:property name="sidIdentityQuery" value="SELECT @@IDENTITY"/>
+	</b:bean>
+	
+	<b:bean id="lookupStrategy" class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
+		<b:constructor-arg ref="dataSource"/>
+		<b:constructor-arg ref="aclCache"/>
+		<b:constructor-arg ref="aclAuthorizationStrategy"/>
+		<b:constructor-arg ref="permissionGrantingStrategy"/>
+	</b:bean>
+	
+	<b:bean id="aclCache" class="org.springframework.security.acls.domain.SpringCacheBasedAclCache">
+		<b:constructor-arg value="#{@cacheManager.getCache('aclCache')}"/>
+		<b:constructor-arg ref="permissionGrantingStrategy"/>
+		<b:constructor-arg ref="aclAuthorizationStrategy"/>
+	</b:bean>
+	
+	<b:bean id="permissionGrantingStrategy" class="org.springframework.security.acls.domain.DefaultPermissionGrantingStrategy">
+		<b:constructor-arg ref="auditLogger"/>
+	</b:bean>
+	
+	<b:bean id="aclAuthorizationStrategy" class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
+		<b:constructor-arg>
+			<b:array>
+				<b:ref local="grantedAuthority"/>
+				<b:ref local="grantedAuthority"/>
+				<b:ref local="grantedAuthority"/>
+			</b:array>
+		</b:constructor-arg>
+	</b:bean>
+	
+	<b:bean id="grantedAuthority" class="org.springframework.security.core.authority.SimpleGrantedAuthority">
+		<b:constructor-arg value="ROLE_ADMIN"/>
+	</b:bean>
+	
+	<b:bean id="auditLogger" class="org.springframework.security.acls.domain.ConsoleAuditLogger"/>
+	
+	<aop:config>
+		<aop:advisor advice-ref="strengthenUserDetailsAdvisor" pointcut="execution(* org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl.loadUserByUsername(..))"/>
+		
+		<aop:aspect ref="jpaPersonDaoAdvice">
+			<aop:after-returning method="afterAddPerson" pointcut="execution(* name.chenyuelin.dao.JpaPersonDao.addPerson(..))" returning="person"/>
+			<aop:after method="afterDeletePerson" pointcut="execution(* name.chenyuelin.dao.JpaPersonDao.deletePerson(..)) and args(id)" arg-names="id"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<b:bean id="jpaPersonDaoAdvice" class="name.chenyuelin.security.acl.JpaPersonDaoAdvice">
+		<b:property name="mutableAclService" ref="aclService"/>
+	</b:bean>
+	
 </b:beans>
