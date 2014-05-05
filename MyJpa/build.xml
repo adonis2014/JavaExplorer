@@ -34,7 +34,7 @@
 		<ivy:deliver conf="*" deliverpattern="${project-dist-directory}/[artifact]-[type].[ext]" />
 	</target>
 
-	<target name="publish" depends="package,javadoc">
+	<target name="publish" depends="weave-package,javadoc">
 		<ivy:publish resolver="local" conf="master${artifact.spread.comma}" forcedeliver="true" overwrite="true">
 			<artifacts pattern="${project-dist-directory}/[artifact]-[revision].jar"/>
 			<artifacts pattern="${project-dist-directory}/[artifact]-[revision]-[type].[ext]"/>
