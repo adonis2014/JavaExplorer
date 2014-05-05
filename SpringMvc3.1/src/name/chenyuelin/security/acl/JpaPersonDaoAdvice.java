@@ -19,7 +19,7 @@ public class JpaPersonDaoAdvice {
 	}
 
 	public void afterDeletePerson(JoinPoint joinPoint, byte id) {
-		ObjectIdentity oid = new ObjectIdentityImpl(Person.class, 1);
+		ObjectIdentity oid = new ObjectIdentityImpl(Person.class, id);
 		mutableAclService.deleteAcl(oid, false);
 		System.out.println(123);
 	}
