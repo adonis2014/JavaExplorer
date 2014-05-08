@@ -166,9 +166,9 @@
 	<b:bean id="aclAuthorizationStrategy" class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
 		<b:constructor-arg>
 			<b:array>
-				<b:ref local="grantedAuthority"/>
-				<b:ref local="grantedAuthority"/>
-				<b:ref local="grantedAuthority"/>
+				<b:ref local="grantedAuthority"/><!-- CHANGE_OWNERSHIP -->
+				<b:ref local="grantedAuthority"/><!-- CHANGE_AUDITING -->
+				<b:ref local="grantedAuthority"/><!-- CHANGE_GENERAL -->
 			</b:array>
 		</b:constructor-arg>
 	</b:bean>
