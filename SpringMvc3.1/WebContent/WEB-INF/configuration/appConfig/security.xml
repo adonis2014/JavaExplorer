@@ -192,4 +192,6 @@
 		<b:property name="mutableAclService" ref="aclService"/>
 	</b:bean>
 	
+<!-- 	AclEntryAfterInvocationProvider -->
+<!-- 	AclEntryAfterInvocationCollectionFilteringProvider -->
 </b:beans>
