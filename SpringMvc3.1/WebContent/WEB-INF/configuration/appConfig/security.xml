@@ -13,6 +13,8 @@
 							http://www.springframework.org/schema/aop
 							http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
+	<!-- org.springframework.security.config.SecurityNamespaceHandler parse the xml -->
+
 	<b:bean class="name.chenyuelin.security.SecurityBeanPostProcessor"/>
 
 	<!-- Remove the default filter -->
@@ -109,8 +111,9 @@
 	<b:bean id="expressionHandler" class="name.chenyuelin.security.ExpansionSecurityExpressionHandler"></b:bean>
 	
 	<!-- ACL Control -->
-	<global-method-security pre-post-annotations="enabled" access-decision-manager-ref="aclAccessDecisionManager">
+	<global-method-security pre-post-annotations="enabled" access-decision-manager-ref="aclAccessDecisionManager" >
 		<expression-handler ref="expressionHandler"/>
+		<after-invocation-provider ref="" />
 	</global-method-security>
 	
 	
@@ -192,6 +195,8 @@
 		<b:property name="mutableAclService" ref="aclService"/>
 	</b:bean>
 	
+	<b:bean class="org.springframework.security.acls.afterinvocation.AclEntryAfterInvocationProvider">
+	</b:bean>
 <!-- 	AclEntryAfterInvocationProvider -->
 <!-- 	AclEntryAfterInvocationCollectionFilteringProvider -->
 </b:beans>
