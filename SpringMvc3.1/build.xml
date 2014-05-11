@@ -160,9 +160,8 @@
 			<arg value="-d"/>
 			<arg value="${schemaOutputPath}"/>
 			<arg value="-cp"/>
-			<arg value="src;${toString:compile-classpath}"/>
+			<arg value="build/classes;${toString:compile-classpath}"/>
 			<arg value="name.chenyuelin.webapp.dto.PersonDtoListWrap"/>
-			<arg value="name.chenyuelin.webapp.dto.ActionStatusListWarp"/>
 		</exec>
 	</target>
 </project>
