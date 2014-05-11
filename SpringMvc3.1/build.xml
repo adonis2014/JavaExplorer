@@ -110,7 +110,7 @@
 			<lib file="${artifact.path.poi-scratchpad}" />
 
 			<lib file="${artifact.path.DataPersistence}" />
-			
+
 			<!-- ant 1.8+
 			<mappedresources>
 				<restrict>
@@ -154,4 +154,15 @@
 		</sql>
 	</target-->
 
+	<target name="schemagen" depends="resolve">
+		<property name="schemaOutputPath" location="${basedir}"/>
+		<exec executable="${env.JAVA_HOME}/bin/schemagen.exe" osfamily="windows">
+			<arg value="-d"/>
+			<arg value="${schemaOutputPath}"/>
+			<arg value="-cp"/>
+			<arg value="src;${toString:compile-classpath}"/>
+			<arg value="name.chenyuelin.webapp.dto.PersonDtoListWrap"/>
+			<arg value="name.chenyuelin.webapp.dto.ActionStatusListWarp"/>
+		</exec>
+	</target>
 </project>
