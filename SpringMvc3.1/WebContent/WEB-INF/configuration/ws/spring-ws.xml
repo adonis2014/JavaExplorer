@@ -23,7 +23,7 @@
 	
 	<ws:annotation-driven/>
 	
-	<ws:dynamic-wsdl id="aa" portTypeName="test" locationUri="localhost">
+	<ws:dynamic-wsdl id="person" portTypeName="test" locationUri="http://localhost:8080/SpringMvc3.1/services/">
 		<ws:xsd location="/WEB-INF/configuration/ws/schema1.xsd"/>
 	</ws:dynamic-wsdl>
 	

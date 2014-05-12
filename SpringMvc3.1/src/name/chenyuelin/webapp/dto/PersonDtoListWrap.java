@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@XmlRootElement
+@XmlRootElement(name="PersonsResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PersonDtoListWrap {
 	@XmlElementWrapper(name="persons")

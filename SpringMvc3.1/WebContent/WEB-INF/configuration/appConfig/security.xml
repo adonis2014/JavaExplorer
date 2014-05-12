@@ -20,7 +20,7 @@
 	<!-- Remove the default filter -->
 	<b:bean class="name.chenyuelin.security.SpringSecurityFilterChainPostProcessor">
 		<b:property name="securityFilterChainName" value="#{T(name.chenyuelin.constants.BaseConstants).SECURITY_FILTER_CHAIN_NAME}"/>
-		<b:property name="rejectPublicInvocations" value="true"/>
+		<b:property name="rejectPublicInvocations" value="false"/>
 		<b:property name="usernameBasedPrimaryKey" value="true"/>
 		<b:property name="excludeFilterClasses">
 			<util:list value-type="java.lang.Class">

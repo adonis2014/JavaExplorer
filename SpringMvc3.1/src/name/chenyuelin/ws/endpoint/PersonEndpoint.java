@@ -16,6 +16,10 @@ public class PersonEndpoint {
 	@Autowired
 	private UserService userService;
 	
+	public PersonEndpoint(){
+		System.out.println(123);
+	}
+	
 	@PayloadRoot(localPart="getAllPersonsRequest")
 	@ResponsePayload
 	public PersonDtoListWrap getAllPersons() throws Exception{
