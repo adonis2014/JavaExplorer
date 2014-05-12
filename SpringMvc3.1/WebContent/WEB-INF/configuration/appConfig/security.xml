@@ -194,8 +194,8 @@
 		<b:property name="mutableAclService" ref="aclService"/>
 	</b:bean>
 	
-	<b:bean class="org.springframework.security.acls.afterinvocation.AclEntryAfterInvocationProvider">
-	</b:bean>
+	<!-- <b:bean class="org.springframework.security.acls.afterinvocation.AclEntryAfterInvocationProvider">
+	</b:bean> -->
 <!-- 	AclEntryAfterInvocationProvider -->
 <!-- 	AclEntryAfterInvocationCollectionFilteringProvider -->
 </b:beans>

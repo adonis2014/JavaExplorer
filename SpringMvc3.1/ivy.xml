@@ -62,6 +62,7 @@
 
 		<dependency org="org.springframework.ws" name="spring-ws-core" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/>
 		<dependency org="org.springframework.ws" name="spring-ws-support" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/>
+		<dependency org="org.springframework.ws" name="spring-xml" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/>
 		
 		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.hibernate" name="hibernate-validator" rev="5.0.2.Final" conf="compile->master${artifact.spread.semicolon}" />

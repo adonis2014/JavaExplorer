@@ -23,9 +23,9 @@
 	
 	<ws:annotation-driven/>
 	
-	<!-- <ws:dynamic-wsdl id="" portTypeName="" locationUri="">
-		<ws:xsd location=""/>
-	</ws:dynamic-wsdl> -->
+	<ws:dynamic-wsdl id="aa" portTypeName="test" locationUri="localhost">
+		<ws:xsd location="/WEB-INF/configuration/ws/schema1.xsd"/>
+	</ws:dynamic-wsdl>
 	
 	<!-- <ws:interceptors>
 	</ws:interceptors> -->
