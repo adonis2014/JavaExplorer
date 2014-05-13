@@ -23,10 +23,11 @@
 	
 	<ws:annotation-driven/>
 	
-	<ws:dynamic-wsdl id="person" portTypeName="test" locationUri="http://localhost:8080/SpringMvc3.1/services/">
-		<ws:xsd location="/WEB-INF/configuration/ws/schema1.xsd"/>
+	<ws:dynamic-wsdl id="person" serviceName="PersonService" portTypeName="PersonPort" locationUri="/services/">
+		<ws:xsd location="/WEB-INF/configuration/ws/schema_final.xsd"/>
 	</ws:dynamic-wsdl>
 	
-	<!-- <ws:interceptors>
-	</ws:interceptors> -->
+	<ws:interceptors>
+		<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+	</ws:interceptors>
 </beans>

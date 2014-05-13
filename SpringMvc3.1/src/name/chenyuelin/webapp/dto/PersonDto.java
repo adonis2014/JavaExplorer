@@ -16,7 +16,7 @@ import name.chenyuelin.enums.Sex;
 import name.chenyuelin.webapp.transformer.Jaxb2SqlDataAdapter;
 import name.chenyuelin.webapp.transformer.Jaxb2SqlTimeAdapter;
 
-@XmlRootElement
+@XmlRootElement(name="findPersonResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PersonDto {
 	private byte id;

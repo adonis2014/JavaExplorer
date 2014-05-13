@@ -161,7 +161,8 @@
 			<arg value="${schemaOutputPath}"/>
 			<arg value="-cp"/>
 			<arg value="build/classes;${toString:compile-classpath}"/>
-			<arg value="name.chenyuelin.webapp.dto.PersonDtoListWrap"/>
+			<arg value="name.chenyuelin.webapp.dto.PersonDto"/>
+			<arg value="name.chenyuelin.ws.dto.PersonCommand"/>
 		</exec>
 	</target>
 </project>
