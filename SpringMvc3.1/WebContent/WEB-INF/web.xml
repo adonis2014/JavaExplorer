@@ -46,7 +46,7 @@
 					/WEB-INF/configuration/servletConfig/servletCoreContext.xml
 					/WEB-INF/configuration/servletConfig/dispatcherStaticServletContext.xml
 					/WEB-INF/configuration/servletConfig/validatorContext.xml
-  				</param-value>
+  			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 		<multipart-config/>
@@ -114,7 +114,7 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>commonsRequestLoggingFilter</filter-name>
-		<servlet-name>SpringMVC</servlet-name>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
 	<!-- Spring security filter. -->
@@ -125,9 +125,16 @@
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<servlet-name>SpringMVC</servlet-name>
-		<!-- <url-pattern>/*</url-pattern> -->
 	</filter-mapping>
 
+	<!-- <filter>
+		<filter-name>CustomFilter</filter-name>
+		<filter-class>name.chenyuelin.filter.CustomFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CustomFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
 	<!-- <filter>
 		<filter-name>HiddenHttpMethodFilter</filter-name>
 		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>

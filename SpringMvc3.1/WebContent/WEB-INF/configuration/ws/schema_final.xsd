@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cyl.org/person/schemas" 
+		xmlns="http://www.cyl.org/person/schemas" 
+		elementFormDefault="qualified">
+
+  <xs:element name="findPersonRequest" type="personCommand"/>
+
+  <xs:element name="findPersonResponse" type="personDto"/>
+  
+  <xs:complexType name="personDto">
+    <xs:sequence>
+      <xs:element name="active" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="version" type="xs:byte"/>
+      <xs:element name="languages" type="language" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="note" type="xs:string" minOccurs="0"/>
+      <xs:element name="salary" type="xs:int"/>
+      <xs:element name="createTime" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="breakfastTime" type="xs:string" minOccurs="0"/>
+      <xs:element name="height" type="xs:double"/>
+      <xs:element name="birthday" type="xs:string" minOccurs="0"/>
+      <xs:element name="sex" type="sex" minOccurs="0"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="id" type="xs:byte"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="personCommand">
+    <xs:sequence>
+    	<xs:element name="id" type="xs:byte"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="language">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="english"/>
+      <xs:enumeration value="chinese"/>
+      <xs:enumeration value="japanese"/>
+      <xs:enumeration value="korean"/>
+      <xs:enumeration value="other"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="sex">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="male"/>
+      <xs:enumeration value="female"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

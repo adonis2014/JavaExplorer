@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="GB18030"?>
 <beans  xmlns="http://www.springframework.org/schema/beans" 
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 		xmlns:aop="http://www.springframework.org/schema/aop"
@@ -23,7 +24,13 @@
 	
 	<ws:annotation-driven/>
 	
-	<ws:dynamic-wsdl id="person" serviceName="PersonService" portTypeName="PersonPort" locationUri="/services/">
+	<!-- 
+	Spring WS 要申明一个operation操作必需要一组请求响应组合而来。
+	如要申明findPerson的operation必需先定意findPersonRequest与findPersonResponse一对参数，operation会跟据此对参数自动生成 
+	-->
+	
+	<!-- ws:dynamic-wsdl空间名的targetNamespace属性为wsdl定义空间名，默认为xsd相同空间名。 -->
+	<ws:dynamic-wsdl id="person" serviceName="PersonService" portTypeName="PersonPort" locationUri="/services/person/">
 		<ws:xsd location="/WEB-INF/configuration/ws/schema_final.xsd"/>
 	</ws:dynamic-wsdl>
 	
