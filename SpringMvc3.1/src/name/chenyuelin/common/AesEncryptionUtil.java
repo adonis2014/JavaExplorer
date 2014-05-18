@@ -1,4 +1,4 @@
-package name.chenyuelin.util;
+package name.chenyuelin.common;
 
 import java.security.InvalidKeyException;
 import java.security.Key;

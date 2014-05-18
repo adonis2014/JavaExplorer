@@ -1,7 +1,7 @@
 /**
  * 
  */
-package name.chenyuelin.util;
+package name.chenyuelin.common;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
