@@ -190,6 +190,12 @@
 			});
 			return false;
 		});
+		
+		$("#asyncTextBut").click(function(){
+			$.get("/SpringMvc3.1/async/randomnum",function(data){
+				alert(data);
+			});
+		})
 	});
 </script>
 </head>
@@ -234,5 +240,7 @@
 			<input type="checkbox" name="_spring_security_remember_me">
 		</form>
 	</div>
+	
+	<button id="asyncTextBut" type="button">Òì²½Ëæ»úÊı²âÊÔ</button>
 </body>
 </html>
