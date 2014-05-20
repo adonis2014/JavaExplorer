@@ -11,6 +11,10 @@
 		*/
 package name.chenyuelin.webapp.controller;
 
+import javax.annotation.PostConstruct;
+
+import junit.framework.Assert;
+
 import name.chenyuelin.entity.test.CustomerAddress;
 import name.chenyuelin.service.UserService;
 import name.chenyuelin.webapp.dto.CustomerAddressDto;
@@ -44,6 +48,11 @@ public class CustomerController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+    
+    @PostConstruct
+	public void init() {
+		Assert.assertNotNull("UserService can not be null.", userService);
+	}
     
 	@Transactional
     @RequestMapping(value="/{id}",method=RequestMethod.GET)
