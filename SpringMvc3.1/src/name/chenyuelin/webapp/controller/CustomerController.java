@@ -13,8 +13,6 @@ package name.chenyuelin.webapp.controller;
 
 import javax.annotation.PostConstruct;
 
-import junit.framework.Assert;
-
 import name.chenyuelin.entity.test.CustomerAddress;
 import name.chenyuelin.service.UserService;
 import name.chenyuelin.webapp.dto.CustomerAddressDto;
@@ -25,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,9 +48,9 @@ public class CustomerController {
         this.userService = userService;
     }
     
-    @PostConstruct
+	@PostConstruct
 	public void init() {
-		Assert.assertNotNull("UserService can not be null.", userService);
+		Assert.notNull(userService, "UserService can not be null.");
 	}
     
 	@Transactional

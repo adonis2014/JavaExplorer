@@ -26,8 +26,8 @@
 		<property name="suppressClose" value="true" />
 		<property name="driverClassName" value="${driverClassName}" />
 		<property name="url" value="${urlTest}" />
-		<property name="username" value="#{T(name.chenyuelin.util.AppUtil).decryptBase64ToString('${user}')}" />
-		<property name="password" value="#{T(name.chenyuelin.util.AppUtil).decryptBase64ToString('${password}')}" />
+		<property name="username" value="#{T(name.chenyuelin.common.AppUtil).decryptBase64ToString('${user}')}" />
+		<property name="password" value="#{T(name.chenyuelin.common.AppUtil).decryptBase64ToString('${password}')}" />
 		<property name="connectionProperties">
 			<props>
 				<prop key="useUnicode">${useUnicode}</prop>
@@ -48,7 +48,7 @@
 	<!-- schedule -->
 	<bean id="cacheCleanTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
 		<constructor-arg ref="cacheCleanSchedule" />
-		<constructor-arg value="#{T(name.chenyuelin.util.AppUtil).calculateDailyMillisecondDifference(3)}" />
+		<constructor-arg value="#{T(name.chenyuelin.common.AppUtil).calculateDailyMillisecondDifference(3)}" />
 		<constructor-arg value="#{T(name.chenyuelin.constants.BaseConstants).MILLISECOND_OF_DAY}" />
 		<constructor-arg value="true" />
 	</bean>

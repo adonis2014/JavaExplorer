@@ -61,6 +61,7 @@
 		<dependency org="org.springframework.security" name="spring-security-acl" rev="${spring.security.version}" conf="compile->master${artifact.spread.semicolon}" />
 
 		<dependency org="org.springframework.ws" name="spring-ws-core" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/>
+		<dependency org="org.springframework.ws" name="spring-ws-security" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/>
 <!-- 		<dependency org="org.springframework.ws" name="spring-ws-support" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/> -->
 		<dependency org="org.springframework.ws" name="spring-xml" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/>
 		
@@ -90,7 +91,9 @@
 		<dependency org="org.powermock" name="powermock-reflect" rev="${org.powermock.version}" conf="test->master${artifact.spread.semicolon}" />
 		<dependency org="org.springframework" name="spring-test" rev="${spring.version}" conf="test->master${artifact.spread.semicolon}" />
 		<dependency org="javassist" name="javassist" rev="3.12.1.GA" conf="test->master" />
-
+		<dependency org="org.springframework.ws" name="spring-ws-test" rev="${spring.ws.version}" conf="test->master${artifact.spread.semicolon}"/>
+		<dependency org="xmlunit" name="xmlunit" rev="1.5" conf="test->master${artifact.spread.semicolon}"/>
+		
 		<dependency org="mysql" name="mysql-connector-java" rev="5.1.28" conf="runtime->master${artifact.spread.semicolon}" />
 		<!-- <dependency org="ojdbc" name="ojdbc" rev="14" conf="runtime->default${artifact.spread.semicolon}" /> -->
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="provided->default${artifact.spread.semicolon}" />

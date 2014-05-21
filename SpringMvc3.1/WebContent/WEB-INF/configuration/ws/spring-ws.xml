@@ -18,10 +18,13 @@
 					http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
 					http://www.springframework.org/schema/web-services 
 					http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
-					
+	
+	<!-- Spring-WS核心类为org.springframework.ws.soap.server.SoapMessageDispatcher -->				
+	
 	<!-- org.springframework.ws.config.WebServicesNamespaceHandler -->
 	<context:component-scan base-package="name.chenyuelin.ws.endpoint" />
 	
+	<!-- org.springframework.ws.config.AnnotationDrivenBeanDefinitionParser -->
 	<ws:annotation-driven/>
 	
 	<!-- 
@@ -29,6 +32,7 @@
 	如要申明findPerson的operation必需先定意findPersonRequest与findPersonResponse一对参数，operation会跟据此对参数自动生成 
 	-->
 	
+	<!-- org.springframework.ws.config.DynamicWsdlBeanDefinitionParser -->
 	<!-- ws:dynamic-wsdl空间名的targetNamespace属性为wsdl定义空间名，默认为xsd相同空间名。 -->
 	<ws:dynamic-wsdl id="person" serviceName="PersonService" portTypeName="PersonPort" locationUri="/services/person/">
 		<ws:xsd location="/WEB-INF/configuration/ws/schema_final.xsd"/>
