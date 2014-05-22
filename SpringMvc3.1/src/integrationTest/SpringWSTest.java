@@ -53,12 +53,18 @@ public class SpringWSTest {
 
 	@Test
 	public void test() {
-//		Source requestPayload = new StringSource("<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\"><S:Body><findPersonRequest xmlns=\"http://www.cyl.org/person/schemas\"><id>1</id></findPersonRequest></S:Body></S:Envelope>");
-//		Source responsePayload = new StringSource("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body><ns2:findPersonResponse xmlns:ns2=\"http://www.cyl.org/person/schemas\"><ns2:id>1</ns2:id><ns2:name>陈岳麟</ns2:name><ns2:sex>male</ns2:sex><ns2:birthday>1983-03-11</ns2:birthday><ns2:height>1.78</ns2:height><ns2:breakfastTime>08:12:12</ns2:breakfastTime><ns2:createTime>2012-01-27T19:19:15.000-08:00</ns2:createTime><ns2:salary>9500</ns2:salary><ns2:note>自定义数据放的是一张帅哥jpg图片。</ns2:note><ns2:languages>chinese</ns2:languages><ns2:languages>english</ns2:languages><ns2:version>1</ns2:version><ns2:active>true</ns2:active></ns2:findPersonResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>");
+		Source requestPayload = new StringSource("<findPersonRequest xmlns=\"http://www.cyl.org/person/schemas\"><id>4</id></findPersonRequest>");
+		Source responsePayload = new StringSource("<ns2:findPersonResponse xmlns:ns2=\"http://www.cyl.org/person/schemas\"><ns2:id>4</ns2:id><ns2:name>张东 </ns2:name><ns2:sex>male</ns2:sex><ns2:birthday>1983-07-05</ns2:birthday><ns2:height>1.76</ns2:height><ns2:breakfastTime>08:12:12</ns2:breakfastTime><ns2:createTime>2012-08-05T18:44:42.000-08:00</ns2:createTime><ns2:salary>8000</ns2:salary><ns2:note>我的同学f</ns2:note><ns2:languages>chinese</ns2:languages><ns2:version>0</ns2:version><ns2:active>true</ns2:active></ns2:findPersonResponse>");
+		mockWebServiceClient.sendRequest(RequestCreators.withPayload(requestPayload))
+		.andExpect(ResponseMatchers.payload(responsePayload))
+		.andExpect(ResponseMatchers.noFault());
 		
-		Source requestPayload = new StringSource("<findPersonRequest xmlns=\"http://www.cyl.org/person/schemas\"><id>1</id></findPersonRequest>");
-		Source responsePayload = new StringSource("<ns2:findPersonResponse xmlns:ns2=\"http://www.cyl.org/person/schemas\"><ns2:id>1</ns2:id><ns2:name>陈岳麟</ns2:name><ns2:sex>male</ns2:sex><ns2:birthday>1983-03-11</ns2:birthday><ns2:height>1.78</ns2:height><ns2:breakfastTime>08:12:12</ns2:breakfastTime><ns2:createTime>2012-01-27T19:19:15.000-08:00</ns2:createTime><ns2:salary>9500</ns2:salary><ns2:note>自定义数据放的是一张帅哥jpg图片。</ns2:note><ns2:languages>chinese</ns2:languages><ns2:languages>english</ns2:languages><ns2:version>1</ns2:version><ns2:active>true</ns2:active></ns2:findPersonResponse>");
-		mockWebServiceClient.sendRequest(RequestCreators.withPayload(requestPayload)).andExpect(ResponseMatchers.payload(responsePayload));
+		requestPayload = new StringSource("<S:Envelope xmlns:S=\"http://schemas.xmlsoap.org/soap/envelope/\"><S:Body><findPersonRequest xmlns=\"http://www.cyl.org/person/schemas\"><id>4</id></findPersonRequest></S:Body></S:Envelope>");
+		responsePayload = new StringSource("<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body><ns2:findPersonResponse xmlns:ns2=\"http://www.cyl.org/person/schemas\"><ns2:id>4</ns2:id><ns2:name>张东 </ns2:name><ns2:sex>male</ns2:sex><ns2:birthday>1983-07-05</ns2:birthday><ns2:height>1.76</ns2:height><ns2:breakfastTime>08:12:12</ns2:breakfastTime><ns2:createTime>2012-08-05T18:44:42.000-08:00</ns2:createTime><ns2:salary>8000</ns2:salary><ns2:note>我的同学f</ns2:note><ns2:languages>chinese</ns2:languages><ns2:version>0</ns2:version><ns2:active>true</ns2:active></ns2:findPersonResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>");
+		
+		mockWebServiceClient.sendRequest(RequestCreators.withSoapEnvelope(requestPayload))
+		.andExpect(ResponseMatchers.soapEnvelope(responsePayload))
+		.andExpect(ResponseMatchers.noFault());
 	}
 
 }

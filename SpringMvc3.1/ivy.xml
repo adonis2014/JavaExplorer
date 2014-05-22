@@ -62,7 +62,6 @@
 
 		<dependency org="org.springframework.ws" name="spring-ws-core" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/>
 		<dependency org="org.springframework.ws" name="spring-ws-security" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/>
-<!-- 		<dependency org="org.springframework.ws" name="spring-ws-support" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/> -->
 		<dependency org="org.springframework.ws" name="spring-xml" rev="${spring.ws.version}" conf="compile->master${artifact.spread.semicolon}"/>
 		
 		<dependency org="wsdl4j" name="wsdl4j" rev="1.6.3" conf="compile->master${artifact.spread.semicolon}"/>
