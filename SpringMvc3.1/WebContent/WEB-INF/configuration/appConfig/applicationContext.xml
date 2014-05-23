@@ -72,6 +72,10 @@
 		</property>
 	</bean>
 	
+	<!-- App Listener -->
+	<bean class="name.chenyuelin.applistener.ContextRefreshedListener"/>
+	<bean class="name.chenyuelin.applistener.ContextStartedListener"/>
+	
 	<beans profile="production">
 		<import resource="production.xml" />
 	</beans>
