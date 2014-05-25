@@ -2,12 +2,16 @@ package name.chenyuelin.service;
 
 import java.util.concurrent.Future;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AsyncService {
+	public static final Log LOG = LogFactory.getLog(AsyncService.class);
+	
 	@Async
 	public Future<Integer> getRandomNum() {
 		try {

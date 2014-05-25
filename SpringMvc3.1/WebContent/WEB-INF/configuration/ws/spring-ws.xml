@@ -22,10 +22,10 @@
 	<!-- Spring-WS核心类为org.springframework.ws.soap.server.SoapMessageDispatcher -->				
 	
 	<!-- org.springframework.ws.config.WebServicesNamespaceHandler -->
-	<context:component-scan base-package="name.chenyuelin.ws.endpoint" />
+	<context:component-scan base-package="name.chenyuelin.ws.endpoint,name.chenyuelin.ws.client" />
 	
 	<!-- org.springframework.ws.config.AnnotationDrivenBeanDefinitionParser -->
-	<ws:annotation-driven/>
+	<ws:annotation-driven marshaller="wsJaxb2Marshaller" unmarshaller="wsJaxb2Marshaller"/>
 	
 	<!-- 
 	Spring WS 要申明一个operation操作必需要一组请求响应组合而来。
@@ -41,4 +41,49 @@
 	<ws:interceptors>
 		<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
 	</ws:interceptors>
+	
+	<!-- Default EndpointExceptionResolver in org.springframework.ws.server.MessageDispatcher is SoapFaultAnnotationExceptionResolver, SimpleSoapExceptionResolver -->
+	<bean class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<util:properties>
+				<prop key="java.lang.RuntimeException">CLIENT,Invalid request</prop>
+			</util:properties>
+		</property>
+	</bean>
+	
+	<!-- org.springframework.ws.soap.SoapVersion -->
+	
+	<!-- Default message factory, MessageDispatcherServlet will reference it -->
+	<!-- <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/> -->
+	
+	<bean id="messageFactory12" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory">
+		<property name="soapVersion">
+			<util:constant static-field="org.springframework.ws.soap.SoapVersion.SOAP_12"/>
+		</property>
+	</bean>
+
+	<bean id="wsJaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="packagesToScan">
+			<list>
+				<value>name.chenyuelin.ws.dto.person</value>
+				<value>name.chenyuelin.ws.dto.airline</value>
+			</list>
+		</property>
+		<property name="marshallerProperties">
+			<map>
+				<entry key="#{T(javax.xml.bind.Marshaller).JAXB_ENCODING}" value="utf-8" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- **************************** Client ************************************ -->
+	<bean id="webServiceTemplate11" class="org.springframework.ws.client.core.WebServiceTemplate">
+		<constructor-arg ref="wsJaxb2Marshaller"/>
+	</bean>
+	
+	<bean id="webServiceTemplate12" class="org.springframework.ws.client.core.WebServiceTemplate">
+		<constructor-arg ref="messageFactory12"/>
+		<property name="marshaller" ref="wsJaxb2Marshaller"/>
+		<property name="unmarshaller" ref="wsJaxb2Marshaller"/>
+	</bean>
 </beans>

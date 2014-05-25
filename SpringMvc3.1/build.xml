@@ -165,4 +165,29 @@
 			<arg value="name.chenyuelin.ws.dto.PersonCommand"/>
 		</exec>
 	</target>
+
+	<target name="xjc">
+		<property name="xjcOutputPath" location="${basedir}/src" />
+		<property name="xsdFilePath" location="${xjcOutputPath}/name/chenyuelin/ws/dto/airline/Reponse.xsd" />
+		<exec executable="${env.JAVA_HOME}/bin/xjc.exe" osfamily="windows">
+			<arg value="-d" />
+			<arg value="${xjcOutputPath}" />
+			<arg value="-p" />
+			<arg value="name.chenyuelin.ws.dto.airline" />
+			<arg value="${xsdFilePath}" />
+		</exec>
+	</target>
+
+	<target name="wsimport">
+		<property name="wsOutputPath" location="${basedir}/src"/>
+		<property name="wsdlFilePath" value="http://webservice.webxml.com.cn/webservices/DomesticAirline.asmx?wsdl"/>
+		<exec executable="${env.JAVA_HOME}/bin/wsimport.exe" osfamily="windows">
+			<arg value="-s"/>
+			<arg value="${wsOutputPath}"/>
+			<arg value="-p"/>
+			<arg value="name.chenyuelin.ws.client.airline"/>
+			<arg value="-extension"/>
+			<arg value="${wsdlFilePath}"/>
+		</exec>
+	</target>
 </project>

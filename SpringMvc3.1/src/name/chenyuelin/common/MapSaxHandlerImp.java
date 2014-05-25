@@ -20,7 +20,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Yuelin Chen
  * @version 1.0 2014-5-16
  */
-class MapSaxHandlerImp extends DefaultHandler {
+public class MapSaxHandlerImp extends DefaultHandler {
 	private static final Log LOG = LogFactory.getLog(MapSaxHandlerImp.class);
 
 	private final Map<String, Object> rootMap;

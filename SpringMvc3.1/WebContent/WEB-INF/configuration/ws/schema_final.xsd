@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cyl.org/person/schemas" 
-		xmlns="http://www.cyl.org/person/schemas" 
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cyl.org/person/schemas/" 
+		xmlns="http://www.cyl.org/person/schemas/" 
 		elementFormDefault="qualified">
 
   <xs:element name="findPersonRequest" type="personCommand"/>

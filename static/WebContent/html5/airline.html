@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="GB18030">
+<title>航班查询</title>
+<link rel="stylesheet" href="../css/lib/redmond/jquery-ui-1.10.4.custom.min.css">
+<script src="../js/lib/jquery-2.1.0.js"></script>
+<script src="../js/lib/jquery-ui-1.10.4.custom.js"></script>
+<script>
+	airLineCity=null;
+	$().ready(function(){
+		$("#cityCode").click(function(){
+			$.get("/SpringMvc3.1/airline/domesticcity",function(data){
+				airLineCity=data;
+				/* var $tbody=$("#airContentTable>tbody");
+				$tbody.empty();
+				$.each(airLineCity,function(index,city){
+					var $tr=$("<tr></tr>");
+					var $td=$("<td></td>");
+					$td.text(city.cnCityName);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(city.enCityName);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(city.Abbreviation);
+					$tr.append($td);
+					
+					$tbody.append($tr);
+				}); */
+				var $startCitySelect=$("#flightForm>select[name='startCity']");
+				
+				fillCityOpt($startCitySelect);
+				
+				$("option",$startCitySelect).clone().appendTo("#flightForm>select[name='lastCity']");
+			});
+			return false;
+		});
+		$("#cityCode").click().hide();
+		
+		$("#flightForm").submit(function(){
+			$.get("/SpringMvc3.1/airline/domestictime",$("#flightForm").serialize(),function(data){
+				var $tbody=$("#airAirlinesTimeTable>tbody");
+				$tbody.empty();
+				$.each(data,function(index,flight){
+					var $tr=$("<tr></tr>");
+					var $td=$("<td></td>");
+					$td.text(flight.Company);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(flight.AirlineCode);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(flight.StartDrome);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(flight.ArriveDrome);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(flight.StartTime);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(flight.ArriveTime);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(flight.Mode);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(flight.AirlineStop);
+					$tr.append($td);
+					
+					$td=$("<td></td>");
+					$td.text(flight.Week);
+					$tr.append($td);
+					
+					$tbody.append($tr);
+				});
+			});
+			return false;
+		});
+		
+		$("#flightForm>input[name='theDate']").datepicker({
+			dateFormat:"yy-mm-dd"
+		});
+	});
+	
+	function fillCityOpt($select){
+		$select.empty();
+		$.each(airLineCity,function(index,city){
+			var opt=$("<option></option>")
+			opt.attr("value",city.Abbreviation);
+			opt.text(city.cnCityName+"-"+city.enCityName);
+			$select.append(opt);
+		});
+	}
+</script>
+</head>
+<body>
+	<h1 align="center">AirLine</h1>
+	<a id="cityCode" href="#">取得城市代码</a>
+	<table id="airContentTable" border="1" style="display: none">
+		<thead>
+			<tr>
+				<td>cnCityName</td>
+				<td>enCityName</td>
+				<td>Abbreviation</td>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	
+	<form id="flightForm" action="#">
+		<select name="startCity"></select>
+		<select name="lastCity"></select>
+		<input name="theDate" type="text" readonly="readonly">
+		<input type="submit">
+	</form>
+	<table id="airAirlinesTimeTable" border="1">
+		<thead>
+			<tr>
+				<td>Company</td>
+				<td>AirlineCode</td>
+				<td>StartDrome</td>
+				<td>ArriveDrome</td>
+				<td>StartTime</td>
+				<td>ArriveTime</td>
+				<td>Mode</td>
+				<td>AirlineStop</td>
+				<td>Week</td>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+</body>
+</html>
