@@ -43,7 +43,9 @@
 	</ws:interceptors>
 	
 	<!-- Default EndpointExceptionResolver in org.springframework.ws.server.MessageDispatcher is SoapFaultAnnotationExceptionResolver, SimpleSoapExceptionResolver -->
+	<!-- AnnotationDrivenBeanDefinitionParser的registerEndpointExceptionResolvers方法注册了两个默认的EndpointExceptionResolver -->
 	<bean class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">
+		<property name="order" value="1"/>
 		<property name="exceptionMappings">
 			<util:properties>
 				<prop key="java.lang.RuntimeException">CLIENT,Invalid request</prop>
