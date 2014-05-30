@@ -50,8 +50,6 @@ public class PersonEndpoint {
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		Result result = new StringResult();
 		transformer.transform(saxSource, result);
-		System.out.println(1/0);
-		System.out.println(result.toString());
 		result = new StringResult();
 		transformer.transform(soapBody.getPayloadSource(), result);
 		System.out.println(result.toString());

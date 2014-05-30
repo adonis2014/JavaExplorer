@@ -19,7 +19,18 @@
 					http://www.springframework.org/schema/web-services 
 					http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
 	
-	<!-- Spring-WS核心类为org.springframework.ws.soap.server.SoapMessageDispatcher -->				
+	<!-- 
+	容器默认的HandlerAdapter是WebServiceMessageReceiverHandlerAdapter，它负责处理所有请求。
+	它以org.springframework.ws.soap.server.SoapMessageDispatcher为核心
+					
+	默认的EndpointMapping有三个，依次为：
+	org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping
+	org.springframework.ws.soap.server.endpoint.mapping.SoapActionAnnotationMethodEndpointMapping
+	org.springframework.ws.soap.addressing.server.AnnotationActionEndpointMapping
+	
+	默认的EndpointAdapter为org.springframework.ws.server.endpoint.adapter.DefaultMethodEndpointAdapter
+	 -->
+	
 	
 	<!-- org.springframework.ws.config.WebServicesNamespaceHandler -->
 	<context:component-scan base-package="name.chenyuelin.ws.endpoint,name.chenyuelin.ws.client" />
@@ -40,6 +51,9 @@
 	
 	<ws:interceptors>
 		<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+		<!-- <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+			<property name="validationActions" value=""></property>
+		</bean> -->
 	</ws:interceptors>
 	
 	<!-- Default EndpointExceptionResolver in org.springframework.ws.server.MessageDispatcher is SoapFaultAnnotationExceptionResolver, SimpleSoapExceptionResolver -->
