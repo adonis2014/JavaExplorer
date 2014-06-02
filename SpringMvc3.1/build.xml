@@ -190,4 +190,13 @@
 			<arg value="${wsdlFilePath}"/>
 		</exec>
 	</target>
+
+	<!-- Mybatis Generate -->
+	<target name="mybatis-generate" depends="resolve">
+		<java jar="${artifact.path.mybatis-generator-core}" fork="true">
+			<arg value="-configfile"/>
+			<arg value="mybatis-generator.xml"/>
+			<arg value="-overwrite"/>
+		</java>
+	</target>
 </project>

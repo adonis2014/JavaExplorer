@@ -51,9 +51,18 @@
 	
 	<ws:interceptors>
 		<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
-		<!-- <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
-			<property name="validationActions" value=""></property>
-		</bean> -->
+		<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+			<property name="validationActions" value="UsernameToken"/>
+			<property name="validationCallbackHandler">
+				<bean class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
+					<property name="usersMap">
+						<map>
+							<entry key="abc" value="abc"/>
+						</map>
+					</property>
+				</bean>
+			</property>
+		</bean>
 	</ws:interceptors>
 	
 	<!-- Default EndpointExceptionResolver in org.springframework.ws.server.MessageDispatcher is SoapFaultAnnotationExceptionResolver, SimpleSoapExceptionResolver -->

@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 
+import name.chenyuelin.dao.mapping.PersonMapper;
 import name.chenyuelin.entity.test.Person;
 import name.chenyuelin.service.UserService;
 import name.chenyuelin.webapp.command.PersonCommand;
@@ -29,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -62,6 +62,9 @@ public class PersonController {
 	
     @Autowired
 	private WebApplicationContext wac;
+    
+    @Autowired
+    private PersonMapper personMapper;
     
 	private UserService userService;
 
@@ -232,4 +235,9 @@ public class PersonController {
 		return "∞Û¥Ì¡À°£";
 	}*/
 	
+	@RequestMapping(value="mybatis/{id}",method=RequestMethod.GET)
+	@ResponseBody
+	public name.chenyuelin.model.Person getPerson(@PathVariable("id")Byte id){
+		return personMapper.selectByPrimaryKey(id);
+	}
 }

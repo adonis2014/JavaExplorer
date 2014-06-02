@@ -195,7 +195,14 @@
 			$.get("/SpringMvc3.1/async/randomnum",function(data){
 				alert(data);
 			});
-		})
+		});
+		
+		$("#mybatis-sample").click(function(){
+			$.get("/SpringMvc3.1/person/mybatis/1",function(data){
+				alert(data);
+			});
+			return false;
+		});
 	});
 </script>
 </head>
@@ -242,5 +249,7 @@
 	</div>
 	
 	<button id="asyncTextBut" type="button">Òì²½Ëæ»úÊı²âÊÔ</button>
+	
+	<a id="mybatis-sample" href="#">Mybatis Sapmle</a>
 </body>
 </html>

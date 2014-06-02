@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="name.chenyuelin.dao.mapping.PersonMapper" >
+  <resultMap id="BaseResultMap" type="name.chenyuelin.model.Person" >
+    <id column="id" property="id" jdbcType="TINYINT" />
+    <result column="sex" property="sex" jdbcType="CHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="height" property="height" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="breakfast_time" property="breakfastTime" jdbcType="TIME" />
+    <result column="languages" property="languages" jdbcType="CHAR" />
+    <result column="salary" property="salary" jdbcType="SMALLINT" />
+    <result column="active" property="active" jdbcType="BOOLEAN" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="TINYINT" />
+    <result column="department_id" property="departmentId" jdbcType="TINYINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="name.chenyuelin.model.Person" extends="BaseResultMap" >
+    <result column="custom_data" property="customData" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sex, name, birthday, height, create_time, breakfast_time, languages, salary, 
+    active, note, version, department_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    custom_data
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="name.chenyuelin.model.PersonCondition" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from person
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="name.chenyuelin.model.PersonCondition" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from person
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Byte" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from person
+    where id = #{id,jdbcType=TINYINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Byte" >
+    delete from person
+    where id = #{id,jdbcType=TINYINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="name.chenyuelin.model.PersonCondition" >
+    delete from person
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="name.chenyuelin.model.Person" >
+    insert into person (id, sex, name, birthday, 
+      height, create_time, breakfast_time, 
+      languages, salary, active, 
+      note, version, department_id, 
+      custom_data)
+    values (#{id,jdbcType=TINYINT}, #{sex,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+      #{height,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{breakfastTime,jdbcType=TIME}, 
+      #{languages,jdbcType=CHAR}, #{salary,jdbcType=SMALLINT}, #{active,jdbcType=BOOLEAN}, 
+      #{note,jdbcType=VARCHAR}, #{version,jdbcType=TINYINT}, #{departmentId,jdbcType=TINYINT}, 
+      #{customData,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="name.chenyuelin.model.Person" >
+    insert into person
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="breakfastTime != null" >
+        breakfast_time,
+      </if>
+      <if test="languages != null" >
+        languages,
+      </if>
+      <if test="salary != null" >
+        salary,
+      </if>
+      <if test="active != null" >
+        active,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="departmentId != null" >
+        department_id,
+      </if>
+      <if test="customData != null" >
+        custom_data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=TINYINT},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="breakfastTime != null" >
+        #{breakfastTime,jdbcType=TIME},
+      </if>
+      <if test="languages != null" >
+        #{languages,jdbcType=CHAR},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=SMALLINT},
+      </if>
+      <if test="active != null" >
+        #{active,jdbcType=BOOLEAN},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=TINYINT},
+      </if>
+      <if test="departmentId != null" >
+        #{departmentId,jdbcType=TINYINT},
+      </if>
+      <if test="customData != null" >
+        #{customData,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="name.chenyuelin.model.PersonCondition" resultType="java.lang.Integer" >
+    select count(*) from person
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update person
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=TINYINT},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=CHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.height != null" >
+        height = #{record.height,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.breakfastTime != null" >
+        breakfast_time = #{record.breakfastTime,jdbcType=TIME},
+      </if>
+      <if test="record.languages != null" >
+        languages = #{record.languages,jdbcType=CHAR},
+      </if>
+      <if test="record.salary != null" >
+        salary = #{record.salary,jdbcType=SMALLINT},
+      </if>
+      <if test="record.active != null" >
+        active = #{record.active,jdbcType=BOOLEAN},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=TINYINT},
+      </if>
+      <if test="record.departmentId != null" >
+        department_id = #{record.departmentId,jdbcType=TINYINT},
+      </if>
+      <if test="record.customData != null" >
+        custom_data = #{record.customData,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update person
+    set id = #{record.id,jdbcType=TINYINT},
+      sex = #{record.sex,jdbcType=CHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
+      height = #{record.height,jdbcType=DECIMAL},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      breakfast_time = #{record.breakfastTime,jdbcType=TIME},
+      languages = #{record.languages,jdbcType=CHAR},
+      salary = #{record.salary,jdbcType=SMALLINT},
+      active = #{record.active,jdbcType=BOOLEAN},
+      note = #{record.note,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=TINYINT},
+      department_id = #{record.departmentId,jdbcType=TINYINT},
+      custom_data = #{record.customData,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update person
+    set id = #{record.id,jdbcType=TINYINT},
+      sex = #{record.sex,jdbcType=CHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
+      height = #{record.height,jdbcType=DECIMAL},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      breakfast_time = #{record.breakfastTime,jdbcType=TIME},
+      languages = #{record.languages,jdbcType=CHAR},
+      salary = #{record.salary,jdbcType=SMALLINT},
+      active = #{record.active,jdbcType=BOOLEAN},
+      note = #{record.note,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=TINYINT},
+      department_id = #{record.departmentId,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="name.chenyuelin.model.Person" >
+    update person
+    <set >
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="breakfastTime != null" >
+        breakfast_time = #{breakfastTime,jdbcType=TIME},
+      </if>
+      <if test="languages != null" >
+        languages = #{languages,jdbcType=CHAR},
+      </if>
+      <if test="salary != null" >
+        salary = #{salary,jdbcType=SMALLINT},
+      </if>
+      <if test="active != null" >
+        active = #{active,jdbcType=BOOLEAN},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=TINYINT},
+      </if>
+      <if test="departmentId != null" >
+        department_id = #{departmentId,jdbcType=TINYINT},
+      </if>
+      <if test="customData != null" >
+        custom_data = #{customData,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where id = #{id,jdbcType=TINYINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="name.chenyuelin.model.Person" >
+    update person
+    set sex = #{sex,jdbcType=CHAR},
+      name = #{name,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      height = #{height,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      breakfast_time = #{breakfastTime,jdbcType=TIME},
+      languages = #{languages,jdbcType=CHAR},
+      salary = #{salary,jdbcType=SMALLINT},
+      active = #{active,jdbcType=BOOLEAN},
+      note = #{note,jdbcType=VARCHAR},
+      version = #{version,jdbcType=TINYINT},
+      department_id = #{departmentId,jdbcType=TINYINT},
+      custom_data = #{customData,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=TINYINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="name.chenyuelin.model.Person" >
+    update person
+    set sex = #{sex,jdbcType=CHAR},
+      name = #{name,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      height = #{height,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      breakfast_time = #{breakfastTime,jdbcType=TIME},
+      languages = #{languages,jdbcType=CHAR},
+      salary = #{salary,jdbcType=SMALLINT},
+      active = #{active,jdbcType=BOOLEAN},
+      note = #{note,jdbcType=VARCHAR},
+      version = #{version,jdbcType=TINYINT},
+      department_id = #{departmentId,jdbcType=TINYINT}
+    where id = #{id,jdbcType=TINYINT}
+  </update>
+  <cache readOnly="true" />
+</mapper>
