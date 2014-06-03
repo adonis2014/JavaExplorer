@@ -51,6 +51,8 @@
 	
 	<ws:interceptors>
 		<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+		
+		<!-- UsernameTokenValidator的validate为默认UsernameToken认证策略 -->
 		<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 			<property name="validationActions" value="UsernameToken"/>
 			<property name="validationCallbackHandler">
