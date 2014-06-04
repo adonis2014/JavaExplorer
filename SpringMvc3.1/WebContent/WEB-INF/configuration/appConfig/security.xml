@@ -86,7 +86,7 @@
 	
 	<authentication-manager id="authenticationManager" erase-credentials="false">
 		<authentication-provider>
-			<jdbc-user-service data-source-ref="dataSource" role-prefix="ROLE_" cache-ref="securityCache" 
+			<jdbc-user-service id="defaultUserDetailsService" data-source-ref="dataSource" role-prefix="ROLE_" cache-ref="securityCache" 
 			authorities-by-username-query="SELECT 1,a.authority FROM ss_user u INNER JOIN ss_user_authority ua ON u.id=ua.user_id AND ua.enabled = true INNER JOIN ss_authority a ON ua.authority_id = a.id AND a.enabled = true AND a.is_expression = false WHERE u.id = ?" 
 			group-authorities-by-username-query="SELECT r.id role_id,r.name role,a.authority FROM ss_user u INNER JOIN ss_user_role ur ON u.id=ur.user_id AND ur.enabled=true INNER JOIN ss_role r ON ur.role_id=r.id AND r.enabled=true INNER JOIN ss_role_authority ra ON r.id=ra.role_id AND ra.enabled=true INNER JOIN ss_authority a ON ra.authority_id=a.id AND a.enabled=true WHERE u.id = ?"
 			users-by-username-query="SELECT id,pd,enabled FROM ss_user WHERE name = ?"/>

@@ -193,7 +193,8 @@
 
 	<!-- Mybatis Generate -->
 	<target name="mybatis-generate" depends="resolve">
-		<java jar="${artifact.path.mybatis-generator-core}" fork="true">
+		<java jar="${artifact.path.mybatis-generator-core}" fork="true" classpath="${artifact.path.mysql-connector-java}" >
+			<sysproperty key="jdbcPath" value="${artifact.path.mysql-connector-java}"/>
 			<arg value="-configfile"/>
 			<arg value="mybatis-generator.xml"/>
 			<arg value="-overwrite"/>

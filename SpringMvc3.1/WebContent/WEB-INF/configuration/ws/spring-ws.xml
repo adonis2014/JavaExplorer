@@ -48,21 +48,27 @@
 	<ws:dynamic-wsdl id="person" serviceName="PersonService" portTypeName="PersonPort" locationUri="/services/person/">
 		<ws:xsd location="/WEB-INF/configuration/ws/schema_final.xsd"/>
 	</ws:dynamic-wsdl>
-	
+
 	<ws:interceptors>
-		<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
-		
+		<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor" />
+
 		<!-- UsernameTokenValidator的validate为默认UsernameToken认证策略 -->
 		<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
-			<property name="validationActions" value="UsernameToken"/>
-			<property name="validationCallbackHandler">
-				<bean class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
-					<property name="usersMap">
-						<map>
-							<entry key="abc" value="abc"/>
-						</map>
-					</property>
-				</bean>
+			<property name="validationActions" value="UsernameToken" />
+			<property name="validationCallbackHandlers">
+				<array>
+					<bean class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
+						<property name="usersMap">
+							<map>
+								<entry key="abc" value="abc" />
+							</map>
+						</property>
+					</bean>
+					<bean class="org.springframework.ws.soap.security.wss4j.callback.SpringSecurityPasswordValidationCallbackHandler">
+						<property name="userDetailsService" ref="defaultUserDetailsService"/>
+					</bean>
+				</array>
+
 			</property>
 		</bean>
 	</ws:interceptors>
