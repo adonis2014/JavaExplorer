@@ -35,7 +35,7 @@
 	<!-- org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser -->
 	<!-- <mvc:annotation-driven/> -->
 	
-<!-- 
+	<!-- 
 	<bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
 	</bean>
@@ -45,7 +45,7 @@
 			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
 		</property>
 	</bean> 
- -->
+ 	-->
 
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
