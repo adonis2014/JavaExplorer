@@ -54,7 +54,17 @@
 
 		<!-- UsernameTokenValidator的validate为默认UsernameToken认证策略 -->
 		<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
-			<property name="validationActions" value="UsernameToken" />
+			<property name="validationActions" value="UsernameToken Timestamp" />
+			<!-- 
+			Soap Header for UsernameToken
+			<wsse:UsernameToken wsu:Id="UsernameToken-2357389552A7C0791614021044770621">
+				<wsse:Username>abc</wsse:Username>
+				<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">SXisPQAh7Kqm2jtXi8yUxF4mzhs=</wsse:Password>
+				<wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">Rv8iCkiWUdC94/Lf4R674w==</wsse:Nonce>
+				<wsu:Created>2014-06-07T01:27:57.046Z</wsu:Created>
+			</wsse:UsernameToken>
+			
+			 -->
 			<property name="validationCallbackHandlers">
 				<array>
 					<bean class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
@@ -64,12 +74,21 @@
 							</map>
 						</property>
 					</bean>
-					<bean class="org.springframework.ws.soap.security.wss4j.callback.SpringSecurityPasswordValidationCallbackHandler">
+					<!-- <bean class="org.springframework.ws.soap.security.wss4j.callback.SpringSecurityPasswordValidationCallbackHandler">
 						<property name="userDetailsService" ref="defaultUserDetailsService"/>
-					</bean>
+					</bean> -->
 				</array>
-
 			</property>
+			<!-- 
+			<wsu:Timestamp wsu:Id="TS-2357389552A7C0791614021044770622">
+				<wsu:Created>2014-06-07T01:27:57.062Z</wsu:Created>
+				<wsu:Expires>2014-06-07T01:32:57.062Z</wsu:Expires>
+			</wsu:Timestamp>
+			
+			<property name="timestampStrict" value="true"/>是否检查客户端的wsu:Expires
+    		<property name="validationTimeToLive" value="300"/>服务端根据客户端wsu:Created检查超时时间
+    		<property name="futureTimeToLive" value="60"/>客户端wsu:Created不能超前服务端60秒时间
+    		 -->
 		</bean>
 	</ws:interceptors>
 	

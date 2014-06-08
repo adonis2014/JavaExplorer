@@ -82,6 +82,7 @@
 		<dependency org="org.apache.poi" name="poi-scratchpad" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
 
 		<!-- <dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${artifact.spread.semicolon}" /> -->
+		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="provided->default${artifact.spread.semicolon}" />
 
 		<dependency org="chenyuelin" name="DataPersistence" rev="latest.revision" conf="compile->master" changing="true" />
 
@@ -101,8 +102,8 @@
 		<dependency org="xmlunit" name="xmlunit" rev="1.5" conf="test->master${artifact.spread.semicolon}"/>
 		
 		<dependency org="mysql" name="mysql-connector-java" rev="5.1.28" conf="runtime->master${artifact.spread.semicolon}" />
+		<dependency org="jstl" name="jstl" rev="1.2" conf="runtime->master${artifact.spread.semicolon}" />
 		<!-- <dependency org="ojdbc" name="ojdbc" rev="14" conf="runtime->default${artifact.spread.semicolon}" /> -->
-		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="provided->default${artifact.spread.semicolon}" />
 		
 		<dependency org="org.mybatis.generator" name="mybatis-generator-core" rev="1.3.2" conf="system->default${artifact.spread.semicolon}"/>
 	</dependencies>

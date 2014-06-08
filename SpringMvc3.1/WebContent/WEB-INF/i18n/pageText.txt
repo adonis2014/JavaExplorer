@@ -1,0 +1,6 @@
+ssrole.index.title=角色信息
+ssrole.index.heading1=角色信息一览
+ssrole.index.table.head.id=ID
+ssrole.index.table.head.name=角色名称
+ssrole.index.table.head.enabled=激活
+ssrole.index.table.head.description=描述

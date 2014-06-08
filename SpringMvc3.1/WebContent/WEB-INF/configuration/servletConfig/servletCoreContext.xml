@@ -36,6 +36,7 @@
 	<!-- <mvc:annotation-driven/> -->
 	
 	<!-- 
+	手动注册事务管理器
 	<bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
 	</bean>
@@ -51,6 +52,7 @@
 		<property name="basenames">
 			<list>
 				<value>/WEB-INF/i18n/warning</value>
+				<value>/WEB-INF/i18n/pageText</value>
 			</list>
 		</property>
 	</bean>
@@ -58,7 +60,6 @@
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="cookieMaxAge" value="#{T(java.lang.Integer).MAX_VALUE}" />
 		<property name="cookieName" value="language" />
-		<!-- <property name="cookieMaxAge" value="#{60*60*24*365*5}"/> -->
 		<property name="defaultLocale" value="en_US" />
 	</bean>
 
@@ -79,13 +80,19 @@
 
 	<!-- 配置ViewResolver -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="ignoreAcceptHeader" value="false" />
-		<property name="defaultContentType" value="#{T(org.springframework.http.MediaType).APPLICATION_XML_VALUE}" />
-		<property name="mediaTypes">
-			<map>
-				<entry key="xml" value="application/xml" />
-				<entry key="json" value="application/json" />
-			</map>
+		<property name="contentNegotiationManager">
+			<bean class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+				<property name="ignoreAcceptHeader" value="false"/>
+				<property name="defaultContentType">
+					<util:constant static-field="org.springframework.http.MediaType.APPLICATION_XML_VALUE"/>
+				</property>
+				<property name="mediaTypes">
+					<map>
+					<entry key="xml" value="application/xml" />
+					<entry key="json" value="application/json" />
+					</map>
+				</property>
+			</bean>
 		</property>
 		<property name="defaultViews">
 			<list>
