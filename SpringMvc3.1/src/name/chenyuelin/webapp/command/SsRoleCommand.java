@@ -5,7 +5,7 @@ public class SsRoleCommand {
 
 	private String description;
 
-	private byte enabled;
+	private Boolean enabled;
 
 	private String name;
 
@@ -25,13 +25,6 @@ public class SsRoleCommand {
 		this.description = description;
 	}
 
-	public byte getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(byte enabled) {
-		this.enabled = enabled;
-	}
 
 	public String getName() {
 		return name;
@@ -41,12 +34,13 @@ public class SsRoleCommand {
 		this.name = name;
 	}
 
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + enabled;
+		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -61,7 +55,9 @@ public class SsRoleCommand {
 		if (description == null) {
 			if (other.description != null) return false;
 		} else if (!description.equals(other.description)) return false;
-		if (enabled != other.enabled) return false;
+		if (enabled == null) {
+			if (other.enabled != null) return false;
+		} else if (!enabled.equals(other.enabled)) return false;
 		if (id != other.id) return false;
 		if (name == null) {
 			if (other.name != null) return false;
@@ -72,5 +68,13 @@ public class SsRoleCommand {
 	@Override
 	public String toString() {
 		return "SsRoleCommand [id=" + id + ", description=" + description + ", enabled=" + enabled + ", name=" + name + "]";
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 }

@@ -22,4 +22,8 @@ public class SsRoleDao {
 	public List<SsRole> getAllSsRole(){
 		return entityManager.createNamedQuery(NamedQueryContent.SSROLE_GET_ALL_SSROLE,SsRole.class).getResultList();
 	}
+	
+	public void insertSsRole(SsRole ssRole){
+		entityManager.persist(ssRole);
+	}
 }

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=GB18030"
     pageEncoding="GB18030"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -26,6 +26,10 @@
 			</tr>
 		</c:forEach>
 	</tbody>
+	<c:if test="${newRoleName!=null}">
+		<h2 align="center">${newRoleName}添加成功</h2>
+	</c:if>
 </table>
+<a href="create.htm">新建权限</a>
 </body>
 </html>
