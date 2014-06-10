@@ -26,4 +26,8 @@ public class SsRoleService {
 	public void createSsRole(SsRoleCommand ssRoleCommand) {
 		dao.insertSsRole(Transformer.toSsRoleEntity(ssRoleCommand));
 	}
+	
+	public void deleteSsRole(byte id) {
+		dao.deleteSsRole(id);
+	}
 }

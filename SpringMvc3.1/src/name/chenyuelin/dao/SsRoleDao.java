@@ -26,4 +26,9 @@ public class SsRoleDao {
 	public void insertSsRole(SsRole ssRole){
 		entityManager.persist(ssRole);
 	}
+	
+	public void deleteSsRole(byte id){
+		SsRole ssRoleEntity=entityManager.find(SsRole.class, id);
+		entityManager.remove(ssRoleEntity);
+	}
 }

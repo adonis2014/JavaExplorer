@@ -17,12 +17,13 @@
 			<td><spring:message code="ssrole.index.table.head.name"/></td>
 			<td><spring:message code="ssrole.index.table.head.enabled"/></td>
 			<td><spring:message code="ssrole.index.table.head.description"/></td>
+			<td>²Ù×÷</td>
 		</tr>
 	</thead>
 	<tbody>
 		<c:forEach var="role" items="${ss_roles}">
 			<tr>
-				<td>${role.id}</td><td>${role.name}</td><td>${role.enabled}</td><td>${role.description}</td>
+				<td>${role.id}</td><td>${role.name}</td><td>${role.enabled}</td><td>${role.description}</td><td><a href="delete/${role.id}">É¾³ý</a></td>
 			</tr>
 		</c:forEach>
 	</tbody>

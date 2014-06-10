@@ -15,6 +15,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -54,24 +55,26 @@ public class SecurityRoleController {
 	}
 	
 	@Transactional
-	@RequestMapping(value="create", method=RequestMethod.POST)
+	@RequestMapping(value="create.htm", method=RequestMethod.POST)
 	public ModelAndView create(@ModelAttribute("ssRole") @Validated SsRoleCommand ssRoleCommand, RedirectAttributes redirectAttributes){
 		service.createSsRole(ssRoleCommand);
 		redirectAttributes.addFlashAttribute("newRoleName", ssRoleCommand.getName());
 		return new ModelAndView("redirect:index.htm");
 	}
 	
+	@Transactional
+	@RequestMapping(value="delete/{id}")
+	public ModelAndView delete(@PathVariable("id")byte id, RedirectAttributes redirectAttributes){
+		service.deleteSsRole(id);
+		return new ModelAndView("redirect:/security/role/index.htm");
+	}
+	
 	@ExceptionHandler(BindException.class)
-	public ModelAndView handleIOException(BindException ex,NativeWebRequest nativeWebRequest) {
+	public ModelAndView handleBindException(BindException ex,NativeWebRequest nativeWebRequest) {
 		String referer=nativeWebRequest.getHeader("referer");
 		System.out.println(nativeWebRequest.getContextPath());
 		int last=referer.lastIndexOf(".");
-		String viewName;
-		if(last<0){
-			viewName="resourceType/"+referer.substring(referer.lastIndexOf("/")+1);
-		}else{
-			viewName="resourceType/"+referer.substring(referer.lastIndexOf("/")+1,last);
-		}
+		String viewName="ssrole/"+referer.substring(referer.lastIndexOf("/")+1,last);
 		return new ModelAndView(viewName,ex.getModel());
 	}
 
