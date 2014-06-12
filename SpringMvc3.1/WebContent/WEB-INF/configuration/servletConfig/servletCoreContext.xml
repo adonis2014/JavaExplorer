@@ -32,6 +32,25 @@
 	
 	<cache:annotation-driven />
 	
+	<!-- MvcNamespaceHandler for Spring MVC configuration namespace -->
+	
+	RequestMappingHandlerMapping
+	ConfigurableWebBindingInitializer
+	RequestMappingHandlerAdapter
+	ConversionServiceExposingInterceptor
+	MappedInterceptor
+	ExceptionHandlerExceptionResolver
+	ResponseStatusExceptionResolver
+	DefaultHandlerExceptionResolver
+	
+	attribute
+	conversion-service FormattingConversionServiceFactoryBean
+	validator jsr303Present?LocalValidatorFactoryBean:null
+	content-negotiation-manager ContentNegotiationManagerFactoryBean
+	message-codes-resolver Reference bean default is DefaultMessageCodesResolver
+	
+	<mvc:annotation-driven ></mvc:annotation-driven>
+	
 	<!-- org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser -->
 	<!-- <mvc:annotation-driven/> -->
 	
