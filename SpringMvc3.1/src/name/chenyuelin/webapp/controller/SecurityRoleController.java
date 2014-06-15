@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("security/role")
+@SessionAttributes("ssRole")
 public class SecurityRoleController {
 	@Autowired
 	private SsRoleService service;
@@ -56,10 +59,13 @@ public class SecurityRoleController {
 	
 	@Transactional
 	@RequestMapping(value="create.htm", method=RequestMethod.POST)
-	public ModelAndView create(@ModelAttribute("ssRole") @Validated SsRoleCommand ssRoleCommand, RedirectAttributes redirectAttributes){
+	public ModelAndView create(@ModelAttribute("ssRole") @Validated SsRoleCommand ssRoleCommand, SessionStatus sessionStatus){
 		service.createSsRole(ssRoleCommand);
-		redirectAttributes.addFlashAttribute("newRoleName", ssRoleCommand.getName());
-		return new ModelAndView("redirect:index.htm");
+		ModelAndView mav=new ModelAndView("ssrole/index");
+		mav.addObject("ss_roles",service.getAllSsRole());
+//		mav.addObject("ssRole", ssRoleCommand);
+		sessionStatus.setComplete();
+		return mav;
 	}
 	
 	@Transactional

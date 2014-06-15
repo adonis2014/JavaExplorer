@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030">
 <title><spring:message code="ssrole.index.title"/></title>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-2.1.1.min.js"></script>
 </head>
 <body>
 <h1 align="center"><spring:message code="ssrole.index.heading1"/></h1>
@@ -27,8 +28,8 @@
 			</tr>
 		</c:forEach>
 	</tbody>
-	<c:if test="${newRoleName!=null}">
-		<h2 align="center">${newRoleName}添加成功</h2>
+	<c:if test="${ssRole!=null}">
+		<h2 align="center">${ssRole.name}添加成功</h2>
 	</c:if>
 </table>
 <a href="create.htm">新建权限</a>

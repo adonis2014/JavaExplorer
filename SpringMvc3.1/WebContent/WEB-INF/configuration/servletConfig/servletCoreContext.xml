@@ -33,26 +33,50 @@
 	<cache:annotation-driven />
 	
 	<!-- MvcNamespaceHandler for Spring MVC configuration namespace -->
-	
+	<!-- 
 	RequestMappingHandlerMapping
 	ConfigurableWebBindingInitializer
 	RequestMappingHandlerAdapter
 	ConversionServiceExposingInterceptor
 	MappedInterceptor
+	
 	ExceptionHandlerExceptionResolver
 	ResponseStatusExceptionResolver
 	DefaultHandlerExceptionResolver
 	
 	attribute
 	conversion-service FormattingConversionServiceFactoryBean
-	validator jsr303Present?LocalValidatorFactoryBean:null
+	validator [jsr303Present?LocalValidatorFactoryBean:null]
 	content-negotiation-manager ContentNegotiationManagerFactoryBean
-	message-codes-resolver Reference bean default is DefaultMessageCodesResolver
+	message-codes-resolver [Reference bean default is DefaultMessageCodesResolver] -->
+	<mvc:annotation-driven conversion-service="formattingConversionService" ignoreDefaultModelOnRedirect="true"/>
+	<!-- 
+	Default message converters:
+	ByteArrayHttpMessageConverter
+	StringHttpMessageConverter [writeAcceptCharset:false]
+	ResourceHttpMessageConverter
+	SourceHttpMessageConverter
+	AllEncompassingFormHttpMessageConverter
+	Jaxb2RootElementHttpMessageConverter
+	MappingJackson2HttpMessageConverter
+	 -->
 	
-	<mvc:annotation-driven ></mvc:annotation-driven>
+	<mvc:interceptors>
+		<!-- 国际化语言选择 -->
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+	</mvc:interceptors>
 	
-	<!-- org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser -->
-	<!-- <mvc:annotation-driven/> -->
+	<mvc:resources location="/WEB-INF/resources/" mapping="/resources/**"/>
+	
+	<mvc:default-servlet-handler/>
+	
+	<bean id="formattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+			<list>
+				<bean class="name.chenyuelin.FormattingAndConversion.XMLGregorianCalendarFormatAnnotationFormatterFactory" />
+			</list>
+		</property>
+	</bean>
 	
 	<!-- 
 	手动注册事务管理器
@@ -82,19 +106,9 @@
 		<property name="defaultLocale" value="en_US" />
 	</bean>
 
-	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
-
 	<!-- <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" /> -->
 	<bean id="multipartResolver" class="name.chenyuelin.custom.EncodingStandardServletMultipartResolver">
 		<property name="encoding" value="UTF-8" />
-	</bean>
-
-	<bean id="formattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-		<property name="formatters">
-			<list>
-				<bean class="name.chenyuelin.FormattingAndConversion.XMLGregorianCalendarFormatAnnotationFormatterFactory" />
-			</list>
-		</property>
 	</bean>
 
 	<!-- 配置ViewResolver -->
@@ -150,7 +164,8 @@
 	</bean>
 	
 	<!-- *********************************************** beans profile ********************************************** -->
-
+	
+	<!-- 暂且不用
 	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
 	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
 		<property name="interceptors">
@@ -159,63 +174,13 @@
 			</list>
 		</property>
 	</bean>
-		
-	<!-- spring 3.1 config -->
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-		<property name="order" value="0" />
-		<property name="useSuffixPatternMatch" value="false" />
-		<property name="interceptors">
-			<list>
-				<ref bean="localeChangeInterceptor" />
-			</list>
-		</property>
-	</bean>
-
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-		<property name="ignoreDefaultModelOnRedirect" value="true" />
-		<property name="webBindingInitializer">
-			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
-				<property name="conversionService" ref="formattingConversionService" />
-			</bean>
-		</property>
-		<property name="messageConverters">
-			<list>
-				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
-				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
-					<constructor-arg value="utf-8"/>
-					<property name="writeAcceptCharset" value="false"/>
-				</bean>
-				<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
-				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-					<property name="objectMapper" ref="defaultJsonMapper" />
-				</bean>
-				<!-- <bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter" /> -->
-			</list>
-		</property>
-	</bean>
-
-	<bean class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
-		<!-- <property name="warnLogCategory" value="name.chenyuelin.exceptionResolver" /> -->
-		<property name="order" value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}" />
-	</bean>
-
-	<!-- 配置ExceptionResolver -->
+	
+	配置ExceptionResolver
 	<bean class="name.chenyuelin.custom.AjaxExceptionResolver">
 		<property name="order" value="0" />
 		<property name="messageSource" ref="messageSource" />
 	</bean>
-
-	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<property name="order" value="1" />
-		<property name="exceptionMappings">
-			<props>
-				<prop key="org.springframework.web.HttpSessionRequiredException">sessionRequired</prop>
-			</props>
-		</property>
-	</bean>
-
-	<bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver" />
-
+ 	-->
 
 	<beans profile="production">
 	</beans>

@@ -10,10 +10,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
            			http://www.springframework.org/schema/mvc
  					http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 	
-	<bean name="/" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-		<property name="viewName" value="index"/>
-	</bean>
-	
 	<bean name="/help/**" class="org.springframework.web.servlet.mvc.UrlFilenameViewController">
 		<property name="prefix" value="help/"/>
 	</bean>
@@ -22,7 +18,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="prefix" value="spa/"/>
 	</bean>
 	
+	<!-- 
+	<bean name="/" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="index"/>
+	</bean>
 	<bean name="/formCommit.htm" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
 		<property name="viewName" value="formCommit"/>
 	</bean>
+	 -->
+	
+	<mvc:view-controller path="/" view-name="index"/>
+	<mvc:view-controller path="/formCommit.htm" view-name="formCommit"/>
 </beans>
