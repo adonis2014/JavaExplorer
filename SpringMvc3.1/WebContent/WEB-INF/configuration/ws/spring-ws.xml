@@ -63,8 +63,8 @@
 				<wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">Rv8iCkiWUdC94/Lf4R674w==</wsse:Nonce>
 				<wsu:Created>2014-06-07T01:27:57.046Z</wsu:Created>
 			</wsse:UsernameToken>
-			
 			 -->
+			 
 			<property name="validationCallbackHandlers">
 				<array>
 					<bean class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
@@ -79,6 +79,14 @@
 					</bean> -->
 				</array>
 			</property>
+
+			<property name="validationSignatureCrypto">
+				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+					<property name="keyStorePassword" value="changeit" />
+					<property name="keyStoreLocation" value="file://D:\Program Files\jdk1.6.0_31\jre\lib\security\cacerts" />
+				</bean>
+			</property>
+			
 			<!-- 
 			<wsu:Timestamp wsu:Id="TS-2357389552A7C0791614021044770622">
 				<wsu:Created>2014-06-07T01:27:57.062Z</wsu:Created>
