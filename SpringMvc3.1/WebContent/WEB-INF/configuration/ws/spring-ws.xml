@@ -54,7 +54,8 @@
 
 		<!-- UsernameTokenValidator的validate为默认UsernameToken认证策略 -->
 		<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
-			<property name="validationActions" value="UsernameToken Timestamp" />
+			<property name="validationActions" value="UsernameToken Timestamp Signature" />
+			
 			<!-- 
 			Soap Header for UsernameToken
 			<wsse:UsernameToken wsu:Id="UsernameToken-2357389552A7C0791614021044770621">
@@ -64,7 +65,6 @@
 				<wsu:Created>2014-06-07T01:27:57.046Z</wsu:Created>
 			</wsse:UsernameToken>
 			 -->
-			 
 			<property name="validationCallbackHandlers">
 				<array>
 					<bean class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
@@ -80,23 +80,58 @@
 				</array>
 			</property>
 
-			<property name="validationSignatureCrypto">
-				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
-					<property name="keyStorePassword" value="changeit" />
-					<property name="keyStoreLocation" value="file://D:\Program Files\jdk1.6.0_31\jre\lib\security\cacerts" />
-				</bean>
-			</property>
-			
 			<!-- 
 			<wsu:Timestamp wsu:Id="TS-2357389552A7C0791614021044770622">
 				<wsu:Created>2014-06-07T01:27:57.062Z</wsu:Created>
 				<wsu:Expires>2014-06-07T01:32:57.062Z</wsu:Expires>
 			</wsu:Timestamp>
-			
-			<property name="timestampStrict" value="true"/>是否检查客户端的wsu:Expires
-    		<property name="validationTimeToLive" value="300"/>服务端根据客户端wsu:Created检查超时时间
-    		<property name="futureTimeToLive" value="60"/>客户端wsu:Created不能超前服务端60秒时间
-    		 -->
+			-->
+			<property name="timestampStrict" value="true"/><!-- 是否检查客户端的wsu:Expires -->
+    		<property name="validationTimeToLive" value="300"/><!-- 服务端根据客户端wsu:Created检查超时时间 -->
+    		<property name="futureTimeToLive" value="60"/><!-- 客户端wsu:Created不能超前服务端60秒时间 -->
+    		
+			<!-- 
+			<SOAP-ENV:Header>
+				<wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+					SOAP-ENV:mustUnderstand="1">
+					<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="SIG-FFD312A85AA8B117CF14030722486405">
+						<ds:SignedInfo>
+							<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+								<ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="SOAP-ENV" />
+							</ds:CanonicalizationMethod>
+							<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1" />
+							<ds:Reference URI="#id-FFD312A85AA8B117CF14030722486404">
+								<ds:Transforms>
+									<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+										<ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="" />
+									</ds:Transform>
+								</ds:Transforms>
+								<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+								<ds:DigestValue>GfwuOROaDQUpiGDdTukxEpnrFgg=</ds:DigestValue>
+							</ds:Reference>
+						</ds:SignedInfo>
+						<ds:SignatureValue>a2ZnJQPiH+NcOwMbF0CDxzpHk+Zw4wBKbAX7pKxBkY/mDa3JQSyTxw==</ds:SignatureValue>
+						<ds:KeyInfo Id="KI-FFD312A85AA8B117CF14030722486252">
+							<wsse:SecurityTokenReference wsu:Id="STR-FFD312A85AA8B117CF14030722486253">
+								<ds:X509Data>
+									<ds:X509IssuerSerial>
+										<ds:X509IssuerName>CN=WS1,OU=Technology Section,O=BJDV,L=WX,ST=JS,C=CN</ds:X509IssuerName>
+										<ds:X509SerialNumber>1403071090</ds:X509SerialNumber>
+									</ds:X509IssuerSerial>
+								</ds:X509Data>
+							</wsse:SecurityTokenReference>
+						</ds:KeyInfo>
+					</ds:Signature>
+				</wsse:Security>
+			</SOAP-ENV:Header>
+			 -->
+			 <property name="enableSignatureConfirmation" value="true"/>
+    		 <property name="validationSignatureCrypto">
+				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+					<property name="keyStorePassword" value="kh6n*898" />
+					<property name="keyStoreLocation" value="file:///E:/GitHome/JavaExplorer/SpringMvc3.1/JavaExplorer.keystore" />
+				</bean>
+			</property>
 		</bean>
 	</ws:interceptors>
 	

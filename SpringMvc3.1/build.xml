@@ -200,4 +200,30 @@
 			<arg value="-overwrite"/>
 		</java>
 	</target>
+	
+	<!-- 
+		CN(Common Name名字与姓氏) 
+	　　OU(Organization Unit组织单位名称) 
+	　　O(Organization组织名称) 
+	　　L(Locality城市或区域名称) 
+	　　ST(State州或省份名称) 
+	　　C(Country国家名称） 
+	-->
+	<target name="keytool-genkeypair">
+		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
+			<arg value="-genkeypair"/>
+			<arg value="-alias"/>
+			<arg value="ws1"/>
+			<arg value="-keystore"/>
+			<arg value="${basedir}/JavaExplorer.keystore"/>
+			<arg value="-storepass"/>
+			<arg value="${keytool.storepass}"/>
+			<arg value="-keypass"/>
+			<arg value="12345678"/>
+			<arg value="-dname"/>
+			<arg value="CN=WS1,OU=Technology Section,O=BJDV,L=WX,ST=JS,C=CN"/>
+			<arg value="-validity"/><!-- default 90 -->
+			<arg value="365"/>
+		</exec>
+	</target>
 </project>

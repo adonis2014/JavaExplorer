@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="GB18030"?>
+<project name="WsClient" default="xjc" basedir=".">
+	<tstamp />
+	<property environment="env" />
+	
+	<target name="xjc">
+		<property name="xjcOutputPath" location="${basedir}/src" />
+		<property name="xsdFilePath" location="${xjcOutputPath}/name/chenyuelin/person/springws/dto/person.xsd" />
+		<exec executable="${env.JAVA_HOME}/bin/xjc.exe" osfamily="windows">
+			<arg value="-d" />
+			<arg value="${xjcOutputPath}" />
+			<arg value="-p" />
+			<arg value="name.chenyuelin.person.springws.dto" />
+			<arg value="${xsdFilePath}" />
+		</exec>
+	</target>
+</project>
