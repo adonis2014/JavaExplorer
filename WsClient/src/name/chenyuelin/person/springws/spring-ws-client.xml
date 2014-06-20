@@ -38,10 +38,10 @@
 	<bean id="defalutWebServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
 		<constructor-arg>
 			<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-				<property name="packagesToScan">
-					<list>
-						<value>name.chenyuelin.person.springws.dto</value>
-					</list>
+				<property name="classesToBeBound">
+					<array>
+						<value>name.chenyuelin.person.springws.dto.ObjectFactory</value>
+					</array>
 				</property>
 				<property name="marshallerProperties">
 					<map>

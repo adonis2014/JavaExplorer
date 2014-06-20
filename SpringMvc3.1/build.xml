@@ -200,7 +200,7 @@
 			<arg value="-overwrite"/>
 		</java>
 	</target>
-	
+
 	<!-- 
 		CN(Common Name名字与姓氏) 
 	　　OU(Organization Unit组织单位名称) 
@@ -210,20 +210,60 @@
 	　　C(Country国家名称） 
 	-->
 	<target name="keytool-genkeypair">
+		<property name="keytool.keystore.alias" value="ws1"/>
+		<property name="keytool.keystore.keypass" value="12345678"/>
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
 			<arg value="-genkeypair"/>
 			<arg value="-alias"/>
-			<arg value="ws1"/>
+			<arg value="${keytool.keystore.alias}"/>
 			<arg value="-keystore"/>
-			<arg value="${basedir}/JavaExplorer.keystore"/>
+			<arg value="${keytool.keystore.master.file}"/>
 			<arg value="-storepass"/>
 			<arg value="${keytool.storepass}"/>
 			<arg value="-keypass"/>
-			<arg value="12345678"/>
+			<arg value="${keytool.keystore.keypass}"/>
 			<arg value="-dname"/>
 			<arg value="CN=WS1,OU=Technology Section,O=BJDV,L=WX,ST=JS,C=CN"/>
-			<arg value="-validity"/><!-- default 90 -->
+			<arg value="-validity"/>
+			<!-- default 90 -->
 			<arg value="365"/>
+			<!--
+			<arg value="-storetype"/><arg value="JKS"/>
+			常用的有JKS(默认),JCEKS(推荐),PKCS12,BKS,UBER。每个密钥库只可以是其中一种类型。
+			-->
+		</exec>
+	</target>
+
+	<target name="keytool-list">
+		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
+			<arg line="-list -v -keystore ${keytool.keystore.master.file} -storepass ${keytool.storepass}"/>
+		</exec>
+	</target>
+
+	<target name="keytool-export">
+		<property name="keytool.keystore.alias" value="ws1" />
+		<property name="keytool.keystore.cer.file" value="${basedir}/${keytool.keystore.alias}.cer" />
+		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
+			<arg value="-export" />
+			<arg value="-alias" />
+			<arg value="${keytool.keystore.alias}" />
+			<arg value="-keystore" />
+			<arg value="${keytool.keystore.master.file}" />
+			<arg value="-storepass"/>
+			<arg value="${keytool.storepass}"/>
+			<arg value="-file" />
+			<arg value="${keytool.keystore.cer.file}" />
+		</exec>
+	</target>
+
+	<target name="keytool-printcert">
+		<property name="keytool.keystore.alias" value="ws1" />
+		<property name="keytool.keystore.cer.file" value="${basedir}/${keytool.keystore.alias}.cer" />
+		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
+			<arg value="-printcert" />
+			<arg value="-v" />
+			<arg value="-file" />
+			<arg value="${keytool.keystore.cer.file}" />
 		</exec>
 	</target>
 </project>

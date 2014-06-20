@@ -129,7 +129,7 @@
     		 <property name="validationSignatureCrypto">
 				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
 					<property name="keyStorePassword" value="kh6n*898" />
-					<property name="keyStoreLocation" value="file:///E:/GitHome/JavaExplorer/SpringMvc3.1/JavaExplorer.keystore" />
+					<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
 				</bean>
 			</property>
 		</bean>

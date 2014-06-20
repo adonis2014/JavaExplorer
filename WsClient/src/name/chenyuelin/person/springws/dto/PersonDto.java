@@ -341,4 +341,10 @@ public class PersonDto {
         this.id = value;
     }
 
+	@Override
+	public String toString() {
+		return "PersonDto [active=" + active + ", version=" + version + ", languages=" + languages + ", note=" + note + ", salary=" + salary + ", createTime=" + createTime
+				+ ", breakfastTime=" + breakfastTime + ", height=" + height + ", birthday=" + birthday + ", sex=" + sex + ", name=" + name + ", id=" + id + "]";
+	}
+
 }

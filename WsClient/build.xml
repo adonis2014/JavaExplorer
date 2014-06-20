@@ -7,10 +7,13 @@
 		<property name="xjcOutputPath" location="${basedir}/src" />
 		<property name="xsdFilePath" location="${xjcOutputPath}/name/chenyuelin/person/springws/dto/person.xsd" />
 		<exec executable="${env.JAVA_HOME}/bin/xjc.exe" osfamily="windows">
+			<arg value="-extension" />
+			<arg value="-b" />
+			<arg value="simple.xjc.xsd" />
 			<arg value="-d" />
 			<arg value="${xjcOutputPath}" />
 			<arg value="-p" />
-			<arg value="name.chenyuelin.person.springws.dto" />
+			<arg value="name.chenyuelin.person.springws.dto.a" />
 			<arg value="${xsdFilePath}" />
 		</exec>
 	</target>
