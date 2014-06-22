@@ -54,7 +54,7 @@
 
 		<!-- UsernameTokenValidator的validate为默认UsernameToken认证策略 -->
 		<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
-			<property name="validationActions" value="UsernameToken Timestamp Signature" />
+			<property name="validationActions" value="UsernameToken Timestamp Signature Encrypt" />
 			
 			<!-- 
 			Soap Header for UsernameToken
@@ -77,6 +77,8 @@
 					<!-- <bean class="org.springframework.ws.soap.security.wss4j.callback.SpringSecurityPasswordValidationCallbackHandler">
 						<property name="userDetailsService" ref="defaultUserDetailsService"/>
 					</bean> -->
+					
+					
 				</array>
 			</property>
 
@@ -125,8 +127,15 @@
 				</wsse:Security>
 			</SOAP-ENV:Header>
 			 -->
-			 <property name="enableSignatureConfirmation" value="true"/>
+			 
     		 <property name="validationSignatureCrypto">
+				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+					<property name="keyStorePassword" value="kh6n*898" />
+					<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
+				</bean>
+			</property>
+			
+			<property name="validationDecryptionCrypto">
 				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
 					<property name="keyStorePassword" value="kh6n*898" />
 					<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />

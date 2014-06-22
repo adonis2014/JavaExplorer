@@ -54,6 +54,7 @@
 		<property name="defaultUri" value="http://localhost/SpringMvc3.1/services/person/" />
 		<property name="interceptors">
 			<array>
+				<bean class="name.chenyuelin.person.springws.ClientInterceptorImp"/>
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="UsernameToken Timestamp" />
 					<property name="securementUsername" value="abc" />
@@ -68,12 +69,12 @@
 
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="Signature" />
-					<property name="securementSignatureUser" value="ws1" />
-					<property name="securementPassword" value="12345678" />
+					<property name="securementSignatureUser" value="ws" />
+					<property name="securementPassword" value="87654321" />
 					<property name="securementSignatureCrypto">
 						<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
 							<property name="keyStorePassword" value="kh6n*898" />
-							<property name="keyStoreLocation" value="file:///E:/GitHome/JavaExplorer/SpringMvc3.1/JavaExplorer.keystore" />
+							<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
 						</bean>
 					</property>
 				</bean>
