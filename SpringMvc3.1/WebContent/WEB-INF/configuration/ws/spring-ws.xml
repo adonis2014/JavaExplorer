@@ -49,6 +49,11 @@
 		<ws:xsd location="/WEB-INF/configuration/ws/schema_final.xsd"/>
 	</ws:dynamic-wsdl>
 
+	<bean id="keyStore" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+		<property name="keyStorePassword" value="kh6n*898" />
+		<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
+	</bean>
+
 	<ws:interceptors>
 		<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor" />
 
@@ -81,7 +86,8 @@
 					</bean> -->
 					
 					<bean class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
-						<property name="privateKeyPassword" value="ws1"/>
+						<property name="keyStore" ref="keyStore"></property>
+						<property name="privateKeyPassword" value="private_pwd"/>
 					</bean>
 				</array>
 			</property>
@@ -138,11 +144,6 @@
 		</bean>
 	</ws:interceptors>
 
-	<bean id="keyStore" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
-		<property name="keyStorePassword" value="kh6n*898" />
-		<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
-	</bean>
-	
 	<!-- Default EndpointExceptionResolver in org.springframework.ws.server.MessageDispatcher is SoapFaultAnnotationExceptionResolver, SimpleSoapExceptionResolver -->
 	<!-- AnnotationDrivenBeanDefinitionParser的registerEndpointExceptionResolvers方法注册了两个默认的EndpointExceptionResolver -->
 	<bean class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">

@@ -211,10 +211,16 @@
 	-->
 	<target name="keytool-genkeypair">
 		<property name="keytool.keystore.alias" value="ws1"/>
-		<property name="keytool.keystore.keypass" value="12345678"/>
-		<property name="keytool.keystore.dname" value="CN=WS1,OU=Technology Section,O=BJDV,L=WX,ST=JS,C=CN"/>
+		<property name="keytool.keystore.keyalg" value="RSA"/>
+		<property name="keytool.keystore.keypass" value="private_pwd"/>
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
 			<arg value="-genkeypair"/>
+			<!--
+			DSA或RSA算法(当使用-genkeypair参数)
+			DES或DESede或AES算法(当使用-genseckey参数)
+			-->
+			<arg value="-keyalg"/>
+			<arg value="${keytool.keystore.keyalg}"/>
 			<arg value="-alias"/>
 			<arg value="${keytool.keystore.alias}"/>
 			<arg value="-keystore"/>

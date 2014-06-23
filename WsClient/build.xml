@@ -2,13 +2,21 @@
 <project name="WsClient" default="xjc" basedir=".">
 	<tstamp />
 	<property environment="env" />
-	<property name="keytool.storepass" value="kh6n*898" />
-	<property name="keytool.keystore.path" value="${basedir}/src" />
-	<property name="keytool.keystore.master.name" value="master.keystore" />
-	<property name="keytool.keystore.master.file" value="${keytool.keystore.path}/${keytool.keystore.master.name}" />
-	<property name="keytool.keystore.servant.name" value="servant.keystore" />
-	<property name="keytool.keystore.file" value="${keytool.keystore.master.file}" />
 	
+	<property name="keytool.storepass" value="kh6n*898" />
+	<property name="keytool.keystore.alias" value="ws1" />
+	
+	<property name="keytool.keystore.path.base" value="${basedir}/src" />
+	<property name="_keytool.keystore.path.package" value="name/chenyuelin/person/springws" />
+	<property name="keytool.keystore.path.package" value="${_keytool.keystore.path.package}" />
+	<property name="keytool.keystore.path.full" value="${keytool.keystore.path.base}/${keytool.keystore.path.package}" />
+	
+	<property name="keytool.keystore.master.name" value="master.keystore" />
+	<property name="keytool.keystore.master.file" value="${keytool.keystore.path.full}/${keytool.keystore.master.name}" />
+	<property name="keytool.keystore.servant.name" value="servant.keystore" />
+	
+	<property name="keytool.keystore.file" value="${keytool.keystore.path.full}/${keytool.keystore.servant.name}" />
+
 	<target name="xjc">
 		<property name="xjcOutputPath" location="${basedir}/src" />
 		<property name="xsdFilePath" location="${xjcOutputPath}/name/chenyuelin/person/springws/dto/person.xsd" />
@@ -26,11 +34,9 @@
 	</target>
 
 	<target name="keytool-importcert">
-		<property name="keytool.keystore.alias" value="ws1" />
 		<property name="keytool.keystore.inport.name" value="${keytool.keystore.alias}" />
-		<property name="keytool.keystore.inport.path" value="${basedir}" />
 		<property name="keytool.keystore.inport.keypass" value="pub_key" />
-		<property name="keytool.keystore.cer.file" value="${keytool.keystore.inport.path}/${keytool.keystore.inport.name}.cer" />
+		<property name="keytool.keystore.cer.file" value="${keytool.keystore.path.full}/${keytool.keystore.inport.name}.cer" />
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe" inputstring="y">
 			<arg value="-importcert" />
 			<arg value="-trustcacerts" />
@@ -54,7 +60,6 @@
 	</target>
 
 	<target name="keytool-keypasswd">
-		<property name="keytool.keystore.alias" value="ws1" />
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
 			<arg value="-keypasswd" />
 			<arg value="-keystore" />
@@ -69,7 +74,6 @@
 	</target>
 
 	<target name="keytool-genseckey">
-		<property name="keytool.keystore.alias" value="ws1" />
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
 			<arg value="-genseckey" />
 			<arg value="-keystore" />
@@ -80,6 +84,19 @@
 			<arg value="${keytool.keystore.alias}" />
 			<arg value="-keypass" />
 			<arg value="66666666" />
+		</exec>
+	</target>
+
+	<target name="keytool-delete">
+		<property name="keytool.keystore.alias" value="ws1" />
+		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
+			<arg value="-delete" />
+			<arg value="-keystore" />
+			<arg value="${keytool.keystore.file}" />
+			<arg value="-storepass" />
+			<arg value="${keytool.storepass}" />
+			<arg value="-alias" />
+			<arg value="${keytool.keystore.alias}" />
 		</exec>
 	</target>
 </project>
