@@ -55,19 +55,21 @@
 		<property name="interceptors">
 			<array>
 				<bean class="name.chenyuelin.person.springws.ClientInterceptorImp"/>
-				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+				<!-- <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="UsernameToken Timestamp" />
 					<property name="securementUsername" value="abc" />
-					<property name="securementPassword" value="abc" />
+					<property name="securementPassword" value="abc" /> -->
+					
 					<!-- 
 					<property name="securementPasswordType">
 						<util:constant static-field="org.apache.ws.security.WSConstants.PW_TEXT" />
 					</property>
 					<property name="securementUsernameTokenElements" value="Nonce Created" />
 					 -->
-				</bean>
+					 
+<!-- 				</bean> -->
 
-				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+				<!-- <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="Signature" />
 					<property name="securementSignatureUser" value="ws" />
 					<property name="securementPassword" value="87654321" />
@@ -77,7 +79,19 @@
 							<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
 						</bean>
 					</property>
+				</bean> -->
+
+				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+					<property name="securementActions" value="Encrypt" />
+					<property name="securementEncryptionUser" value="pubws" />
+					<property name="securementEncryptionCrypto">
+						<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+							<property name="keyStorePassword" value="kh6n*898" />
+							<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
+						</bean>
+					</property>
 				</bean>
+				
 			</array>
 		</property>
 		<property name="faultMessageResolver">

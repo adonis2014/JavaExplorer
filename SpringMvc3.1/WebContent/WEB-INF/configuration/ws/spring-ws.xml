@@ -54,7 +54,7 @@
 
 		<!-- UsernameTokenValidator的validate为默认UsernameToken认证策略 -->
 		<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
-			<property name="validationActions" value="UsernameToken Timestamp Signature Encrypt" />
+			<property name="validationActions" value="Encrypt" />
 			
 			<!-- 
 			Soap Header for UsernameToken
@@ -67,6 +67,7 @@
 			 -->
 			<property name="validationCallbackHandlers">
 				<array>
+				<!-- 
 					<bean class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
 						<property name="usersMap">
 							<map>
@@ -74,11 +75,14 @@
 							</map>
 						</property>
 					</bean>
+					 -->
 					<!-- <bean class="org.springframework.ws.soap.security.wss4j.callback.SpringSecurityPasswordValidationCallbackHandler">
 						<property name="userDetailsService" ref="defaultUserDetailsService"/>
 					</bean> -->
 					
-					
+					<bean class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
+						<property name="privateKeyPassword" value="ws1"/>
+					</bean>
 				</array>
 			</property>
 
@@ -126,23 +130,18 @@
 					</ds:Signature>
 				</wsse:Security>
 			</SOAP-ENV:Header>
-			 -->
-			 
-    		 <property name="validationSignatureCrypto">
-				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
-					<property name="keyStorePassword" value="kh6n*898" />
-					<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
-				</bean>
-			</property>
-			
-			<property name="validationDecryptionCrypto">
-				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
-					<property name="keyStorePassword" value="kh6n*898" />
-					<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
-				</bean>
-			</property>
+			-->
+		
+<!-- 			<property name="validationSignatureCrypto" ref="keyStore" /> -->
+		
+			<property name="validationDecryptionCrypto" ref="keyStore" />
 		</bean>
 	</ws:interceptors>
+
+	<bean id="keyStore" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+		<property name="keyStorePassword" value="kh6n*898" />
+		<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
+	</bean>
 	
 	<!-- Default EndpointExceptionResolver in org.springframework.ws.server.MessageDispatcher is SoapFaultAnnotationExceptionResolver, SimpleSoapExceptionResolver -->
 	<!-- AnnotationDrivenBeanDefinitionParser的registerEndpointExceptionResolvers方法注册了两个默认的EndpointExceptionResolver -->

@@ -237,7 +237,6 @@
 
 	<target name="keytool-list">
 		<property name="keytool.keystore.file" value="${keytool.keystore.master.file}" />
-		<echo>${keytool.keystore.file}</echo>
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
 			<arg line="-list -v -keystore ${keytool.keystore.file} -storepass ${keytool.storepass}"/>
 		</exec>
@@ -245,7 +244,9 @@
 
 	<target name="keytool-export">
 		<property name="keytool.keystore.alias" value="ws1" />
-		<property name="keytool.keystore.cer.file" value="${basedir}/${keytool.keystore.alias}.cer" />
+		<property name="keytool.keystore.export.name" value="${keytool.keystore.alias}" />
+		<property name="keytool.keystore.export.path" value="${basedir}" />
+		<property name="keytool.keystore.cer.file" value="${keytool.keystore.export.path}/${keytool.keystore.export.name}.cer" />
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
 			<arg value="-export" />
 			<arg value="-alias" />
