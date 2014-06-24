@@ -242,23 +242,24 @@
 	</target>
 
 	<target name="keytool-list">
-		<property name="keytool.keystore.file" value="${keytool.keystore.master.file}" />
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
-			<arg line="-list -v -keystore ${keytool.keystore.file} -storepass ${keytool.storepass}"/>
+			<arg line="-list -v -keystore ${keytool.keystore.file} -storepass ${keytool.storepass} -storetype ${keytool.keystore.storetype}"/>
 		</exec>
 	</target>
 
 	<target name="keytool-export">
 		<property name="keytool.keystore.alias" value="ws1" />
 		<property name="keytool.keystore.export.name" value="${keytool.keystore.alias}" />
-		<property name="keytool.keystore.export.path" value="${basedir}" />
+		<property name="keytool.keystore.export.path" value="${keytool.keystore.path}" />
 		<property name="keytool.keystore.cer.file" value="${keytool.keystore.export.path}/${keytool.keystore.export.name}.cer" />
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
 			<arg value="-export" />
 			<arg value="-alias" />
 			<arg value="${keytool.keystore.alias}" />
+			<arg value="-storetype" />
+			<arg value="${keytool.keystore.storetype}" />
 			<arg value="-keystore" />
-			<arg value="${keytool.keystore.master.file}" />
+			<arg value="${keytool.keystore.file}" />
 			<arg value="-storepass"/>
 			<arg value="${keytool.storepass}"/>
 			<arg value="-file" />
@@ -299,6 +300,22 @@
 			<arg value="12345678" />
 			<arg value="-destkeypass" />
 			<arg value="87654321" />
+		</exec>
+	</target>
+	
+	<target name="keytool-genseckey">
+		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
+			<arg value="-genseckey" />
+			<arg value="-storetype" />
+			<arg value="${keytool.keystore.storetype}" />
+			<arg value="-keystore" />
+			<arg value="${keytool.keystore.file}" />
+			<arg value="-storepass" />
+			<arg value="${keytool.storepass}" />
+			<arg value="-alias" />
+			<arg value="${keytool.keystore.alias}" />
+			<arg value="-keypass" />
+			<arg value="symmetric_key" />
 		</exec>
 	</target>
 </project>
