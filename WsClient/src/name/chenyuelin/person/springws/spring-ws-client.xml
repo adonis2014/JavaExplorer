@@ -84,6 +84,8 @@
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="Encrypt" />
 					<property name="securementEncryptionUser" value="pubws" />
+<!-- 					<property name="securementEncryptionKeyIdentifier" value="EmbeddedKeyName"/> -->
+					<property name="securementEncryptionParts" value="{Content}{http://www.cyl.org/person/schemas/}findPersonRequest" />
 					<property name="securementEncryptionCrypto">
 						<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
 							<property name="keyStorePassword" value="kh6n*898" />

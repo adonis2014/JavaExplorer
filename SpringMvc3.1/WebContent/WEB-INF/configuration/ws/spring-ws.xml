@@ -49,7 +49,7 @@
 		<ws:xsd location="/WEB-INF/configuration/ws/schema_final.xsd"/>
 	</ws:dynamic-wsdl>
 
-	<bean id="keyStore" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+	<bean id="crypto" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
 		<property name="keyStorePassword" value="kh6n*898" />
 		<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
 	</bean>
@@ -86,7 +86,6 @@
 					</bean> -->
 					
 					<bean class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
-						<property name="keyStore" ref="keyStore"></property>
 						<property name="privateKeyPassword" value="private_pwd"/>
 					</bean>
 				</array>
@@ -138,9 +137,9 @@
 			</SOAP-ENV:Header>
 			-->
 		
-<!-- 			<property name="validationSignatureCrypto" ref="keyStore" /> -->
+<!-- 			<property name="validationSignatureCrypto" ref="crypto" /> -->
 		
-			<property name="validationDecryptionCrypto" ref="keyStore" />
+			<property name="validationDecryptionCrypto" ref="crypto" />
 		</bean>
 	</ws:interceptors>
 
