@@ -114,4 +114,6 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<bean class="name.chenyuelin.person.springws.BeanPostProcessorImp"/>
 </beans>
