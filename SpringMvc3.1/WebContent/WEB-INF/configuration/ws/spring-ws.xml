@@ -83,10 +83,18 @@
 					 -->
 					<!-- <bean class="org.springframework.ws.soap.security.wss4j.callback.SpringSecurityPasswordValidationCallbackHandler">
 						<property name="userDetailsService" ref="defaultUserDetailsService"/>
-					</bean> -->
-					
+									</bean> -->
+				
 					<bean class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
-						<property name="privateKeyPassword" value="private_pwd"/>
+						<property name="privateKeyPassword" value="private_pwd" /><!-- -keypass -->
+						<property name="keyStore">
+							<bean class="org.springframework.ws.soap.security.support.KeyStoreFactoryBean">
+								<property name="location" value="WEB-INF/keystore/symmetric.jceks" />
+								<property name="type" value="JCEKS" />
+								<property name="password" value="kh6n*898" />
+							</bean>
+						</property>
+						<property name="symmetricKeyPassword" value="symmetric_key"/><!-- -keypass -->
 					</bean>
 				</array>
 			</property>

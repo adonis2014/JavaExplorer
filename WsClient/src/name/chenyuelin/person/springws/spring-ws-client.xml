@@ -83,9 +83,11 @@
 
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="Encrypt" />
+					<property name="securementEncryptionKeyIdentifier" value="EmbeddedKeyName"/>
 					<property name="securementEncryptionUser" value="pubws" />
-<!-- 					<property name="securementEncryptionKeyIdentifier" value="EmbeddedKeyName"/> -->
+					<property name="securementEncryptionEmbeddedKeyName" value="myKey"/>
 					<property name="securementEncryptionParts" value="{Content}{http://www.cyl.org/person/schemas/}findPersonRequest" />
+<!-- 					<property name="securementCallbackHandler" value="123"></property> -->
 					<property name="securementEncryptionCrypto">
 						<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
 							<property name="keyStorePassword" value="kh6n*898" />
@@ -101,4 +103,15 @@
 		</property>
 	</bean>
 
+
+	<bean id="" class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
+		<property name="symmetricKeyPassword" value="keypass" />
+		<property name="keyStore">
+			<bean class="org.springframework.ws.soap.security.support.KeyStoreFactoryBean">
+				<property name="location" value="file:/keystore.jks" />
+				<property name="type" value="jceks" />
+				<property name="password" value="123456" />
+			</bean>
+		</property>
+	</bean>
 </beans>
