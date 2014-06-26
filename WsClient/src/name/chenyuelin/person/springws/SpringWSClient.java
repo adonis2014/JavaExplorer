@@ -8,6 +8,7 @@ import name.chenyuelin.person.springws.dto.PersonCommand;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.ws.client.core.WebServiceTemplate;
+import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 public class SpringWSClient {
 
@@ -23,7 +24,7 @@ public class SpringWSClient {
 		PersonCommand personCommand = objectFactory.createPersonCommand();
 		personCommand.setId((byte) 1);
 
-		Object result = webServiceTemplate.marshalSendAndReceive(objectFactory.createFindPersonRequest(personCommand));
+		Object result = webServiceTemplate.marshalSendAndReceive(objectFactory.createFindPersonRequest(personCommand),new SoapActionCallback("http://www.cyl.org/person/schemas/findPersonRequest"));
 		System.out.println(((JAXBElement<?>)result).getValue());
 
 	}

@@ -5,6 +5,7 @@
 	
 	<property name="keytool.storepass" value="kh6n*898" />
 	<property name="keytool.keystore.alias" value="ws1" />
+	<property name="keytool.keystore.storetype" value="jceks"/>
 	
 	<property name="keytool.keystore.path.base" value="${basedir}/src" />
 	<property name="_keytool.keystore.path.package" value="name/chenyuelin/person/springws" />
@@ -13,9 +14,10 @@
 	
 	<property name="keytool.keystore.master.name" value="master.keystore" />
 	<property name="keytool.keystore.master.file" value="${keytool.keystore.path.full}/${keytool.keystore.master.name}" />
-	<property name="keytool.keystore.servant.name" value="servant.keystore" />
+	<property name="_keytool.keystore.servant.name" value="servant.keystore" />
 	
-	<property name="keytool.keystore.file" value="${keytool.keystore.path.full}/${keytool.keystore.servant.name}" />
+	<property name="keytool.keystore.name" value="${_keytool.keystore.servant.name}"/>
+	<property name="keytool.keystore.file" value="${keytool.keystore.path.full}/${keytool.keystore.name}" />
 
 	<target name="xjc">
 		<property name="xjcOutputPath" location="${basedir}/src" />
@@ -55,7 +57,7 @@
 
 	<target name="keytool-list">
 		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
-			<arg line="-list -v -keystore ${keytool.keystore.file} -storepass ${keytool.storepass}" />
+			<arg line="-list -v -keystore ${keytool.keystore.file} -storepass ${keytool.storepass} -storetype ${keytool.keystore.storetype}" />
 		</exec>
 	</target>
 

@@ -54,7 +54,10 @@
 		<property name="defaultUri" value="http://localhost/SpringMvc3.1/services/person/" />
 		<property name="interceptors">
 			<array>
-				<bean class="name.chenyuelin.person.springws.ClientInterceptorImp"/>
+				<bean class="name.chenyuelin.person.springws.LoggerClientInterceptorImp"/>
+				<bean class="name.chenyuelin.person.springws.ClientInterceptorImp">
+					<property name="keyStoreCallbackHandler" ref="keyStoreCallbackHandler"/>
+				</bean>
 				<!-- <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="UsernameToken Timestamp" />
 					<property name="securementUsername" value="abc" />
@@ -84,10 +87,11 @@
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="Encrypt" />
 					<property name="securementEncryptionKeyIdentifier" value="EmbeddedKeyName"/>
-					<property name="securementEncryptionUser" value="pubws" />
-					<property name="securementEncryptionEmbeddedKeyName" value="myKey"/>
-					<property name="securementEncryptionParts" value="{Content}{http://www.cyl.org/person/schemas/}findPersonRequest" />
-<!-- 					<property name="securementCallbackHandler" value="123"></property> -->
+					<property name="securementEncryptionUser" value="symmetric-key-1" />
+					<property name="securementEncryptionEmbeddedKeyName" value="symmetric-key-1"/>
+					<property name="securementEncryptionSymAlgorithm">
+						<util:constant static-field="org.apache.ws.security.WSConstants.AES_256"/>
+					</property>
 					<property name="securementEncryptionCrypto">
 						<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
 							<property name="keyStorePassword" value="kh6n*898" />
@@ -103,17 +107,16 @@
 		</property>
 	</bean>
 
-
-	<bean id="" class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
-		<property name="symmetricKeyPassword" value="keypass" />
+	<bean id="keyStoreCallbackHandler" class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
 		<property name="keyStore">
 			<bean class="org.springframework.ws.soap.security.support.KeyStoreFactoryBean">
-				<property name="location" value="file:/keystore.jks" />
-				<property name="type" value="jceks" />
-				<property name="password" value="123456" />
+				<property name="location" value="classpath:name/chenyuelin/person/springws/symmetric.jceks" />
+				<property name="type" value="JCEKS" />
+				<property name="password" value="kh6n*898" />
 			</bean>
 		</property>
+		<property name="symmetricKeyPassword" value="symmetric_key" />
 	</bean>
-	
+
 	<bean class="name.chenyuelin.person.springws.BeanPostProcessorImp"/>
 </beans>

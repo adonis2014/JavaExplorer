@@ -22,6 +22,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.soap.SoapBody;
+import org.springframework.ws.soap.server.endpoint.annotation.SoapAction;
 import org.springframework.xml.transform.StringResult;
 
 @Component
@@ -43,6 +44,7 @@ public class PersonEndpoint {
 	}
 
 	@PayloadRoot(localPart = "findPersonRequest", namespace = WSConstant.NAMESPACE)
+	@SoapAction(WSConstant.NAMESPACE+"findPersonRequest")
 	@ResponsePayload
 	public PersonDto findPerson(@RequestPayload PersonCommand command, @RequestPayload SAXSource saxSource, SoapBody soapBody, MessageContext messageContext) throws Exception {
 		Transformer transformer = DEFAULT_TRANSFORMER_FACTORY.newTransformer();
