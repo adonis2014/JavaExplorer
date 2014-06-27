@@ -56,6 +56,7 @@ public class LoggerClientInterceptorImp implements ClientInterceptor {
 			TransformerUtil.transform(source, result);
 			LOG.debug("Request:\n" + result);
 
+			result = new StringResult();
 			source = ((SoapMessage) messageContext.getResponse()).getEnvelope().getSource();
 			TransformerUtil.transform(source, result);
 			LOG.debug("Response:\n" + result);

@@ -58,21 +58,19 @@
 				<bean class="name.chenyuelin.person.springws.ClientInterceptorImp">
 					<property name="keyStoreCallbackHandler" ref="keyStoreCallbackHandler"/>
 				</bean>
-				<!-- <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="UsernameToken Timestamp" />
 					<property name="securementUsername" value="abc" />
-					<property name="securementPassword" value="abc" /> -->
-					
+					<property name="securementPassword" value="abc" />
 					<!-- 
 					<property name="securementPasswordType">
 						<util:constant static-field="org.apache.ws.security.WSConstants.PW_TEXT" />
 					</property>
 					<property name="securementUsernameTokenElements" value="Nonce Created" />
 					 -->
-					 
-<!-- 				</bean> -->
+				</bean>
 
-				<!-- <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="Signature" />
 					<property name="securementSignatureUser" value="ws" />
 					<property name="securementPassword" value="87654321" />
@@ -82,7 +80,7 @@
 							<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
 						</bean>
 					</property>
-				</bean> -->
+				</bean>
 
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="Encrypt" />

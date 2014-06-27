@@ -59,7 +59,7 @@
 
 		<!-- UsernameTokenValidator的validate为默认UsernameToken认证策略 -->
 		<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
-			<property name="validationActions" value="Encrypt" />
+			<property name="validationActions" value="UsernameToken Timestamp Signature Encrypt" />
 			
 			<!-- 
 			Soap Header for UsernameToken
@@ -72,7 +72,7 @@
 			 -->
 			<property name="validationCallbackHandlers">
 				<array>
-				<!-- 
+				
 					<bean class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
 						<property name="usersMap">
 							<map>
@@ -80,10 +80,12 @@
 							</map>
 						</property>
 					</bean>
-					 -->
-					<!-- <bean class="org.springframework.ws.soap.security.wss4j.callback.SpringSecurityPasswordValidationCallbackHandler">
+					
+					<!-- 
+					<bean class="org.springframework.ws.soap.security.wss4j.callback.SpringSecurityPasswordValidationCallbackHandler">
 						<property name="userDetailsService" ref="defaultUserDetailsService"/>
-									</bean> -->
+					</bean> 
+					-->
 				
 					<bean class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
 						<property name="privateKeyPassword" value="private_pwd" /><!-- -keypass -->
@@ -145,9 +147,23 @@
 			</SOAP-ENV:Header>
 			-->
 		
-<!-- 			<property name="validationSignatureCrypto" ref="crypto" /> -->
-		
+			<property name="validationSignatureCrypto" ref="crypto" />
 			<property name="validationDecryptionCrypto" ref="crypto" />
+			
+			<property name="securementActions" value="Encrypt" />
+			<property name="securementEncryptionKeyIdentifier" value="EmbeddedKeyName"/>
+			<property name="securementEncryptionUser" value="symmetric-key-1" />
+			<property name="securementEncryptionEmbeddedKeyName" value="symmetric-key-1"/>
+			<property name="securementEncryptionSymAlgorithm">
+				<util:constant static-field="org.apache.ws.security.WSConstants.AES_256"/>
+			</property>
+			
+			<!-- <property name="securementEncryptionCrypto">
+				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+					<property name="keyStorePassword" value="kh6n*898" />
+					<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
+				</bean>
+			</property> -->
 		</bean>
 	</ws:interceptors>
 
