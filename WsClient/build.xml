@@ -21,6 +21,7 @@
 
 	<target name="xjc">
 		<property name="xjcOutputPath" location="${basedir}/src" />
+		<property name="xjc.target.package" value="name.chenyuelin.ws.dto" />
 		<property name="xsdFilePath" location="${xjcOutputPath}/name/chenyuelin/person/springws/dto/person.xsd" />
 		<exec executable="${env.JAVA_HOME}/bin/xjc.exe" osfamily="windows">
 			<arg value="-npa"/>
@@ -30,7 +31,7 @@
 			<arg value="-d" />
 			<arg value="${xjcOutputPath}" />
 			<arg value="-p" />
-			<arg value="name.chenyuelin.person.springws.dto.a" />
+			<arg value="${xjc.target.package}" />
 			<arg value="${xsdFilePath}" />
 		</exec>
 	</target>
@@ -99,6 +100,25 @@
 			<arg value="${keytool.storepass}" />
 			<arg value="-alias" />
 			<arg value="${keytool.keystore.alias}" />
+		</exec>
+	</target>
+	
+	<target name="keytool-export">
+		<property name="keytool.keystore.export.name" value="${keytool.keystore.alias}" />
+		<property name="keytool.keystore.export.path" value="${keytool.keystore.path.full}" />
+		<property name="keytool.keystore.cer.file" value="${keytool.keystore.export.path}/${keytool.keystore.export.name}.cer" />
+		<exec executable="${env.JAVA_HOME}/bin/keytool.exe">
+			<arg value="-export" />
+			<arg value="-alias" />
+			<arg value="${keytool.keystore.alias}" />
+			<arg value="-storetype" />
+			<arg value="${keytool.keystore.storetype}" />
+			<arg value="-keystore" />
+			<arg value="${keytool.keystore.file}" />
+			<arg value="-storepass"/>
+			<arg value="${keytool.storepass}"/>
+			<arg value="-file" />
+			<arg value="${keytool.keystore.cer.file}" />
 		</exec>
 	</target>
 </project>

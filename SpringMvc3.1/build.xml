@@ -168,12 +168,13 @@
 
 	<target name="xjc">
 		<property name="xjcOutputPath" location="${basedir}/src" />
+		<property name="xjc.target.package" value="name.chenyuelin.ws.dto.airline" />
 		<property name="xsdFilePath" location="${xjcOutputPath}/name/chenyuelin/ws/dto/airline/Reponse.xsd" />
 		<exec executable="${env.JAVA_HOME}/bin/xjc.exe" osfamily="windows">
 			<arg value="-d" />
 			<arg value="${xjcOutputPath}" />
 			<arg value="-p" />
-			<arg value="name.chenyuelin.ws.dto.airline" />
+			<arg value="${xjc.target.package}" />
 			<arg value="${xsdFilePath}" />
 		</exec>
 	</target>
@@ -361,6 +362,26 @@
 			<arg value="${keytool.keystore.alias}" />
 			<arg value="-storetype" />
 			<arg value="${keytool.keystore.storetype}" />
+		</exec>
+	</target>
+	
+	<target name="keytool-importcert">
+		<property name="keytool.keystore.inport.name" value="${keytool.keystore.alias}" />
+		<property name="keytool.keystore.inport.keypass" value="pub_key" />
+		<property name="keytool.keystore.cer.file" value="${keytool.keystore.path}/${keytool.keystore.inport.name}.cer" />
+		<exec executable="${env.JAVA_HOME}/bin/keytool.exe" inputstring="y">
+			<arg value="-importcert" />
+			<arg value="-trustcacerts" />
+			<arg value="-keystore" />
+			<arg value="${keytool.keystore.file}" />
+			<arg value="-storepass" />
+			<arg value="${keytool.storepass}" />
+			<arg value="-alias" />
+			<arg value="${keytool.keystore.alias}" />
+			<arg value="-keypass" />
+			<arg value="${keytool.keystore.inport.keypass}" />
+			<arg value="-file" />
+			<arg value="${keytool.keystore.cer.file}" />
 		</exec>
 	</target>
 </project>

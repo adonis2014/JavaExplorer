@@ -23,12 +23,6 @@ public class LoggerClientInterceptorImp implements ClientInterceptor {
 
 	@Override
 	public boolean handleResponse(MessageContext messageContext) throws WebServiceClientException {
-		/*
-		 * System.out.println("HandleResponse................................."); Result result = new StringResult(); Source source =
-		 * ((SoapMessage) messageContext.getRequest()).getEnvelope().getSource(); TransformerUtil.transform(source, result);
-		 * System.out.println(result); System.out.println(); source = ((SoapMessage)
-		 * messageContext.getResponse()).getEnvelope().getSource(); TransformerUtil.transform(source, result); System.out.println(result);
-		 */
 		return true;
 	}
 

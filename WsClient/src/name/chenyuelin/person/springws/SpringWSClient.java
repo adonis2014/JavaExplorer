@@ -1,5 +1,8 @@
 package name.chenyuelin.person.springws;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 
 import name.chenyuelin.person.springws.dto.ObjectFactory;
@@ -17,6 +20,14 @@ public class SpringWSClient {
 	 */
 	public static void main(String[] args) {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("name/chenyuelin/person/springws/spring-ws-client.xml");
+		
+		List<Object> list1 = ac.getBean("list1", ArrayList.class);
+		
+		List<Object> list2 = ac.getBean("list2", ArrayList.class);
+		
+		list1.add(1);
+		list2.add(2);
+		
 		WebServiceTemplate webServiceTemplate = ac.getBean("defalutWebServiceTemplate", WebServiceTemplate.class);
 
 		ObjectFactory objectFactory=ac.getBean(ObjectFactory.class);

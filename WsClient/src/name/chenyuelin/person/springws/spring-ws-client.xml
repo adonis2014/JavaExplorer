@@ -52,12 +52,16 @@
 		</constructor-arg>
 
 		<property name="defaultUri" value="http://localhost/SpringMvc3.1/services/person/" />
+		
 		<property name="interceptors">
 			<array>
 				<bean class="name.chenyuelin.person.springws.LoggerClientInterceptorImp"/>
+				
+				<!-- 添加对称加密CallbackHandler -->
 				<bean class="name.chenyuelin.person.springws.ClientInterceptorImp">
 					<property name="keyStoreCallbackHandler" ref="keyStoreCallbackHandler"/>
 				</bean>
+				
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="UsernameToken Timestamp" />
 					<property name="securementUsername" value="abc" />
@@ -74,35 +78,40 @@
 					<property name="securementActions" value="Signature" />
 					<property name="securementSignatureUser" value="ws" />
 					<property name="securementPassword" value="87654321" />
-					<property name="securementSignatureCrypto">
-						<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
-							<property name="keyStorePassword" value="kh6n*898" />
-							<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
-						</bean>
-					</property>
+					<property name="securementSignatureCrypto" ref="crypto"/>
 				</bean>
 
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="Encrypt" />
-					<property name="securementEncryptionKeyIdentifier" value="EmbeddedKeyName"/>
+					<property name="securementEncryptionKeyIdentifier" value="EmbeddedKeyName" />
 					<property name="securementEncryptionUser" value="symmetric-key-1" />
-					<property name="securementEncryptionEmbeddedKeyName" value="symmetric-key-1"/>
+					<property name="securementEncryptionEmbeddedKeyName" value="symmetric-key-1" />
+					<property name="securementEncryptionParts" value="{Content}{http://www.cyl.org/person/schemas/}findPersonRequest;"/>
 					<property name="securementEncryptionSymAlgorithm">
-						<util:constant static-field="org.apache.ws.security.WSConstants.AES_256"/>
+						<util:constant static-field="org.apache.ws.security.WSConstants.AES_256" />
 					</property>
-					<property name="securementEncryptionCrypto">
-						<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
-							<property name="keyStorePassword" value="kh6n*898" />
-							<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
-						</bean>
-					</property>
+					<property name="securementEncryptionCrypto" ref="crypto"/>
 				</bean>
 				
+				<!-- 反回Response解密 -->
+				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+					<property name="validationActions" value="Encrypt" />
+					<property name="validationCallbackHandlers">
+						<array>
+							<ref local="keyStoreCallbackHandler"/>
+						</array>
+					</property>
+				</bean>
 			</array>
 		</property>
 		<property name="faultMessageResolver">
 			<bean class="org.springframework.ws.client.core.SimpleFaultMessageResolver" />
 		</property>
+	</bean>
+
+	<bean id="crypto" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+		<property name="keyStorePassword" value="kh6n*898" />
+		<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
 	</bean>
 
 	<bean id="keyStoreCallbackHandler" class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
@@ -117,4 +126,12 @@
 	</bean>
 
 	<bean class="name.chenyuelin.person.springws.BeanPostProcessorImp"/>
+	
+	<bean id="list1" class="java.util.ArrayList"/>
+	<bean id="list2" class="java.util.ArrayList"/>
+	<bean id="afterReturningAdviceImp" class="name.chenyuelin.person.springws.AfterReturningAdviceImp" />
+	<aop:config>
+		<!-- <aop:advisor advice-ref="name.chenyuelin.aopAdvisor.DebugLoggerAdvisor" pointcut="execution(* name.chenyuelin.controller..*.*(..))" /> -->
+		<aop:advisor advice-ref="afterReturningAdviceImp" pointcut="execution(* java.util.ArrayList.*(..)) and bean(list1)" />
+	</aop:config>
 </beans>

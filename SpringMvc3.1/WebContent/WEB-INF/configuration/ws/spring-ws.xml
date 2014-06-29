@@ -48,14 +48,15 @@
 	<ws:dynamic-wsdl id="person" serviceName="PersonService" portTypeName="PersonPort" locationUri="/services/person/">
 		<ws:xsd location="/WEB-INF/configuration/ws/schema_final.xsd"/>
 	</ws:dynamic-wsdl>
-
-	<bean id="crypto" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
-		<property name="keyStorePassword" value="kh6n*898" />
-		<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
-	</bean>
-
+	
 	<ws:interceptors>
 		<bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor" />
+		
+		<!-- 在消息上下文中添加CallbackHandler -->
+		<bean class="name.chenyuelin.ws.interceptor.CallbackHandlersInterceptorImp">
+			<!-- 添加对称加密CallbackHandler -->
+			<property name="keyStoreCallbackHandler" ref="keyStoreCallbackHandler"/>
+		</bean>
 
 		<!-- UsernameTokenValidator的validate为默认UsernameToken认证策略 -->
 		<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
@@ -87,17 +88,7 @@
 					</bean> 
 					-->
 				
-					<bean class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
-						<property name="privateKeyPassword" value="private_pwd" /><!-- -keypass -->
-						<property name="keyStore">
-							<bean class="org.springframework.ws.soap.security.support.KeyStoreFactoryBean">
-								<property name="location" value="WEB-INF/keystore/symmetric.jceks" />
-								<property name="type" value="JCEKS" />
-								<property name="password" value="kh6n*898" />
-							</bean>
-						</property>
-						<property name="symmetricKeyPassword" value="symmetric_key"/><!-- -keypass -->
-					</bean>
+					<ref local="keyStoreCallbackHandler"/><!-- 此callBackHandler用于对称解密 -->
 				</array>
 			</property>
 
@@ -146,10 +137,12 @@
 				</wsse:Security>
 			</SOAP-ENV:Header>
 			-->
-		
 			<property name="validationSignatureCrypto" ref="crypto" />
-			<property name="validationDecryptionCrypto" ref="crypto" />
 			
+			<!-- 如用对称加密可不设此属性 -->
+			<!-- <property name="validationDecryptionCrypto" ref="crypto" /> -->
+			
+			<!-- 对称加密Response -->
 			<property name="securementActions" value="Encrypt" />
 			<property name="securementEncryptionKeyIdentifier" value="EmbeddedKeyName"/>
 			<property name="securementEncryptionUser" value="symmetric-key-1" />
@@ -157,16 +150,28 @@
 			<property name="securementEncryptionSymAlgorithm">
 				<util:constant static-field="org.apache.ws.security.WSConstants.AES_256"/>
 			</property>
-			
-			<!-- <property name="securementEncryptionCrypto">
-				<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
-					<property name="keyStorePassword" value="kh6n*898" />
-					<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
-				</bean>
-			</property> -->
 		</bean>
 	</ws:interceptors>
 
+	<bean id="crypto" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+		<property name="keyStorePassword" value="kh6n*898" />
+		<property name="keyStoreLocation" value="WEB-INF/keystore/master.keystore" />
+	</bean>
+
+	<bean id="keyStore" class="org.springframework.ws.soap.security.support.KeyStoreFactoryBean">
+		<property name="location" value="WEB-INF/keystore/symmetric.jceks" />
+		<property name="type" value="JCEKS" />
+		<property name="password" value="kh6n*898" />
+	</bean>
+
+	<bean id="keyStoreCallbackHandler" class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
+		<property name="privateKeyPassword" value="private_pwd" /><!-- -keypass 非对称加密用-->
+		<property name="keyStore" ref="keyStore"/><!-- 对称加密用 -->
+		<property name="symmetricKeyPassword" value="symmetric_key"/><!-- -keypass -->
+	</bean>
+	
+	
+	
 	<!-- Default EndpointExceptionResolver in org.springframework.ws.server.MessageDispatcher is SoapFaultAnnotationExceptionResolver, SimpleSoapExceptionResolver -->
 	<!-- AnnotationDrivenBeanDefinitionParser的registerEndpointExceptionResolvers方法注册了两个默认的EndpointExceptionResolver -->
 	<bean class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">
