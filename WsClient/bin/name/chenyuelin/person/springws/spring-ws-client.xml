@@ -38,10 +38,10 @@
 	<bean id="defalutWebServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
 		<constructor-arg>
 			<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-				<property name="packagesToScan">
-					<list>
-						<value>name.chenyuelin.person.springws.dto</value>
-					</list>
+				<property name="classesToBeBound">
+					<array>
+						<value>name.chenyuelin.person.springws.dto.ObjectFactory</value>
+					</array>
 				</property>
 				<property name="marshallerProperties">
 					<map>
@@ -52,8 +52,16 @@
 		</constructor-arg>
 
 		<property name="defaultUri" value="http://localhost/SpringMvc3.1/services/person/" />
+		
 		<property name="interceptors">
 			<array>
+				<bean class="name.chenyuelin.person.springws.LoggerClientInterceptorImp"/>
+				
+				<!-- 添加对称加密CallbackHandler -->
+				<bean class="name.chenyuelin.person.springws.ClientInterceptorImp">
+					<property name="keyStoreCallbackHandler" ref="keyStoreCallbackHandler"/>
+				</bean>
+				
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="UsernameToken Timestamp" />
 					<property name="securementUsername" value="abc" />
@@ -68,13 +76,30 @@
 
 				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
 					<property name="securementActions" value="Signature" />
-					<property name="securementSignatureUser" value="ws1" />
-					<property name="securementPassword" value="12345678" />
-					<property name="securementSignatureCrypto">
-						<bean class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
-							<property name="keyStorePassword" value="kh6n*898" />
-							<property name="keyStoreLocation" value="file:///E:/GitHome/JavaExplorer/SpringMvc3.1/JavaExplorer.keystore" />
-						</bean>
+					<property name="securementSignatureUser" value="ws" />
+					<property name="securementPassword" value="87654321" />
+					<property name="securementSignatureCrypto" ref="crypto"/>
+				</bean>
+
+				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+					<property name="securementActions" value="Encrypt" />
+					<property name="securementEncryptionKeyIdentifier" value="EmbeddedKeyName" />
+					<property name="securementEncryptionUser" value="symmetric-key-1" />
+					<property name="securementEncryptionEmbeddedKeyName" value="symmetric-key-1" />
+					<property name="securementEncryptionParts" value="{Content}{http://www.cyl.org/person/schemas/}findPersonRequest;"/>
+					<property name="securementEncryptionSymAlgorithm">
+						<util:constant static-field="org.apache.ws.security.WSConstants.AES_256" />
+					</property>
+					<property name="securementEncryptionCrypto" ref="crypto"/>
+				</bean>
+				
+				<!-- 反回Response解密 -->
+				<bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+					<property name="validationActions" value="Encrypt" />
+					<property name="validationCallbackHandlers">
+						<array>
+							<ref local="keyStoreCallbackHandler"/>
+						</array>
 					</property>
 				</bean>
 			</array>
@@ -84,4 +109,29 @@
 		</property>
 	</bean>
 
+	<bean id="crypto" class="org.springframework.ws.soap.security.wss4j.support.CryptoFactoryBean">
+		<property name="keyStorePassword" value="kh6n*898" />
+		<property name="keyStoreLocation" value="classpath:name/chenyuelin/person/springws/servant.keystore" />
+	</bean>
+
+	<bean id="keyStoreCallbackHandler" class="org.springframework.ws.soap.security.wss4j.callback.KeyStoreCallbackHandler">
+		<property name="keyStore">
+			<bean class="org.springframework.ws.soap.security.support.KeyStoreFactoryBean">
+				<property name="location" value="classpath:name/chenyuelin/person/springws/symmetric.jceks" />
+				<property name="type" value="JCEKS" />
+				<property name="password" value="kh6n*898" />
+			</bean>
+		</property>
+		<property name="symmetricKeyPassword" value="symmetric_key" />
+	</bean>
+
+	<bean class="name.chenyuelin.person.springws.BeanPostProcessorImp"/>
+	
+	<bean id="list1" class="java.util.ArrayList"/>
+	<bean id="list2" class="java.util.ArrayList"/>
+	<bean id="afterReturningAdviceImp" class="name.chenyuelin.person.springws.AfterReturningAdviceImp" />
+	<aop:config>
+		<!-- <aop:advisor advice-ref="name.chenyuelin.aopAdvisor.DebugLoggerAdvisor" pointcut="execution(* name.chenyuelin.controller..*.*(..))" /> -->
+		<aop:advisor advice-ref="afterReturningAdviceImp" pointcut="execution(* java.util.ArrayList.*(..)) and bean(list1)" />
+	</aop:config>
 </beans>

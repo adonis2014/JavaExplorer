@@ -182,11 +182,12 @@
 	<target name="wsimport">
 		<property name="wsOutputPath" location="${basedir}/src"/>
 		<property name="wsdlFilePath" value="http://webservice.webxml.com.cn/webservices/DomesticAirline.asmx?wsdl"/>
+		<property name="cmd.wsimport.package" value="name.chenyuelin.ws.client.airline"/>
 		<exec executable="${env.JAVA_HOME}/bin/wsimport.exe" osfamily="windows">
 			<arg value="-s"/>
 			<arg value="${wsOutputPath}"/>
 			<arg value="-p"/>
-			<arg value="name.chenyuelin.ws.client.airline"/>
+			<arg value="${cmd.wsimport.package}"/>
 			<arg value="-extension"/>
 			<arg value="${wsdlFilePath}"/>
 		</exec>
