@@ -82,10 +82,12 @@
 		<dependency org="org.apache.poi" name="poi-ooxml-schemas" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.apache.poi" name="poi-scratchpad" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="org.activiti" name="activiti-engine" rev="5.15.1" conf="compile->master${artifact.spread.semicolon}" />
-		<dependency org="org.activiti" name="activiti-bpmn-model" rev="5.15.1" conf="compile->master${artifact.spread.semicolon}" />
-		<dependency org="org.activiti" name="activiti-process-validation" rev="5.15.1" conf="compile->master${artifact.spread.semicolon}" />
-		<dependency org="org.activiti" name="activiti-spring" rev="5.15.1" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.activiti" name="activiti-engine" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.activiti" name="activiti-bpmn-model" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.activiti" name="activiti-process-validation" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.activiti" name="activiti-bpmn-converter" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.activiti" name="activiti-spring" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
+		
 		<dependency org="joda-time" name="joda-time" rev="2.3" conf="compile->master${artifact.spread.semicolon}" />
 		
 		<!-- <dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${artifact.spread.semicolon}" /> -->
