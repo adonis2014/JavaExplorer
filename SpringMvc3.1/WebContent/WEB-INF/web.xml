@@ -15,6 +15,10 @@
 		<session-timeout>1</session-timeout>
 	</session-config>
 
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -34,10 +38,6 @@
 		<param-value>dev</param-value>
 	</context-param>
 	
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-
 	<servlet>
 		<servlet-name>SpringMVC</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -81,7 +81,6 @@
 		<servlet-name>spring-ws</servlet-name>
 		<url-pattern>*.wsdl</url-pattern>
 	</servlet-mapping>
-	
 	
 	<filter>
 		<filter-name>characterEncodingFilter</filter-name>
