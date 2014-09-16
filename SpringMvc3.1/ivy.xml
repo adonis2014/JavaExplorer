@@ -86,6 +86,7 @@
 		<dependency org="org.activiti" name="activiti-bpmn-model" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.activiti" name="activiti-process-validation" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.activiti" name="activiti-bpmn-converter" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.activiti" name="activiti-image-generator" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.activiti" name="activiti-spring" rev="${activiti.version}" conf="compile->master${artifact.spread.semicolon}" />
 		
 		<dependency org="joda-time" name="joda-time" rev="2.3" conf="compile->master${artifact.spread.semicolon}" />
