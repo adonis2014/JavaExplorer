@@ -7,7 +7,7 @@
       to this file before it is usable by MyBatis.
     This file was generated on Mon Jun 02 16:48:24 CST 2014.
   -->
-  <mappers >
+  <mappers>
     <mapper resource="name/chenyuelin/model/PersonMapper.xml" />
   </mappers>
 </configuration>
