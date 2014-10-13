@@ -5,13 +5,13 @@
 	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-         					http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+         					http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+         					http://www.springframework.org/schema/aop
+							http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
          					http://www.springframework.org/schema/util
-    						http://www.springframework.org/schema/util/spring-util.xsd
+    						http://www.springframework.org/schema/util/spring-util-4.1.xsd
          					http://www.springframework.org/schema/security
-							http://www.springframework.org/schema/security/spring-security-3.2.xsd
-							http://www.springframework.org/schema/aop
-							http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+							http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<!-- org.springframework.security.config.SecurityNamespaceHandler parse the xml -->
 
@@ -168,9 +168,9 @@
 	<b:bean id="aclAuthorizationStrategy" class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
 		<b:constructor-arg>
 			<b:array>
-				<b:ref local="grantedAuthority"/><!-- CHANGE_OWNERSHIP -->
-				<b:ref local="grantedAuthority"/><!-- CHANGE_AUDITING -->
-				<b:ref local="grantedAuthority"/><!-- CHANGE_GENERAL -->
+				<b:ref bean="grantedAuthority"/><!-- CHANGE_OWNERSHIP -->
+				<b:ref bean="grantedAuthority"/><!-- CHANGE_AUDITING -->
+				<b:ref bean="grantedAuthority"/><!-- CHANGE_GENERAL -->
 			</b:array>
 		</b:constructor-arg>
 	</b:bean>
