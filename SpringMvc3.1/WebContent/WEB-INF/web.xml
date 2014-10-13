@@ -23,6 +23,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
   				/WEB-INF/configuration/appConfig/applicationContext.xml
+  				/WEB-INF/configuration/appConfig/activiti.xml
   				/WEB-INF/configuration/appConfig/security.xml
   				/WEB-INF/configuration/appConfig/scheduled.xml
 			</param-value>

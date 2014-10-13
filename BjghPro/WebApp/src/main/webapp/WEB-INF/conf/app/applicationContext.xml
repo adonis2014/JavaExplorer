@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="GB18030"?>
+<beans  xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:aop="http://www.springframework.org/schema/aop"
+	  	xmlns:context="http://www.springframework.org/schema/context" 
+	  	xmlns:tx="http://www.springframework.org/schema/tx" 
+	  	xmlns:util="http://www.springframework.org/schema/util"
+		xmlns:jee="http://www.springframework.org/schema/jee" 
+		xmlns:cache="http://www.springframework.org/schema/cache"
+		xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+					http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+					http://www.springframework.org/schema/aop
+					http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+					http://www.springframework.org/schema/context
+					http://www.springframework.org/schema/context/spring-context-4.1.xsd
+					http://www.springframework.org/schema/util
+    				http://www.springframework.org/schema/util/spring-util-4.1.xsd
+					http://www.springframework.org/schema/tx
+					http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+					http://www.springframework.org/schema/jee
+					http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+					http://www.springframework.org/schema/cache 
+    				http://www.springframework.org/schema/cache/spring-cache-4.1.xsd
+    				http://mybatis.org/schema/mybatis-spring 
+    				http://mybatis.org/schema/mybatis-spring.xsd">
+    				
+	<context:property-placeholder location="/WEB-INF/conf/application.properties"/>
+
+	<context:component-scan base-package="com.bjdv.cidp.dao,com.bjdv.cidp.service" />
+	
+	<cache:annotation-driven />
+	
+	<!-- JPA Manager -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="loadTimeWeaver">
+			<bean class="org.springframework.context.weaving.DefaultContextLoadTimeWeaver" />
+		</property>
+		<property name="jpaDialect">
+			<bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect"/>
+		</property>
+	</bean>
+
+	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<qualifier value="jtm"/>
+		<property name="entityManagerFactory" ref="entityManager" />
+	</bean>
+	<!-- end -->
+	
+	<bean id="cacheManager" class="org.springframework.cache.concurrent.ConcurrentMapCacheManager" />
+	
+	<beans profile="production">
+		<import resource="production.xml" />
+	</beans>
+
+	<beans profile="dev">
+		<import resource="development.xml" />
+	</beans>
+</beans>

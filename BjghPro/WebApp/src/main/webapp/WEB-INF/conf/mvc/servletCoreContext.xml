@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="GB18030"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+					http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+					http://www.springframework.org/schema/context
+					http://www.springframework.org/schema/context/spring-context-4.1.xsd
+					http://www.springframework.org/schema/aop
+					http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+           			http://www.springframework.org/schema/mvc
+ 					http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+ 					http://www.springframework.org/schema/tx
+					http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+					http://www.springframework.org/schema/util
+    				http://www.springframework.org/schema/util/spring-util-4.1.xsd
+    				http://www.springframework.org/schema/cache 
+    				http://www.springframework.org/schema/cache/spring-cache-4.1.xsd">
+
+	<context:component-scan base-package="com.bjdv.cidp.dao.webapp.controller" />
+
+<!-- 	<tx:annotation-driven transaction-manager="jdbcTransactionManager" /> -->
+	<tx:annotation-driven transaction-manager="jpaTransactionManager" />
+	
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+	<cache:annotation-driven />
+	
+	<mvc:resources location="/lib/" mapping="/lib/**"/>
+	<mvc:resources location="/image/" mapping="/image/**"/>
+	<mvc:resources location="/js/" mapping="/js/**"/>
+	<mvc:resources location="/css/" mapping="/css/**"/>
+	
+	<mvc:default-servlet-handler/>
+	
+	<!-- MvcNamespaceHandler for Spring MVC configuration namespace -->
+	<!-- 
+	RequestMappingHandlerMapping
+	ConfigurableWebBindingInitializer
+	RequestMappingHandlerAdapter
+	ConversionServiceExposingInterceptor
+	MappedInterceptor
+	
+	ExceptionHandlerExceptionResolver
+	ResponseStatusExceptionResolver
+	DefaultHandlerExceptionResolver
+	
+	attribute
+	conversion-service FormattingConversionServiceFactoryBean
+	validator [jsr303Present?LocalValidatorFactoryBean:null]
+	content-negotiation-manager ContentNegotiationManagerFactoryBean
+	message-codes-resolver [Reference bean default is DefaultMessageCodesResolver] -->
+	<mvc:annotation-driven ignore-default-model-on-redirect="true"/>
+	<!-- 
+	Default message converters:
+	ByteArrayHttpMessageConverter
+	StringHttpMessageConverter [writeAcceptCharset:false]
+	ResourceHttpMessageConverter
+	SourceHttpMessageConverter
+	AllEncompassingFormHttpMessageConverter
+	Jaxb2RootElementHttpMessageConverter
+	MappingJackson2HttpMessageConverter
+	 -->
+	
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+	</mvc:interceptors>
+	
+	<mvc:view-resolvers>
+		<mvc:jsp prefix="/WEB-INF/jsp/"/>
+	</mvc:view-resolvers>
+	
+	<!-- <bean id="formattingConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+			<list>
+				<bean class="name.chenyuelin.FormattingAndConversion.XMLGregorianCalendarFormatAnnotationFormatterFactory" />
+			</list>
+		</property>
+	</bean> -->
+	
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>/WEB-INF/i18n/message</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieMaxAge" value="#{T(java.lang.Integer).MAX_VALUE}" />
+		<property name="cookieName" value="language" />
+		<property name="defaultLocale" value="zh_CH" />
+	</bean>
+
+	<!-- <bean id="multipartResolver" class="name.chenyuelin.custom.EncodingStandardServletMultipartResolver">
+		<property name="encoding" value="UTF-8" />
+	</bean> -->
+</beans>

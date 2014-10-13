@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
 <title>Welcome</title>
+<link rel="stylesheet" type="text/css" href="resources/js/n1.css"/>
 <script type="text/javascript" src="/static/lib/jquery.min.js"></script>
 <script type="text/javascript">
 </script>

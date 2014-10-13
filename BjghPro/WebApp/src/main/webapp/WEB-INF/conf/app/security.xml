@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="GB18030"?>
+<b:beans xmlns="http://www.springframework.org/schema/security" 
+	xmlns:b="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         					http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+         					http://www.springframework.org/schema/util
+    						http://www.springframework.org/schema/util/spring-util.xsd
+         					http://www.springframework.org/schema/security
+							http://www.springframework.org/schema/security/spring-security-3.2.xsd
+							http://www.springframework.org/schema/aop
+							http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+	<!-- org.springframework.security.config.SecurityNamespaceHandler parse the xml -->
+
+	<b:bean class="name.chenyuelin.security.SecurityBeanPostProcessor"/>
+
+	<!-- Remove the default filter -->
+	<b:bean class="name.chenyuelin.security.SpringSecurityFilterChainPostProcessor">
+		<b:property name="securityFilterChainName" value="#{T(name.chenyuelin.constants.BaseConstants).SECURITY_FILTER_CHAIN_NAME}"/>
+		<b:property name="rejectPublicInvocations" value="false"/>
+		<b:property name="usernameBasedPrimaryKey" value="true"/>
+		<b:property name="excludeFilterClasses">
+			<util:list value-type="java.lang.Class">
+				<b:value>org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter</b:value>
+				<b:value>org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter</b:value>
+			</util:list>
+		</b:property>
+	</b:bean>
+	
+	<!-- BeanFactoryPostProcessor set this bean to FilterInvocationSecurityMetadataSource-->
+	<b:bean class="name.chenyuelin.security.TreeDataFilterInvocationSecurityMetadataSource" init-method="loadAuthorities">
+		<b:constructor-arg>
+			<util:map key-type="java.lang.String" value-type="java.lang.String">
+				<b:entry key="ANONYMOUS" value="IS_AUTHENTICATED_ANONYMOUSLY"/>
+			</util:map>
+		</b:constructor-arg>
+		<b:property name="securityExpressionHandler">
+			<b:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+		</b:property>
+		<b:property name="jdbcTemplate" ref="defaultJdbcTemplate"/>
+		<b:property name="rolePrefix" value="ROLE_"/>
+	</b:bean>
+	
+	<b:bean id="mySqlPasswordEncoder" class="name.chenyuelin.security.MySqlPasswordEncoder">
+		<b:property name="jdbcTemplate" ref="defaultJdbcTemplate"/>
+	</b:bean>
+	
+	<b:bean id="basicAuthenticationEntryPoint" class="name.chenyuelin.security.BasicAuthenticationEntryPoint"/>
+	
+	<b:bean id="authenticationSuccessHandler" class="name.chenyuelin.security.AjaxAuthenticationSuccessHandler">
+		<b:property name="objectMapper" ref="defaultJsonMapper"/>
+	</b:bean>
+	<b:bean id="authenticationFailureHandler" class="name.chenyuelin.security.AjaxAuthenticationFailureHandler"/>
+	<b:bean id="accessDeniedHandler" class="name.chenyuelin.security.AjaxAccessDeniedHandler"/>
+	<b:bean id="logoutSuccessHandler" class="name.chenyuelin.security.AjaxLogoutSuccessHandler"/>
+	
+	<b:bean id="securityCache" class="org.springframework.security.core.userdetails.cache.SpringCacheBasedUserCache">
+		<b:constructor-arg value="#{@cacheManager.getCache('securityCache')}"/>
+			<!-- <b:bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+				<b:property name="name" value="securityCache"/>
+			</b:bean> -->
+	</b:bean>
+	
+	<http name="httpSecurityFilterChain" authentication-manager-ref="authenticationManager" access-decision-manager-ref="accessDecisionManager" entry-point-ref="basicAuthenticationEntryPoint">
+		<!-- default login-processing-url is "/j_spring_security_check" -->
+		<form-login authentication-success-handler-ref="authenticationSuccessHandler" authentication-failure-handler-ref="authenticationFailureHandler"/>
+		
+		<!-- default is enabled	<anonymous/> -->
+		<access-denied-handler ref="accessDeniedHandler"/>
+		
+		<!-- default logout url is "/j_spring_security_logout" -->
+		<logout success-handler-ref="logoutSuccessHandler"/>
+		
+		<!-- default is to set -->
+		<!-- <anonymous/> -->
+		
+		<!-- <request-cache ref=""/> -->
+		
+		<session-management session-fixation-protection="none"/>
+		
+		<remember-me key="jbcpPets-rmkey-Dz^!3wbcXkMZ+PFdqF%FGZFALZaNC$/RCeJfh2K#Mpyj2GRXM-vnVytw^4_L%Qfu" />
+	</http>
+	
+	<authentication-manager id="authenticationManager" erase-credentials="false">
+		<authentication-provider>
+			<jdbc-user-service id="defaultUserDetailsService" data-source-ref="dataSource" role-prefix="ROLE_" cache-ref="securityCache" 
+			authorities-by-username-query="SELECT 1,a.authority FROM ss_user u INNER JOIN ss_user_authority ua ON u.id=ua.user_id AND ua.enabled = true INNER JOIN ss_authority a ON ua.authority_id = a.id AND a.enabled = true AND a.is_expression = false WHERE u.id = ?" 
+			group-authorities-by-username-query="SELECT r.id role_id,r.name role,a.authority FROM ss_user u INNER JOIN ss_user_role ur ON u.id=ur.user_id AND ur.enabled=true INNER JOIN ss_role r ON ur.role_id=r.id AND r.enabled=true INNER JOIN ss_role_authority ra ON r.id=ra.role_id AND ra.enabled=true INNER JOIN ss_authority a ON ra.authority_id=a.id AND a.enabled=true WHERE u.id = ?"
+			users-by-username-query="SELECT id,pd,enabled FROM ss_user WHERE name = ?"/>
+			<password-encoder ref="mySqlPasswordEncoder"/>
+		</authentication-provider>
+	</authentication-manager>
+	
+	<b:bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+		<b:constructor-arg>
+			<b:list>
+				<b:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+				<b:bean class="org.springframework.security.access.vote.RoleVoter"/>
+			</b:list>
+		</b:constructor-arg>
+	</b:bean>
+	
+	<b:bean id="strengthenUserDetailsAdvisor" class="name.chenyuelin.security.SecurityAdvisor"/>
+	
+	<!-- Support security expression interface -->
+	<!-- org.springframework.security.access.expression.SecurityExpressionOperations -->
+	
+	<b:bean id="expressionHandler" class="name.chenyuelin.security.ExpansionSecurityExpressionHandler"></b:bean>
+	
+	<!-- ACL Control -->
+	<global-method-security pre-post-annotations="enabled" access-decision-manager-ref="aclAccessDecisionManager" >
+		<expression-handler ref="expressionHandler"/>
+	</global-method-security>
+	
+	
+	<b:bean id="aclAccessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+		<b:constructor-arg>
+			<b:list>
+				<b:bean class="org.springframework.security.access.prepost.PreInvocationAuthorizationAdviceVoter">
+					<b:constructor-arg>
+						<b:bean class="org.springframework.security.access.expression.method.ExpressionBasedPreInvocationAdvice"/>
+					</b:constructor-arg>
+				</b:bean>
+				<b:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+				<b:bean class="org.springframework.security.acls.AclEntryVoter">
+					<b:constructor-arg ref="aclService"/>
+					<b:constructor-arg value="ACL_TEST"/>
+					<b:constructor-arg>
+						<b:array>
+							<util:constant static-field="org.springframework.security.acls.domain.BasePermission.ADMINISTRATION"/>
+							<util:constant static-field="org.springframework.security.acls.domain.BasePermission.READ"/>
+							<util:constant static-field="org.springframework.security.acls.domain.BasePermission.WRITE"/>
+						</b:array>
+					</b:constructor-arg>
+				</b:bean>
+			</b:list>
+		</b:constructor-arg>
+	</b:bean>
+	
+	<b:bean id="aclService" class="org.springframework.security.acls.jdbc.JdbcMutableAclService">
+		<b:constructor-arg ref="dataSource"/>
+		<b:constructor-arg ref="lookupStrategy"/>
+		<b:constructor-arg ref="aclCache"/>
+		<b:property name="classIdentityQuery" value="SELECT @@IDENTITY"/>
+		<b:property name="sidIdentityQuery" value="SELECT @@IDENTITY"/>
+	</b:bean>
+	
+	<b:bean id="lookupStrategy" class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
+		<b:constructor-arg ref="dataSource"/>
+		<b:constructor-arg ref="aclCache"/>
+		<b:constructor-arg ref="aclAuthorizationStrategy"/>
+		<b:constructor-arg ref="permissionGrantingStrategy"/>
+	</b:bean>
+	
+	<b:bean id="aclCache" class="org.springframework.security.acls.domain.SpringCacheBasedAclCache">
+		<b:constructor-arg value="#{@cacheManager.getCache('aclCache')}"/>
+		<b:constructor-arg ref="permissionGrantingStrategy"/>
+		<b:constructor-arg ref="aclAuthorizationStrategy"/>
+	</b:bean>
+	
+	<b:bean id="permissionGrantingStrategy" class="org.springframework.security.acls.domain.DefaultPermissionGrantingStrategy">
+		<b:constructor-arg ref="auditLogger"/>
+	</b:bean>
+	
+	<b:bean id="aclAuthorizationStrategy" class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
+		<b:constructor-arg>
+			<b:array>
+				<b:ref local="grantedAuthority"/><!-- CHANGE_OWNERSHIP -->
+				<b:ref local="grantedAuthority"/><!-- CHANGE_AUDITING -->
+				<b:ref local="grantedAuthority"/><!-- CHANGE_GENERAL -->
+			</b:array>
+		</b:constructor-arg>
+	</b:bean>
+	
+	<b:bean id="grantedAuthority" class="org.springframework.security.core.authority.SimpleGrantedAuthority">
+		<b:constructor-arg value="ROLE_ADMIN"/>
+	</b:bean>
+	
+	<b:bean id="auditLogger" class="org.springframework.security.acls.domain.ConsoleAuditLogger"/>
+	
+	<aop:config>
+		<aop:advisor advice-ref="strengthenUserDetailsAdvisor" pointcut="execution(* org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl.loadUserByUsername(..))"/>
+		
+		<aop:aspect ref="jpaPersonDaoAdvice">
+			<aop:after-returning method="afterAddPerson" pointcut="execution(* name.chenyuelin.dao.JpaPersonDao.addPerson(..))" returning="person"/>
+			<aop:after method="afterDeletePerson" pointcut="execution(* name.chenyuelin.dao.JpaPersonDao.deletePerson(..)) and args(id)" arg-names="id"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<b:bean id="jpaPersonDaoAdvice" class="name.chenyuelin.security.acl.JpaPersonDaoAdvice">
+		<b:property name="mutableAclService" ref="aclService"/>
+	</b:bean>
+	
+	<!-- <b:bean class="org.springframework.security.acls.afterinvocation.AclEntryAfterInvocationProvider">
+	</b:bean> -->
+<!-- 	AclEntryAfterInvocationProvider -->
+<!-- 	AclEntryAfterInvocationCollectionFilteringProvider -->
+</b:beans>
