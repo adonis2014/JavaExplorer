@@ -3,6 +3,7 @@
 	<name>SpringMvc3.1</name>
 	<comment></comment>
 	<projects>
+		<project>MyJpa</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
