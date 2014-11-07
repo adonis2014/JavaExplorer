@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.support.XmlWebApplicationContext;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
 
 @Controller
 @RequestMapping("async")
@@ -37,7 +37,7 @@ public class AsyncController {
 	@Autowired
 	public void setAc(ApplicationContext ac) {
 		System.out.println(ac instanceof BeanDefinitionRegistry);
-		((XmlWebApplicationContext)ac).getBeanFactory();
+		((ConfigurableWebApplicationContext)ac).getBeanFactory();
 		this.ac = ac;
 	}
 }

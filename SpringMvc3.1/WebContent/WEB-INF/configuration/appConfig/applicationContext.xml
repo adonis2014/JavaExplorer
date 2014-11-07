@@ -78,9 +78,12 @@
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 	 -->
+	 
+	 <!-- 有了JPA事务管理器就不需要JDBC事务管理器了
 	<bean id="jdbcTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
-	</bean>
+	</bean> -->
+	
 	<!-- end -->
 
 	<!-- This is the globle cache manager. If in the production environment it need use ehcache. -->
@@ -99,7 +102,9 @@
 	</bean>
 	
 	<!-- App Listener -->
+	<!-- 容器启动监听 -->
 	<bean class="name.chenyuelin.applistener.ContextRefreshedListener"/>
+	<!-- 有代调查 -->
 	<bean class="name.chenyuelin.applistener.ContextStartedListener"/>
 	
 	<beans profile="production">
@@ -111,7 +116,7 @@
 	</beans>
 
 	<beans profile="test">
-		<import resource="unitTesting.xml" />
+		<import resource="testing.xml" />
 	</beans>
 
 </beans>

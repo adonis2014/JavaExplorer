@@ -23,9 +23,15 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="transactionManager" ref="jpaTransactionManager" />
 		<property name="databaseSchemaUpdate" value="true" />
+		<property name="beans">
+			<map>
+				<entry key="activitySampleService" value-ref="activitySampleService"/>
+				<entry key="activitySampleExecutionListener" value-ref="activitySampleExecutionListenerImpl"/>
+			</map>
+		</property>
 		<property name="deploymentResources">
 			<array value-type="java.lang.String">
-				<value>/WEB-INF/activiy/**/*.*</value>
+				<value>/WEB-INF/activities/**/*.*</value>
 			</array>
 		</property>
 		

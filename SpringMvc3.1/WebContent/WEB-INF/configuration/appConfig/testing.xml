@@ -22,11 +22,32 @@
 					http://www.springframework.org/schema/cache 
     				http://www.springframework.org/schema/cache/spring-cache-4.1.xsd">
 
-	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<!-- 		<property name="autoCommit" value="false"/> -->
+<!-- 		<property name="suppressClose" value="true" /> -->
+		<property name="driverClassName" value="${driverClassName}" />
+		<property name="url" value="${urlTest}" />
+		<property name="username" value="#{T(name.chenyuelin.common.AppUtil).decryptBase64ToString('${user}')}" />
+		<property name="password" value="#{T(name.chenyuelin.common.AppUtil).decryptBase64ToString('${password}')}" />
+		<property name="connectionProperties">
+			<props>
+				<prop key="useUnicode">${useUnicode}</prop>
+				<prop key="characterEncoding">${characterEncoding}</prop>
+				<prop key="zeroDateTimeBehavior">${zeroDateTimeBehavior}</prop>
+				<prop key="transformedBitIsBoolean">${transformedBitIsBoolean}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>file:WebContent/WEB-INF/configuration/appProperty.properties</value>
 			</list>
 		</property>
+	</bean> -->
+
+	<bean id="activitiRule" class="org.activiti.engine.test.ActivitiRule">
+		<property name="processEngine" ref="processEngine" />
 	</bean>
 </beans>

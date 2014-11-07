@@ -23,6 +23,7 @@
     				http://www.springframework.org/schema/cache/spring-cache-4.1.xsd">
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+		<property name="autoCommit" value="false"/>
 		<property name="suppressClose" value="true" />
 		<property name="driverClassName" value="${driverClassName}" />
 		<property name="url" value="${urlTest}" />
