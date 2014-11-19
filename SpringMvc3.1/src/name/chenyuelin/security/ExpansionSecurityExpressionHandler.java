@@ -28,9 +28,4 @@ public class ExpansionSecurityExpressionHandler extends DefaultMethodSecurityExp
 		}
 		return filterTarget;
 	}
-
-	public static void main(String[] args) {
-		System.out.println(Character.codePointAt("=", 0));
-		System.out.println((int) '=');
-	}
 }

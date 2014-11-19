@@ -34,10 +34,10 @@ import org.springframework.transaction.annotation.Transactional;
 				,"file:WebContent/WEB-INF/configuration/appConfig/activiti.xml"
 				,"file:WebContent/WEB-INF/configuration/appConfig/security.xml"
 				,"file:WebContent/WEB-INF/configuration/appConfig/scheduled.xml"
-		})/*,
+		}),
 		@ContextConfiguration(locations={ "file:WebContent/WEB-INF/configuration/servletConfig/servletCoreContext.xml",
 				"file:WebContent/WEB-INF/configuration/servletConfig/dispatcherStaticServletContext.xml",
-				"file:WebContent/WEB-INF/configuration/servletConfig/validatorContext.xml" })*/ })
+				"file:WebContent/WEB-INF/configuration/servletConfig/validatorContext.xml" }) })
 @ActiveProfiles(profiles = { "test" })
 @TransactionConfiguration(transactionManager="jpaTransactionManager",defaultRollback=false)
 @Transactional
