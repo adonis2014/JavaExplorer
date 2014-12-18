@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="GB18030"?>
 <ivysettings>
 	<resolvers>
-		<chain name="public" returnFirst="true" dual="true">
+		<chain name="public" returnFirst="true">
 			<ibiblio name="public-oschina" m2compatible="true" root="http://maven.oschina.net/content/groups/public/" />
 			<ibiblio name="public-maven" m2compatible="true" />
 		</chain>

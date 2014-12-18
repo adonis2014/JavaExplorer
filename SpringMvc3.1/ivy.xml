@@ -30,13 +30,13 @@
 		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="${jackson.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="com.fasterxml.jackson.dataformat" name="jackson-dataformat-csv" rev="${jackson.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa.jpql" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<!-- <dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa.jpql" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.core" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.asm" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.antlr" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
-		<!-- <dependency org="org.eclipse.persistence" name="eclipselink" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" /> -->
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" /> -->
 		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="${org.javax.persistence.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="eclipselink" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
 
 		<dependency org="org.mybatis" name="mybatis" rev="3.2.7" conf="compile->master${artifact.spread.semicolon}"/>
 		<dependency org="org.mybatis" name="mybatis-spring" rev="1.2.2" conf="compile->master${artifact.spread.semicolon}"/>

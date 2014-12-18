@@ -22,12 +22,13 @@
 	<dependencies>
 		<dependency org="commons-logging" name="commons-logging" rev="${commons-logging.version}" conf="compile->master${artifact.spread.semicolon}" />
 
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.core" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="${org.javax.persistence.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="eclipselink" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
 		
+		<!-- <dependency org="org.eclipse.persistence" name="org.eclipse.persistence.core" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="${eclipseLink.version}" conf="runtime->master${artifact.spread.semicolon}" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.asm" rev="${eclipseLink.version}" conf="runtime->master${artifact.spread.semicolon}" />
-		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa.jpql" rev="${eclipseLink.version}" conf="runtime->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa.jpql" rev="${eclipseLink.version}" conf="runtime->master${artifact.spread.semicolon}" /> -->
 		
 		<dependency org="junit" name="junit" rev="${junit.version}" conf="test->master${artifact.spread.semicolon}" />
 		<dependency org="org.hamcrest" name="hamcrest-core" rev="${hamcrest-core.version}" conf="test->master${artifact.spread.semicolon}" />

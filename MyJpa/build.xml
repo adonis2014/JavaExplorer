@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="GB18030"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" default="initialize" name="DataPersistence">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" default="resolve" name="DataPersistence">
 
 	<import file="../base.xml" />
 
@@ -22,11 +22,16 @@
 		"(?<=\\<property name=\"eclipselink.weaving\" value=\")[a-zA-Z]+?(?=\" />)", "static"
 		-->
 		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match="(?&lt;=\&lt;property name=&quot;eclipselink.weaving&quot; value=&quot;)[a-zA-Z]+?(?=&quot; /&gt;)" replace="static" byline="true"/>
+		
+		<!-- 删除注解 -->
+		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match=".*&lt;!--.+--&gt;.*" replace="" byline="true"/>
+		<!-- 删除jdbc操作 -->
+		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match=".+javax\.persistence\.jdbc.+" replace="" byline="true"/>
+		
 		<java classpathref="runtime-classpath" classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave" failonerror="true">
 			<arg value="${project-class-directory}"/>
 			<arg value="${project-dist-directory}/${ant.project.name}-${ivy.revision}.jar"/>
 		</java>
-		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match=".+eclipselink\.weaving.+" replace="" flags="true"/>
 	</target>
 	
 	<target name="deliver" depends="resolve" unless="target.resolved">

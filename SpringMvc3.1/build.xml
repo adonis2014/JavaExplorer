@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="GB18030"?>
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="SpringMvc3.1" default="native" basedir=".">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="SpringMvc3.1" default="resolve" basedir=".">
 
 	<description>Spring3.1 MVC sample.</description>
 
