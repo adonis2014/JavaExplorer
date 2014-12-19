@@ -143,46 +143,6 @@
 			return false;
 		});
 		
-		$("#a-login").click(function() {
-			$("#loginDialog").dialog("open");
-			return false;
-		});
-		
-		$("#a-logout").click(function() {
-			/* $.get("/SpringMvc3.1/j_spring_security_logout",function(data){
-				alert(123);
-			}); */
-			$.get("/SpringMvc3.1/j_spring_security_logout", function(data) {
-				alert(data);
-			});
-			return false;
-		});
-		
-		$("#a-reloadAuthority").click(function() {
-			$.get("/SpringMvc3.1/upload/reloadAuthority", function(data) {
-				alert(data);
-			});
-			return false;
-		});
-		
-		$("#loginDialog").dialog({
-		      autoOpen: false,
-		      modal: true,
-		      height:340,
-		      width:280,
-		      buttons: {
-		    	  "OK": function() {
-		    		  var dialog=this;
-		    		  $.post("/SpringMvc3.1/j_spring_security_check",$("#loginForm").serialize(),function(data){
-		    			  $(dialog).dialog("close");
-		    		  }, "json");
-		            },
-		            Cancel: function() {
-		              $(this).dialog("close");
-		            }
-		        }
-		    });
-		
 		$("#one-way-encryption>input:last").click(function(){
 			var pd=$("#one-way-encryption>input:first").val();
 			$.get("/SpringMvc3.1/sqlUtil/digestPassword/"+pd, function(data) {
@@ -227,26 +187,12 @@
 		<input type="file" name="file1" multiple="multiple"> <input type="submit">
 	</form>
 	</br>
-	<a id="a-login" href="#">登录</a>
-	<a id="a-logout" href="/SpringMvc3.1/j_spring_security_logout">退出</a>
-	<a id="a-reloadAuthority" href="#">重载入权限</a>
 	
 	<form id="one-way-encryption">
 		<label for="password">单向加密：</label>
 		<input type="text" name="password">
 		<input type="submit">
 	</form>
-	
-	<div id="loginDialog" title="Basic dialog">
-		<form id="loginForm" action="/j_spring_security_check">
-			<label for="j_username">用户名</label><br/>
-			<input type="text" name="j_username" class="text ui-widget-content ui-corner-all"><br/>
-			<label for="j_password">密码</label><br/>
-			<input type="password" name="j_password" class="text ui-widget-content ui-corner-all"><br/>
-			<label for="_spring_security_remember_me">记住用户</label>
-			<input type="checkbox" name="_spring_security_remember_me">
-		</form>
-	</div>
 	
 	<button id="asyncTextBut" type="button">异步随机数测试</button>
 	

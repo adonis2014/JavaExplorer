@@ -1,41 +1,19 @@
 <?xml version="1.0" encoding="GB18030" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=GB18030" />
 <title>Hello World</title>
+<link rel="stylesheet" href="css/lib/redmond/jquery-ui-1.10.4.custom.min.css">
+<link rel="stylesheet" href="css/lib/layout-default-latest.css">
+<link rel="stylesheet" href="css/lib/ui.jqgrid.css">
 <script src="js/lib/jquery-2.1.0.js"></script>
 <script src="js/lib/jquery-ui-1.10.4.custom.js"></script>
+<script src="js/lib/jquery.layout-latest.min.js"></script>
+<script src="js/lib/i18n/grid.locale-en.js"></script>
+<script src="js/lib/jquery.jqGrid.src.js"></script>
 <script src="js/lib/underscore.js"></script>
 <script src="js/lib/backbone.js"></script>
-
-<script src="js/base1.js"></script>
-<script src="js/base2.js"></script>
-
-<script src="js/common/common.js"></script>
-<script src="js/common/common2.js"></script>
-<script src="js/common2/common.js"></script>
-<script src="js/common2/common2.js"></script>
-
-<script src="js/index/a.js"></script>
-<script src="js/index/b.js"></script>
-
-<script type="textjavascript">
-Note = Backbone.Model.extend({
-
-  initialize: function() {},
-
-  author: function() {},
-
-  coordinates: function() {},
-
-  allowedToEdit: function(account) {
-    return true;
-  }
-
-});
-
-</script>
 
 <script id="entry-template1" type="text/x-handlebars-template">
   <input type="text" value="<%= value %>"/>
@@ -55,42 +33,69 @@ Note = Backbone.Model.extend({
 <script id="entry-template4" type="text/x-handlebars-template">
   <h1>hellow</h1>
 </script>
-<script type="text/javascript">
-	var reg = /b(?=a)/;
-	alert("acab".replace(reg, "*"));
-	$().ready(function() {
-		var aaa = [ {
-			a : 1
-		}, {
-			b : 3
-		} ];
-		var ccc = $.extend(true, [], aaa);
-		var bbb = aaa.concat(ccc);
-		alert(aaa === ccc);
-		alert(aaa === bbb)
 
-		var template1 = _.template($("#entry-template1").text());
-		$("body").append(template1({
-			value : 1
-		}));
-		$("body").append(template1({
-			value : 2
-		}));
-		var template2 = _.template($("#entry-template2").text());
-		$("body").append(template2({
-			value : '<script>'
-		}));
-		var template3 = _.template($("#entry-template3").text());
-		$("body").append(template3({
-			people : [ "张三", "李四", "王五" ]
-		}));
-		var template4 = _.template($("#entry-template4").text());
-		$("body").append(template4());
+<script>
+$().ready(function(){
+	$("#loginDialog").dialog({
+	      autoOpen: false,
+	      modal: true,
+	      height:340,
+	      width:280,
+	      buttons: {
+	    	  "OK": function() {
+	    		  var dialog=this;
+	    		  $.post("/SpringMvc3.1/j_spring_security_check",$("#loginForm").serialize(),function(data){
+	    			  $(dialog).dialog("close");
+	    		  }, "json");
+	            },
+	            Cancel: function() {
+	              $(this).dialog("close");
+	            }
+	        }
+	    });
+	
+	$("#a-login").click(function() {
+		$("#loginDialog").dialog("open");
+		return false;
 	});
+	
+	$("#a-logout").click(function() {
+		/* $.get("/SpringMvc3.1/j_spring_security_logout",function(data){
+			alert(123);
+		}); */
+		$.get("/SpringMvc3.1/j_spring_security_logout", function(data) {
+			alert(data);
+		});
+		return false;
+	});
+	
+	$("#a-reloadAuthority").click(function() {
+		$.get("/SpringMvc3.1/upload/reloadAuthority", function(data) {
+			alert(data);
+		});
+		return false;
+	});
+	
+});
+
 </script>
 </head>
 <body>
-	work now!
-	<div style="display: none;"></div>
+	<a id="a-login" href="#">登录</a>
+	<a id="a-logout" href="/SpringMvc3.1/j_spring_security_logout">退出</a>
+	<a id="a-reloadAuthority" href="#">重载入权限</a>
+	
+	
+	
+	<div id="loginDialog" title="Basic dialog">
+		<form id="loginForm" action="/j_spring_security_check">
+			<label for="j_username">用户名</label><br/>
+			<input type="text" name="j_username" class="text ui-widget-content ui-corner-all"><br/>
+			<label for="j_password">密码</label><br/>
+			<input type="password" name="j_password" class="text ui-widget-content ui-corner-all"><br/>
+			<label for="_spring_security_remember_me">记住用户</label>
+			<input type="checkbox" name="_spring_security_remember_me">
+		</form>
+	</div>
 </body>
 </html>
