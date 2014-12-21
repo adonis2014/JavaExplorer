@@ -11,11 +11,13 @@
 		<property name="targetObject" ref="personController" />
 		<property name="targetMethod" value="setValidatorMap" />
 		<property name="arguments">
-			<map key-type="java.lang.Class">
-				<entry key="name.chenyuelin.webapp.command.PersonCommandListWrap" value-ref="personCommandListWrapValidator" />
-				<entry key="name.chenyuelin.webapp.command.PersonCommand" value-ref="personCommandValidator" />
-				<entry key="name.chenyuelin.webapp.command.PersonUploadInformation" value-ref="personUploadInformationValidator" />
-			</map>
+			<array>
+				<map key-type="java.lang.Class">
+					<entry key="name.chenyuelin.webapp.command.PersonCommandListWrap" value-ref="personCommandListWrapValidator" />
+					<entry key="name.chenyuelin.webapp.command.PersonCommand" value-ref="personCommandValidator" />
+					<entry key="name.chenyuelin.webapp.command.PersonUploadInformation" value-ref="personUploadInformationValidator" />
+				</map>
+			</array>
 		</property>
 	</bean>
 
@@ -23,9 +25,11 @@
 		<property name="targetObject" ref="securityRoleController" />
 		<property name="targetMethod" value="setValidatorMap" />
 		<property name="arguments">
-			<map key-type="java.lang.Class">
-				<entry key="name.chenyuelin.webapp.command.SsRoleCommand" value-ref="ssRoleCommandValidator" />
-			</map>
+			<array>
+				<map key-type="java.lang.Class">
+					<entry key="name.chenyuelin.webapp.command.SsRoleCommand" value-ref="ssRoleCommandValidator" />
+				</map>
+			</array>
 		</property>
 	</bean>
 </beans>

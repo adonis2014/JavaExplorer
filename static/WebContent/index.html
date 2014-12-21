@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="GB18030" ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -46,6 +45,12 @@ $().ready(function(){
 	    		  var dialog=this;
 	    		  $.post("/SpringMvc3.1/j_spring_security_check",$("#loginForm").serialize(),function(data){
 	    			  $(dialog).dialog("close");
+	    			  var roles="登录成功。";
+	    			  roles+="\nid:"+data.id;
+	    			  $.each(data.authorities,function(index,r){
+	    				  roles+="\n"+r.authority;
+	    			  });
+	    			  alert(roles);
 	    		  }, "json");
 	            },
 	            Cancel: function() {
@@ -81,11 +86,13 @@ $().ready(function(){
 </script>
 </head>
 <body>
+	<h1 align="center">欢迎</h1>
 	<a id="a-login" href="#">登录</a>
 	<a id="a-logout" href="/SpringMvc3.1/j_spring_security_logout">退出</a>
 	<a id="a-reloadAuthority" href="#">重载入权限</a>
 	
-	
+	<br>
+	<a href="../SpringMvc3.1/management/person.htm" target="_blank">人成管理</a>
 	
 	<div id="loginDialog" title="Basic dialog">
 		<form id="loginForm" action="/j_spring_security_check">

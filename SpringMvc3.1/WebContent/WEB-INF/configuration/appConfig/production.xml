@@ -24,4 +24,19 @@
 
 	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/datasource" />
 	
+	<!-- JPA Manager -->
+	<bean id="testDbEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaDialect">
+			<bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect" />
+		</property>
+		<!-- 
+		<property name="packagesToScan" value="name.chenyuelin.entity.test" />
+		<property name="persistenceXmlLocation" value="/META-INF/persistence.xml" />
+		<property name="persistenceUnitName" value="testDB" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter" />
+		</property>
+		 -->
+	</bean>
 </beans>

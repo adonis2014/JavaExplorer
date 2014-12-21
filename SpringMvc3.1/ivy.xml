@@ -133,7 +133,7 @@
 		 <!-- 简单logger,类似说common logger的simple logger
 		 <dependency org="org.slf4j" name="slf4j-simple" rev="${slf4j.version}" conf="runtime->master${artifact.spread.semicolon}"/> -->
 		 
-		<dependency org="mysql" name="mysql-connector-java" rev="5.1.28" conf="runtime->master${artifact.spread.semicolon}" />
+		<dependency org="mysql" name="mysql-connector-java" rev="${mysql.connector.version}" conf="runtime->master${artifact.spread.semicolon}" />
 		<dependency org="jstl" name="jstl" rev="1.2" conf="runtime->master${artifact.spread.semicolon}" />
 		<!-- <dependency org="ojdbc" name="ojdbc" rev="14" conf="runtime->default${artifact.spread.semicolon}" /> -->
 		

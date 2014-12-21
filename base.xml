@@ -2,6 +2,8 @@
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="baseBuild" default="initialize" basedir=".">
 	<description>Base Build.</description>
 
+	<!-- Sample. -Divy.win.dir.path=g: -Dant-build-space=g: -DspreadConf=";sources" -->
+	
 	<tstamp />
 	<property environment="env" />
 
@@ -80,12 +82,12 @@
 		<ivyConfGenerate originalspreadproperty="spreadConf" targetspreadproperty="artifact.spread.comma" punctuation="${punctuation.comma}" />
 		
 		<!-- Set ivy default user dir property -->
-		<available file="${ivy.win.parent.path}" type="dir" property="ivy.win.parent.path.exist" />
+		<available file="${ivy.win.dir.path}" type="dir" property="ivy.win.dir.path.exist" />
 
-		<condition property="ivy.default.ivy.user.dir" value="${ivy.win.parent.path}/${ivy.win.dir.name}">
+		<condition property="ivy.default.ivy.user.dir" value="${ivy.win.dir.path}/${ivy.win.dir.name}">
 			<and>
 				<os family="windows" />
-				<isset property="ivy.win.parent.path.exist" />
+				<isset property="ivy.win.dir.path.exist" />
 			</and>
 		</condition>
 		<!-- end -->
