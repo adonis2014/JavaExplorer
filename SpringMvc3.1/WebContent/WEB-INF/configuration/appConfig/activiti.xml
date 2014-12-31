@@ -22,10 +22,11 @@
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
 		<property name="dataSource" ref="dataSource" />
 		<property name="transactionManager" ref="jpaTransactionManager" />
+		<property name="jobExecutorActivate" value="true" />
+		<property name="databaseSchemaUpdate" value="true" />
 		<property name="deploymentMode">
 			<util:constant static-field="org.activiti.spring.autodeployment.SingleResourceAutoDeploymentStrategy.DEPLOYMENT_MODE"/>
 		</property>
-		<property name="databaseSchemaUpdate" value="true" />
 		<property name="beans">
 			<map>
 				<entry key="activitySampleService" value-ref="activitySampleService"/>

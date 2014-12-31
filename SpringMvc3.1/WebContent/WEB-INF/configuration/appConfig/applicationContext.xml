@@ -28,16 +28,27 @@
 	<!-- <context:property-placeholder location="/WEB-INF/configuration/appProperty.Properties"/> -->
 
 	<context:component-scan base-package="name.chenyuelin.service,name.chenyuelin.dao,name.chenyuelin.schedule,name.chenyuelin.configuration" />
+	<context:property-placeholder location="WEB-INF/configuration/appProperty.properties" />
+<!-- 	<context:property-override/> -->
 	
 	<cache:annotation-driven />
 	
-	<bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<!-- 
+	PropertyOverrideConfigurer
+	与PropertyPlaceholderConfigurer 不同的是: PropertyOverrideConfigurer 利用属性文件的相关信息，覆盖XML 配置文件中定义。即PropertyOverrideConfigurer 允许XML 配置文件中有默认的配置信息。 
+	如果PropertyOverrideConfigurer 的属性文件有对应配置信息，则XML 文件中的配 
+	置信息被覆盖:否则，直接使用XML 文件中的配置信息。使用PropertyOverrideConfigurer 
+	属性文件的格式如下: 
+	beanName.property=value 
+	beanName 是属性占位符企图覆盖的bean 名， property 是企图覆盖的属性名。
+	 -->
+	<!-- <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>WEB-INF/configuration/appProperty.properties</value>
 			</list>
 		</property>
-	</bean>
+	</bean> -->
 	
 	<!-- JPA事务管理器 -->
 	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -45,7 +56,6 @@
 		<property name="entityManagerFactory" ref="testDbEntityManagerFactory" />
 	</bean>
 	<!-- end -->
-	
 	
 	<!-- Mybatis factory SqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -94,7 +104,7 @@
 	</beans>
 
 	<beans profile="dev">
-		<import resource="development.xml" />
+		<import resource="dev/development.xml" />
 	</beans>
 
 	<beans profile="test">
