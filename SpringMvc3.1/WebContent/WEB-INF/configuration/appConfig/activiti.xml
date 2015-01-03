@@ -40,7 +40,7 @@
 		</property>
 		
 		<property name="jpaEntityManagerFactory" ref="testDbEntityManagerFactory" />
-		<property name="jpaHandleTransaction" value="true" />
+		<property name="jpaHandleTransaction" value="false" />
 		<property name="jpaCloseEntityManager" value="false" />
 		<!-- <property name="jpaPersistenceUnitName" value="BJGH" /> -->
 	</bean>
