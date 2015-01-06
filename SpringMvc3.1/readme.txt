@@ -1,34 +1,6 @@
---------------- Input argument. -----------------------
-org.springframework.web.context.request.WebRequest
-org.springframework.web.context.request.NativeWebRequest
-java.util.Locale [for the current request locale, determined by the most specific locale resolver available, in effect, the configured LocaleResolver in a Servlet environment.]
-java.io.InputStream / java.io.Reader
-java.io.OutputStream / java.io.Writer
-java.security.Principal
-@PathVariable
-@MatrixVariable
-@RequestParam
-@RequestHeader
-@RequestBody
-@RequestPart
-@CookieValue
-@ModelAttribute
-HttpEntity<?>
-java.util.Map / org.springframework.ui.Model / org.springframework.ui.ModelMap
-org.springframework.web.servlet.mvc.support.RedirectAttributes
-org.springframework.validation.Errors
-org.springframework.validation.BindingResult
-org.springframework.web.bind.support.SessionStatus
-org.springframework.web.util.UriComponentsBuilder
-
------------------ Return types ----------------------------
-ModelAndView
-Model
-Map
-View
-String
-void
-@ResponseBody
-HttpEntity<?> / ResponseEntity<?>
-Callable<?>
-DeferredResult<?>
+1)ant运行参数
+-Divy.win.dir.path=g: -Dant-build-space=g: -DspreadConf=";sources"
+2)启动参数(三种环境production,dev,test。默认production)
+如开发环境使用如下参数
+-Dspring.profiles.active="dev" -javaagent:"D:\.ivy2\cache\org.springframework\spring-instrument\jars\spring-instrument-4.1.3.RELEASE.jar"
+生产环境不许要加任何参数，但需要名为"dataSource"的一个JNDI数据源

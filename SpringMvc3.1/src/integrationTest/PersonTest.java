@@ -3,6 +3,9 @@
  */
 package integrationTest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 /**
  * @author U1
@@ -31,11 +35,15 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration("WebContent")
 @ContextHierarchy({
-		@ContextConfiguration(locations="file:WebContent/WEB-INF/configuration/appConfig/applicationContext.xml"),
+		@ContextConfiguration(locations={"file:WebContent/WEB-INF/configuration/appConfig/applicationContext.xml",
+				"file:WebContent/WEB-INF/configuration/appConfig/activiti.xml",
+				"file:WebContent/WEB-INF/configuration/appConfig/security.xml",
+				"file:WebContent/WEB-INF/configuration/appConfig/scheduled.xml",
+		}),
 		@ContextConfiguration(locations={ "file:WebContent/WEB-INF/configuration/servletConfig/servletCoreContext.xml",
 				"file:WebContent/WEB-INF/configuration/servletConfig/dispatcherStaticServletContext.xml",
 				"file:WebContent/WEB-INF/configuration/servletConfig/validatorContext.xml" }) })
-@ActiveProfiles(profiles = { "dev", "test" })
+@ActiveProfiles(profiles = {"test"})
 public class PersonTest {
 
 	@Autowired
@@ -63,8 +71,10 @@ public class PersonTest {
 	@Before
 	public void setUp() throws Exception {
 		System.out.println(wac.getServletContext().getRealPath("index.html"));
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-		System.out.println(123);
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).addFilters(new DelegatingFilterProxy("springSecurityFilterChain")).alwaysDo(MockMvcResultHandlers.print()).build();
+		Map<String, Object> parma=new HashMap<>();
+		parma.put("a", "b");
+		mockMvc.perform(MockMvcRequestBuilders.post("/j_spring_security_check").param("j_username", "user3").param("j_password", "123").accept(MediaType.APPLICATION_FORM_URLENCODED)).andReturn();
 	}
 
 	/**

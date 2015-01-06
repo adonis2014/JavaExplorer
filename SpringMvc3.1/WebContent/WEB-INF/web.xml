@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="GB18030"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 		 xmlns="http://java.sun.com/xml/ns/javaee" 
 		 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
@@ -29,14 +29,16 @@
 			</param-value>
 	</context-param>
 
+	<!-- 
+	通过启动参数-D来配制
 	<context-param>
 		<param-name>spring.profiles.active</param-name>
-		<param-value>dev</param-value>
-	</context-param>
+		<param-value>production</param-value>
+	</context-param> -->
 
 	<context-param>
 		<param-name>spring.profiles.default</param-name>
-		<param-value>dev</param-value>
+		<param-value>production</param-value>
 	</context-param>
 	
 	<servlet>

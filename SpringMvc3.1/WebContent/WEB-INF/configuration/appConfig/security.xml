@@ -30,7 +30,7 @@
 		</b:property>
 	</b:bean>
 	
-	<!-- BeanFactoryPostProcessor set this bean to FilterInvocationSecurityMetadataSource-->
+	<!-- BeanFactoryPostProcessor set this bean to FilterInvocationSecurityMetadataSource -->
 	<b:bean class="name.chenyuelin.security.TreeDataFilterInvocationSecurityMetadataSource" init-method="loadAuthorities">
 		<b:constructor-arg>
 			<util:map key-type="java.lang.String" value-type="java.lang.String">
@@ -84,6 +84,10 @@
 		<remember-me key="jbcpPets-rmkey-Dz^!3wbcXkMZ+PFdqF%FGZFALZaNC$/RCeJfh2K#Mpyj2GRXM-vnVytw^4_L%Qfu" />
 	</http>
 	
+	<!-- 
+	激动用户认证过滤器UsernamePasswordAuthenticationFilter
+	数据库用户认证方法DaoAuthenticationProvider.retrieveUser(String username, UsernamePasswordAuthenticationToken authentication)
+	 -->
 	<authentication-manager id="authenticationManager" erase-credentials="false">
 		<authentication-provider>
 			<jdbc-user-service id="defaultUserDetailsService" data-source-ref="dataSource" role-prefix="ROLE_" cache-ref="securityCache" 
