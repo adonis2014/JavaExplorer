@@ -3,6 +3,8 @@
  */
 package integrationTest;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +16,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
@@ -27,7 +36,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.DelegatingFilterProxy;
 
 /**
  * @author U1
@@ -45,17 +53,22 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 				"file:WebContent/WEB-INF/configuration/servletConfig/validatorContext.xml" }) })
 @ActiveProfiles(profiles = {"test"})
 public class PersonTest {
-
+	
 	@Autowired
 	private WebApplicationContext wac;
 
 	private MockMvc mockMvc;
 
+	private MockHttpSession session;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		Collection<GrantedAuthority> grantedAuthoritys=new ArrayList<>();
+		User user=new User("user3", "*23AE809DDACAF96AF0FD78ED04B6A265E05AA257", grantedAuthoritys);
+		PreAuthenticatedAuthenticationToken USERNAME_PASSWORD_AUTHENTICATION_TOKEN=new PreAuthenticatedAuthenticationToken(user,"123");
 	}
 
 	/**
@@ -71,10 +84,19 @@ public class PersonTest {
 	@Before
 	public void setUp() throws Exception {
 		System.out.println(wac.getServletContext().getRealPath("index.html"));
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).addFilters(new DelegatingFilterProxy("springSecurityFilterChain")).alwaysDo(MockMvcResultHandlers.print()).build();
-		Map<String, Object> parma=new HashMap<>();
-		parma.put("a", "b");
-		mockMvc.perform(MockMvcRequestBuilders.post("/j_spring_security_check").param("j_username", "user3").param("j_password", "123").accept(MediaType.APPLICATION_FORM_URLENCODED)).andReturn();
+		
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+				.addFilters((FilterChainProxy)wac.getBean("springSecurityFilterChain"))
+				.alwaysDo(MockMvcResultHandlers.print()).build();
+		
+		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/j_spring_security_check")
+				.param("j_username", "user3")
+				.param("j_password", "123")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.accept(MediaType.APPLICATION_JSON))
+				.andReturn();
+		
+		session=(MockHttpSession)mvcResult.getRequest().getSession();
 	}
 
 	/**
@@ -82,15 +104,16 @@ public class PersonTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/j_spring_security_logout").accept(MediaType.APPLICATION_JSON));
 	}
 
 	@Test
 	public void test() throws Exception {
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/person/").accept(MediaType.APPLICATION_JSON)).andDo(MockMvcResultHandlers.print())
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/person/").session(session).accept(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
-
+		
 		MvcResult result = resultActions.andReturn();
-		System.out.println(result.getAsyncResult());
+//		System.out.println(result.getAsyncResult());
 		System.out.println(result.getHandler());
 		System.out.println(result.getRequest().getContextPath());
 		System.out.println(result.getResponse().getContentAsString());

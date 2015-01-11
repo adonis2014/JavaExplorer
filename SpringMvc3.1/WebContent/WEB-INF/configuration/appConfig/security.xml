@@ -64,9 +64,56 @@
 			</b:bean> -->
 	</b:bean>
 	
+	<!-- 
+	The class J2eePreAuthenticatedProcessingFilter will extract the username from the userPrincipal property of the HttpServletRequest. 
+	Use of this filter would usually be combined with the use of Java EE roles as described above in J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource.
+	此认证方法目前以方便集成测试为目的。
+	 -->
+	<b:bean id="j2eePreAuthenticatedProcessingFilter" class="org.springframework.security.web.authentication.preauth.j2ee.J2eePreAuthenticatedProcessingFilter">
+		<b:property name="authenticationManager" ref="authenticationManager"/>
+		<b:property name="authenticationDetailsSource">
+			<b:bean class="org.springframework.security.web.authentication.preauth.j2ee.J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource">
+				<b:property name="mappableRolesRetriever">
+					<b:bean class="org.springframework.security.core.authority.mapping.SimpleMappableAttributesRetriever">
+						<b:property name="mappableAttributes">
+							<b:set value-type="java.lang.String">
+								<b:value>ADMIN</b:value>
+							</b:set>
+						</b:property>
+					</b:bean>
+				</b:property>
+			</b:bean>
+		</b:property>
+	</b:bean>
+	<b:bean id="preAuthenticatedAuthenticationProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+		<b:property name="preAuthenticatedUserDetailsService">
+			<b:bean class="org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService"/>
+		</b:property>
+	</b:bean>
+	
+	
+	<!-- 
+	HttpSecurityBeanDefinitionParser解析http标签
+	生成SecurityFilterChain实例对象
+	
+	默认filter顺序为
+	SecurityContextPersistenceFilter
+	WebAsyncManagerIntegrationFilter
+	LogoutFilter
+	UsernamePasswordAuthenticationFilter
+	DefaultLoginPageGeneratingFilter
+	RequestCacheAwareFilter
+	SecurityContextHolderAwareRequestFilter
+	RememberMeAuthenticationFilter
+	AnonymousAuthenticationFilter
+	ExceptionTranslationFilter
+	FilterSecurityInterceptor
+	 -->
 	<http name="httpSecurityFilterChain" authentication-manager-ref="authenticationManager" access-decision-manager-ref="accessDecisionManager" entry-point-ref="basicAuthenticationEntryPoint">
 		<!-- default login-processing-url is "/j_spring_security_check" -->
 		<form-login authentication-success-handler-ref="authenticationSuccessHandler" authentication-failure-handler-ref="authenticationFailureHandler"/>
+		
+		<custom-filter ref="j2eePreAuthenticatedProcessingFilter" position="PRE_AUTH_FILTER"/>
 		
 		<!-- default is enabled	<anonymous/> -->
 		<access-denied-handler ref="accessDeniedHandler"/>
@@ -87,8 +134,11 @@
 	<!-- 
 	激动用户认证过滤器UsernamePasswordAuthenticationFilter
 	数据库用户认证方法DaoAuthenticationProvider.retrieveUser(String username, UsernamePasswordAuthenticationToken authentication)
+	
+	AuthenticationManagerBeanDefinitionParser来解析authentication-manager标签
 	 -->
 	<authentication-manager id="authenticationManager" erase-credentials="false">
+		<!-- DaoAuthenticationProvider注册 -->
 		<authentication-provider>
 			<jdbc-user-service id="defaultUserDetailsService" data-source-ref="dataSource" role-prefix="ROLE_" cache-ref="securityCache" 
 			authorities-by-username-query="SELECT 1,a.authority FROM ss_user u INNER JOIN ss_user_authority ua ON u.id=ua.user_id AND ua.enabled = true INNER JOIN ss_authority a ON ua.authority_id = a.id AND a.enabled = true AND a.is_expression = false WHERE u.id = ?" 
@@ -96,6 +146,8 @@
 			users-by-username-query="SELECT id,pd,enabled FROM ss_user WHERE name = ?"/>
 			<password-encoder ref="mySqlPasswordEncoder"/>
 		</authentication-provider>
+		
+		<authentication-provider ref="preAuthenticatedAuthenticationProvider"/>
 	</authentication-manager>
 	
 	<b:bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
@@ -109,10 +161,12 @@
 	
 	<b:bean id="strengthenUserDetailsAdvisor" class="name.chenyuelin.security.SecurityAdvisor"/>
 	
-	<!-- Support security expression interface -->
-	<!-- org.springframework.security.access.expression.SecurityExpressionOperations -->
-	
-	<b:bean id="expressionHandler" class="name.chenyuelin.security.ExpansionSecurityExpressionHandler"></b:bean>
+	<!-- 
+	Support security expression interface
+	org.springframework.security.access.expression.SecurityExpressionOperations
+	支持@PreAuthorize,@PreFilter,@PostAuthorize,@PostFilter解析
+	 -->
+	<b:bean id="expressionHandler" class="name.chenyuelin.security.ExpansionSecurityExpressionHandler"/>
 	
 	<!-- ACL Control -->
 	<global-method-security pre-post-annotations="enabled" access-decision-manager-ref="aclAccessDecisionManager" >

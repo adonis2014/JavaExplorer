@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="GB18030"?>
 <persistence version="2.1" 
 				xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -50,10 +50,10 @@
 			
 			<property name="eclipselink.weaving" value="dynamic" />
 			
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=gbk" />
-			<property name="javax.persistence.jdbc.user" value="developer" />
-			<property name="javax.persistence.jdbc.password" value="developer" />
+<!-- 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" /> -->
+<!-- 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=gbk" /> -->
+<!-- 			<property name="javax.persistence.jdbc.user" value="developer" /> -->
+<!-- 			<property name="javax.persistence.jdbc.password" value="developer" /> -->
 
 			<!-- Optimization #12 - turn logging off -->
 			<!-- Optimization #13 - close EntityManager on commit, to avoid cost of resume -->
