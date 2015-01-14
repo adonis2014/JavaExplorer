@@ -1,7 +1,7 @@
 /**
  * 
  */
-package name.chenyuelin.custom;
+package name.chenyuelin.webapp.custom;
 
 import java.util.ArrayList;
 import java.util.Collection;

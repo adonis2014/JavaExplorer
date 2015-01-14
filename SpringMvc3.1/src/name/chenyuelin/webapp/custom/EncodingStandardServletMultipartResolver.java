@@ -1,7 +1,7 @@
 /**
  * 
  */
-package name.chenyuelin.custom;
+package name.chenyuelin.webapp.custom;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,9 +15,15 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
  */
 public class EncodingStandardServletMultipartResolver extends StandardServletMultipartResolver {
 	private String encoding;
-	
+
 	public MultipartHttpServletRequest resolveMultipart(HttpServletRequest request) throws MultipartException {
-		return new EncodingStandardMultipartHttpServletRequest(encoding,request);
+		MultipartHttpServletRequest multipartHttpServletRequest = null;
+		if ("XMLHttpRequest".equals(request.getHeader("x-requested-with"))) {
+			multipartHttpServletRequest = new EncodingStandardMultipartHttpServletRequest("UTF-8", request);
+		} else {
+			multipartHttpServletRequest = new EncodingStandardMultipartHttpServletRequest(encoding, request);
+		}
+		return multipartHttpServletRequest;
 	}
 
 	public String getEncoding() {

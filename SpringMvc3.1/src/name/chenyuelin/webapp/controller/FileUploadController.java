@@ -70,19 +70,19 @@ public class FileUploadController {
 		}
 	}
 
-	@RequestMapping(value = "download1/{picName}", method = RequestMethod.GET, produces = { "application/octet-stream" })
+	@RequestMapping(value = "download1/{picName:.+}", method = RequestMethod.GET/*, produces = { "application/octet-stream" }*/)
 	@ResponseBody
 	public byte[] download1(@PathVariable("picName") String picName, NativeWebRequest nativeWebRequest) throws Exception {
 		return FileUtil.readAsByteArray(new File(imgRealPath + picName));
 	}
 
-	@RequestMapping(value = "download2/{picName}", method = RequestMethod.GET)
+	@RequestMapping(value = "download2/{picName:.+}", method = RequestMethod.GET)
 	public void download2(@PathVariable("picName") String picName, OutputStream output) throws Exception {
 		InputStream in = new FileInputStream(new File(imgRealPath + picName));
 		FileUtil.copyStream(in, output);
 	}
 
-	@RequestMapping(value = "download3/{picName}", method = RequestMethod.GET)
+	@RequestMapping(value = "download3/{picName:.+}", method = RequestMethod.GET)
 	public HttpEntity<byte[]> download3(@PathVariable("picName") String picName) throws Exception {
 		byte[] data = FileUtil.readAsByteArray(new File(imgRealPath + picName));
 		HttpHeaders httpHeaders = new HttpHeaders();

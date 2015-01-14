@@ -28,11 +28,6 @@
 	});
 	
 	$().ready(function() {
-		$("#a-sample").click(function() {
-			alert(11);
-			return false;
-		});
-
 		$("#f1-sub").click(function() {
 			var $file = $("#f1-file");
 			var fileReader = new FileReader();
@@ -72,12 +67,20 @@
 		$("#a-download-image5").click(function() {
 			$.ajax("/SpringMvc3.1/upload/download1/-047.jpg", {
 				xhrFields : {
-					responseType : "blob"
+					responseType : "text"
 				},
 				contentType : false,
 				processData : false,
 				success : function(data, textStatus, jqXHR) {
-					alert(data);
+					var blob = new Blob([data], {type: "text/plain"}); // 传入一个合适的MIME类型
+					var $a = $("<a>temp anchor</a>");
+					$a.attr("download", "test.jpg");
+					$a.attr("href", URL.createObjectURL(blob));
+					$(document.body).append($a);
+					//$a.trigger("click");
+					$a[0].click();
+					$a.remove();
+					URL.revokeObjectURL(blob);
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					alert(textStatus);
@@ -102,6 +105,7 @@
 			}); */
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', '/SpringMvc3.1/upload/one', true);
+			xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
 			xhr.upload.onprogress = function(progress) {
 				if (progress.lengthComputable) {
 					//loaded
@@ -167,26 +171,39 @@
 </script>
 </head>
 <body>
+	<h3>文件读取:</h3>
 	<form>
-		<input type="file" name="file1" multiple="multiple" id="f1-file"> <input type="submit" id="f1-sub">
+		<input type="file" name="file1" multiple="multiple" id="f1-file"> 
+		<input type="submit" id="f1-sub">
 	</form>
+	<div id="r1"></div>
+	
+	<h3>异步上传:</h3>
 	<div style="border-style: solid; border-color: green; border-width: 2px">
 		<form id="uploadform" enctype="multipart/form-data" action="/SpringMvc3.1/upload/one/" method="post">
 			<input type="text" name="name" /><br /> <input type="file" name="files" multiple="multiple" /><br /> <input type="submit" />
 		</form>
 	</div>
-	<div id="r1"></div>
-	<a id="a-sample" href="#">test</a>
+	
+	<h3>同步上传:</h3>
+	<div style="border-style: solid; border-color: blue; border-width: 2px">
+		<form enctype="multipart/form-data" action="/SpringMvc3.1/upload/one/" method="post" target="_black">
+			<input type="text" name="name" /><br /> <input type="file" name="files" multiple="multiple" /><br /> <input type="submit" />
+		</form>
+	</div>
+	
+	<h3>下载:</h3>
 	<a href="/SpringMvc3.1/upload/download1/-047.jpg">下载图片1</a>
 	<a href="/SpringMvc3.1/upload/download2/-047.jpg">下载图片2</a>
-	<a href="/SpringMvc3.1/upload/download3/-047.jpg">下载图片3</a>
-	<a id="a-download-image4" href="#">下载图片4</a>
-	<a id="a-download-image5" href="#">下载图片5</a>
+	<a href="/SpringMvc3.1/upload/download3/-047.jpg">同步下载图片3</a>
+	<a id="a-download-image4" href="#">异步下载图片4</a>
+	<a id="a-download-image5" href="#">下载图片5(Jquery 解析不了)</a>
+	
 	<div id="div-hide" style="display: none;"></div>
 	<form id="form2">
 		<input type="file" name="file1" multiple="multiple"> <input type="submit">
 	</form>
-	</br>
+	<br>
 	
 	<form id="one-way-encryption">
 		<label for="password">单向加密：</label>

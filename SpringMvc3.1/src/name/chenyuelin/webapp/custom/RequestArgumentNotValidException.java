@@ -1,4 +1,4 @@
-package name.chenyuelin.custom;
+package name.chenyuelin.webapp.custom;
 
 public class RequestArgumentNotValidException extends Exception {
 

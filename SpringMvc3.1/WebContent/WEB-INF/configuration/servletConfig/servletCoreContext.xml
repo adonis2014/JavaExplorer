@@ -121,8 +121,8 @@
 	</bean>
 
 	<!-- <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" /> -->
-	<bean id="multipartResolver" class="name.chenyuelin.custom.EncodingStandardServletMultipartResolver">
-		<property name="encoding" value="UTF-8" />
+	<bean id="multipartResolver" class="name.chenyuelin.webapp.custom.EncodingStandardServletMultipartResolver">
+		<property name="encoding" value="GB18030" />
 	</bean>
 
 	<!-- ÅäÖÃViewResolver -->

@@ -76,8 +76,8 @@
 		
 		<dependency org="javax.validation" name="validation-api" rev="1.1.0.Final" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.hibernate" name="hibernate-validator" rev="5.0.2.Final" conf="compile->master${artifact.spread.semicolon}" />
-		<dependency org="org.jboss.logging" name="jboss-logging" rev="3.2.0.Final" conf="test->master${artifact.spread.semicolon}" />
-		<dependency org="com.fasterxml" name="classmate" rev="1.1.0" conf="test->master${artifact.spread.semicolon}" />
+		<dependency org="org.jboss.logging" name="jboss-logging" rev="3.2.0.Final" conf="runtime->master${artifact.spread.semicolon}" />
+		<dependency org="com.fasterxml" name="classmate" rev="1.1.0" conf="runtime->master${artifact.spread.semicolon}" />
 
 		<dependency org="org.apache.poi" name="poi" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.apache.poi" name="poi-ooxml" rev="${poi.version}" conf="compile->master${artifact.spread.semicolon}" />
@@ -94,7 +94,7 @@
 		<dependency org="joda-time" name="joda-time" rev="2.3" conf="compile->master${artifact.spread.semicolon}" />
 		
 		<!-- <dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${artifact.spread.semicolon}" /> -->
-		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="provided->default${artifact.spread.semicolon}" />
+		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="provided->master${artifact.spread.semicolon}" />
 
 		<dependency org="chenyuelin" name="DataPersistence" rev="latest.revision" conf="compile->master" changing="true" />
 
@@ -136,7 +136,7 @@
 		 <dependency org="org.slf4j" name="slf4j-simple" rev="${slf4j.version}" conf="runtime->master${artifact.spread.semicolon}"/> -->
 		 
 		<dependency org="mysql" name="mysql-connector-java" rev="${mysql.connector.version}" conf="runtime->master${artifact.spread.semicolon}" />
-		<dependency org="jstl" name="jstl" rev="1.2" conf="runtime->master${artifact.spread.semicolon}" />
+		<dependency org="jstl" name="jstl" rev="1.2" conf="compile->master${artifact.spread.semicolon}" />
 		<!-- <dependency org="ojdbc" name="ojdbc" rev="14" conf="runtime->default${artifact.spread.semicolon}" /> -->
 		
 		<dependency org="org.mybatis.generator" name="mybatis-generator-core" rev="1.3.2" conf="system->default${artifact.spread.semicolon}"/>
