@@ -12,12 +12,13 @@
 		<conf name="sources" />
 		<conf name="javadoc" />
 	</configurations>
+	
 	<publications defaultconf="master">
 		<artifact />
 	</publications>
 
 	<dependencies>
-		<dependency org="commons-logging" name="commons-logging" rev="1.1.3" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="commons-logging" name="commons-logging" rev="${commons-logging.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.slf4j" name="slf4j-api" rev="${slf4j.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.apache.commons" name="commons-lang3" rev="3.3.2" conf="compile->master${artifact.spread.semicolon}" />
 		
