@@ -95,7 +95,7 @@
 		<dependency org="joda-time" name="joda-time" rev="2.3" conf="compile->master${artifact.spread.semicolon}" />
 		
 		<!-- <dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${artifact.spread.semicolon}" /> -->
-		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" conf="provided->master${artifact.spread.semicolon}" />
+		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.1.0" conf="provided->master${artifact.spread.semicolon}" />
 
 		<dependency org="chenyuelin" name="DataPersistence" rev="latest.revision" conf="compile->master" changing="true" />
 
