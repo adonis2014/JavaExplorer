@@ -54,6 +54,7 @@
 		<dependency org="org.springframework" name="spring-oxm" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.springframework" name="spring-tx" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.springframework" name="spring-web" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.springframework" name="spring-websocket" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.springframework" name="spring-webmvc" rev="${spring.version}" conf="compile->master${artifact.spread.semicolon}" />
 		
 		<dependency org="org.springframework" name="spring-instrument-tomcat" rev="${spring.version}" conf="system->master"/>
@@ -96,6 +97,7 @@
 		
 		<!-- <dependency org="org.pojomatic" name="pojomatic" rev="1.0" conf="compile->master${artifact.spread.semicolon}" /> -->
 		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.1.0" conf="provided->master${artifact.spread.semicolon}" />
+		<dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" conf="provided->master${artifact.spread.semicolon}" />
 
 		<dependency org="chenyuelin" name="DataPersistence" rev="latest.revision" conf="compile->master" changing="true" />
 

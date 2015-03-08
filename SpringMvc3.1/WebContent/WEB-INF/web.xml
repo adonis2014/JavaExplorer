@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="GB18030"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		 xmlns="http://java.sun.com/xml/ns/javaee" 
-		 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-		 					 http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
-		 id="WebApp_ID" version="3.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+		 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+		 					 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+		 id="WebApp_ID" version="3.1">
 		 
 	<display-name>SpringMvc3.1</display-name>
+	
 	<welcome-file-list>
 		<welcome-file>/index.htm</welcome-file>
 	</welcome-file-list>
@@ -21,16 +21,17 @@
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>
+			<param-value>
   				/WEB-INF/configuration/appConfig/applicationContext.xml
   				/WEB-INF/configuration/appConfig/activiti.xml
   				/WEB-INF/configuration/appConfig/security.xml
   				/WEB-INF/configuration/appConfig/scheduled.xml
+  				/WEB-INF/configuration/appConfig/webSocket.xml
 			</param-value>
 	</context-param>
 
 	<!-- 
-	ͨ����������-D������
+	通过启动参数-D来配制
 	<context-param>
 		<param-name>spring.profiles.active</param-name>
 		<param-value>production</param-value>

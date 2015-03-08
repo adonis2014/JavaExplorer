@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="GB18030">
+<title>Web Socket 1</title>
+</head>
+<script src="../js/lib/jquery-2.1.0.js"></script>
+<script>
+
+	wsUri="ws://localhost/webwithoutspring/websocket/websocketSample1";
+	//wsUri="ws://localhost:8080/WebWithoutSpring/websocket/websocketSample1";
+	wsUri="ws://localhost/webwithoutspring/websocket/sample2/123abc"
+	wsUri="ws://localhost/SpringMvc3.1/websocket/sample2/123abc"
+	
+	$().ready(function() {
+		$outText=$("#outText");
+		
+		$inText=$("#inText");
+		
+		websocket = new WebSocket(wsUri);
+        websocket.onopen = onOpen; 
+        websocket.onclose = onClose; 
+        websocket.onmessage = onMessage; 
+        websocket.onerror = onError;
+        
+        $("#apply").click(function(evt){
+        	websocket.send($outText.val());
+        	$outText.val("");
+        });
+        
+        $("#turnOff").click(function(evt){
+        	websocket.close(1000, "谢谢");
+        });
+        
+        $("#fileForm").submit(function(evt){
+        	var file = $("input:first",this);
+        	var reader = new FileReader();
+        	//以二进制形式读取文件
+        	reader.readAsArrayBuffer(file[0].files[0]);
+        	reader.onload = function loaded(evt) {
+                var binaryString = evt.target.result;
+                        //发送文件
+                //alert(String.fromCharCode.apply(null, new Uint8Array(binaryString)));
+                websocket.send(binaryString);
+        }
+        	return false;
+        });
+	});
+
+	function onOpen(evt) {
+		console.info("open");
+	}
+
+	function onClose(evt) {
+		console.info("close");
+	}
+
+	function onMessage(evt) {
+		var textContent=$inText.val();
+		if(evt.data instanceof Blob){
+			var reader = new FileReader();
+			reader.readAsArrayBuffer(evt.data);
+        	reader.onload = function loaded(readerEvt) {
+        		var dataview=new DataView(readerEvt.target.result);
+        		var num="adler32:[";
+        		for(var i=0;i<8;i+=1){
+        			num+=dataview.getInt8(i)+",";
+        		}
+        		num+="]";
+        		textContent+=num+"\n";
+        		$inText.val(textContent);
+        	}
+		}else{
+			textContent+=evt.data+"\n";
+			$inText.val(textContent);
+		}
+		
+	}
+
+	function onError(evt) {
+		console.info("error");
+	}
+
+	function doSend(message) {
+	}
+</script>
+<body>
+	<textarea id="inText" rows="30" cols="100" disabled="disabled"></textarea>
+	<textarea id="outText" rows="30" cols="100"></textarea>
+	<br>
+	<button id="apply" type="button">发送</button>
+	<button id="turnOff" type="button">断开</button>
+	<form id="fileForm" action="">
+		<input type="file">
+		<input type="submit">
+	</form>
+</body>
+</html>
