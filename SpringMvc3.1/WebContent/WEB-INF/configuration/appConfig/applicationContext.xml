@@ -25,11 +25,10 @@
     				http://mybatis.org/schema/mybatis-spring 
     				http://mybatis.org/schema/mybatis-spring.xsd">
 
-	<!-- <context:property-placeholder location="/WEB-INF/configuration/appProperty.Properties"/> -->
-
 	<context:component-scan base-package="name.chenyuelin.service,name.chenyuelin.dao,name.chenyuelin.schedule,name.chenyuelin.configuration" />
 	<context:property-placeholder location="WEB-INF/configuration/appProperty.properties" />
-<!-- 	<context:property-override/> -->
+	
+	<!-- <context:property-override/> -->
 	
 	<cache:annotation-driven />
 	

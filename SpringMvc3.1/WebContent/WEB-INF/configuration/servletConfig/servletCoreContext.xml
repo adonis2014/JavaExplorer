@@ -126,6 +126,11 @@
 	</bean>
 
 	<!-- 配置ViewResolver -->
+	<!-- spring 4.1 用如下空间名配置ViewResolver
+	<mvc:view-resolvers>
+		<mvc:content-negotiation>...</mvc:content-negotiation>
+	</mvc:view-resolvers>
+	 -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="contentNegotiationManager">
 			<bean class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
