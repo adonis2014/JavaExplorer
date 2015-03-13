@@ -84,6 +84,7 @@ PersonModel = Backbone.Model.extend({
 		return undefined;
 	},
 	
+	//异步ajax请求后台核心函数，一般可使用默认行为
 	sync:function(method, model, options){
 		return Backbone.Model.prototype.sync.apply(this, arguments);
 	}

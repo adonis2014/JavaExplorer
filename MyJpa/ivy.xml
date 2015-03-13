@@ -24,6 +24,7 @@
 
 		<dependency org="org.eclipse.persistence" name="javax.persistence" rev="${org.javax.persistence.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.eclipse.persistence" name="eclipselink" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
+		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa.modelgen.processor" rev="${eclipseLink.version}" conf="system->master" />
 		
 		<!-- <dependency org="org.eclipse.persistence" name="org.eclipse.persistence.core" rev="${eclipseLink.version}" conf="compile->master${artifact.spread.semicolon}" />
 		<dependency org="org.eclipse.persistence" name="org.eclipse.persistence.jpa" rev="${eclipseLink.version}" conf="runtime->master${artifact.spread.semicolon}" />
