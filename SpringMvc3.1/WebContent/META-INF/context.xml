@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>  
+    <Resource name="jdbc/datasource/tm"   
+        auth="Container"   
+        type="javax.sql.DataSource"  
+        factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"   
+        maxActive="100" 
+        initialSize="10" 
+        testWhileIdle="true"
+        timeBetweenEvictionRunsMillis="25200000"
+        validationQuery="select 1"
+        username="root"  
+        password="root" 
+        driverClassName="com.mysql.jdbc.Driver" 
+        url="jdbc:mysql://43.82.153.233:3306/sma?characterEncoding=UTF-8" />   
+</Context>  
