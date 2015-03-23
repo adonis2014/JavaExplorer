@@ -43,4 +43,4 @@
 	<property name="removeAbandonedTimeout" value="60" />
 	<!--设置拦截器，默认为空 ConnectionState：跟踪自动提交，只读目录和事务隔离级别 StatementFinalizer：跟踪打开的语句，并关闭连接时的返回到池中 -->
 	<property name="jdbcInterceptors" value="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer" />
-</bean> 
+</bean>
