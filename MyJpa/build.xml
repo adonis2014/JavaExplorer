@@ -3,17 +3,17 @@
 
 	<import file="../base.xml" />
 
-	<property file="build.properties"/>
+	<property file="ant/properties/build.properties" />
 
 	<target name="initialize" depends="baseBuild.initialize" unless="target.initialized">
-		<echo message="${ivy.dep.file}"/>
-		<echo message="${ivy.module}"/>
-		<echo message="${ivy.revision}"/>
-		<echo message="${ivy.new.revision}"/>
-		<echo message="${ivy.build.number}"/>
-		<echo message="${ivy.new.build.number}"/>
+		<echo message="${ivy.dep.file}" />
+		<echo message="${ivy.module}" />
+		<echo message="${ivy.revision}" />
+		<echo message="${ivy.new.revision}" />
+		<echo message="${ivy.build.number}" />
+		<echo message="${ivy.new.build.number}" />
 		<echo message="${toString:ivy.instance}" />
-		<property name="target.initialized" value="true"/>
+		<property name="target.initialized" value="true" />
 	</target>
 
 	<target name="weave-package" depends="generate-test-report,package-source">
@@ -21,33 +21,44 @@
 		"(<property name=\"eclipselink.weaving\" value=\")(?:[a-zA-Z]+?)(\" />)", "$1static$2")
 		"(?<=\\<property name=\"eclipselink.weaving\" value=\")[a-zA-Z]+?(?=\" />)", "static"
 		-->
-		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match="(?&lt;=\&lt;property name=&quot;eclipselink.weaving&quot; value=&quot;)[a-zA-Z]+?(?=&quot; /&gt;)" replace="static" byline="true"/>
-		
-		<!-- É¾³ý×¢½â -->
-		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match=".*&lt;!--.+--&gt;.*" replace="" byline="true"/>
-		<!-- É¾³ýjdbc²Ù×÷ -->
-		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match=".+javax\.persistence\.jdbc.+" replace="" byline="true"/>
-		
+		<!-- <replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match="(?&lt;=\&lt;property name=&quot;eclipselink.weaving&quot; value=&quot;)[a-zA-Z]+?(?=&quot; /&gt;)" replace="static" byline="true"/> -->
+
+		<loadfile property="_inner.persistence.properties" srcfile="${basedir}/ant/files/persistence_production.xml">
+			<filterchain>
+				<tokenfilter>
+					<containsregex pattern="^\s*&lt;property.+/&gt;" byline="true" />
+					<trim byline="true"/>
+				</tokenfilter>
+				<!-- <striplinebreaks/> -->
+				<replacetokens>
+					<token key="outputPath" value="${basedir}" />
+				</replacetokens>
+				<replacestring from="\" to="\\\\"/>
+			</filterchain>
+		</loadfile>
+
+		<replaceregexp file="${project-class-directory}/META-INF/persistence.xml" match="(?&lt;=\&lt;properties&gt;).+(?=&lt;/properties&gt;)" flags="s" replace="${_inner.persistence.properties}" />
+
 		<java classpathref="runtime-classpath" classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave" failonerror="true">
-			<arg value="${project-class-directory}"/>
-			<arg value="${project-dist-directory}/${ant.project.name}-${ivy.revision}.jar"/>
+			<arg value="${project-class-directory}" />
+			<arg value="${project-dist-directory}/${ant.project.name}-${ivy.revision}.jar" />
 		</java>
 	</target>
-	
+
 	<target name="deliver" depends="resolve" unless="target.resolved">
-		<echo message="${ivy.deliver.ivy.pattern}"/>
+		<echo message="${ivy.deliver.ivy.pattern}" />
 		<ivy:deliver conf="*" deliverpattern="${project-dist-directory}/[artifact]-[type].[ext]" />
 	</target>
 
 	<target name="publish" depends="weave-package,javadoc">
 		<ivy:publish resolver="local" conf="master${artifact.spread.comma}" forcedeliver="true" overwrite="true">
-			<artifacts pattern="${project-dist-directory}/[artifact]-[revision].jar"/>
-			<artifacts pattern="${project-dist-directory}/[artifact]-[revision]-[type].[ext]"/>
+			<artifacts pattern="${project-dist-directory}/[artifact]-[revision].jar" />
+			<artifacts pattern="${project-dist-directory}/[artifact]-[revision]-[type].[ext]" />
 		</ivy:publish>
 	</target>
 
 	<target name="install" depends="publish">
-		<ivy:install organisation="${ivy.organisation}" module="${ivy.module}" revision="${ivy.revision}" from="local" to="shared" overwrite="true"/>
+		<ivy:install organisation="${ivy.organisation}" module="${ivy.module}" revision="${ivy.revision}" from="local" to="shared" overwrite="true" />
 	</target>
 
 </project>

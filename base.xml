@@ -67,7 +67,7 @@
 							continue;
 						}
 						if(artifacts.get(i).equals(spf)){
-							project.setNewProperty(sp,true);
+							//project.setNewProperty(sp,true);
 						}else if(artifacts.get(i).equals(dpf)){
 							project.setNewProperty(dp,true);
 						}
